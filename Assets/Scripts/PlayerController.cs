@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed;
     private bool runPressed;
     private float xAxis;
-    public bool facingRight = true;
+    private bool facingRight = true;
     private Rigidbody2D rb;
 
     //Jumping
