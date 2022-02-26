@@ -1,28 +1,28 @@
 fileFormatVersion: 2
-guid: 3fcad69c95e082047ac4043ce1d888f2
+guid: 13e92c1d98e659941b362fa7c74445fa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5515247173311700785
-    second: crouch_attacks_0
+      213: 7812597124052491198
+    second: Bat_Attack_0
   - first:
-      213: -4572076308115362940
-    second: crouch_attacks_1
+      213: -1304374588832342911
+    second: Bat_Attack_1
   - first:
-      213: -1006885749875651793
-    second: crouch_attacks_2
+      213: 5189149705242216134
+    second: Bat_Attack_2
   - first:
-      213: 3888701059537634496
-    second: crouch_attacks_3
+      213: -6885433733598600802
+    second: Bat_Attack_3
   - first:
-      213: -9115036747040266995
-    second: crouch_attacks_4
+      213: -1965249869322778238
+    second: Bat_Attack_4
   - first:
-      213: -7784815003266371253
-    second: crouch_attacks_5
+      213: -1436389308669078484
+    second: Bat_Attack_5
   - first:
-      213: -5184701433095755370
-    second: crouch_attacks_6
+      213: -6790038531861846183
+    second: Bat_Attack_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -53,7 +53,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -67,7 +67,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -89,7 +89,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,7 +101,43 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -112,13 +148,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crouch_attacks_0
+      name: Bat_Attack_0
       rect:
         serializedVersion: 2
-        x: 50
-        y: 192
-        width: 47
-        height: 39
+        x: 23
+        y: 86
+        width: 14
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -126,20 +162,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13f98b545181a8c40800000000000000
-      internalID: 5515247173311700785
+      spriteID: ebb136001bbeb6c60800000000000000
+      internalID: 7812597124052491198
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_1
+      name: Bat_Attack_1
       rect:
         serializedVersion: 2
-        x: 172
-        y: 192
-        width: 44
-        height: 40
+        x: 86
+        y: 90
+        width: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,20 +183,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 48bedc852d8bc80c0800000000000000
-      internalID: -4572076308115362940
+      spriteID: 18c1a9ae83ee5ede0800000000000000
+      internalID: -1304374588832342911
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_2
+      name: Bat_Attack_2
       rect:
         serializedVersion: 2
-        x: 43
-        y: 128
-        width: 32
-        height: 40
+        x: 151
+        y: 90
+        width: 17
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,20 +204,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f2b4245ceb2d602f0800000000000000
-      internalID: -1006885749875651793
+      spriteID: 6c60943e920930840800000000000000
+      internalID: 5189149705242216134
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_3
+      name: Bat_Attack_3
       rect:
         serializedVersion: 2
-        x: 173
-        y: 128
-        width: 30
-        height: 40
+        x: 216
+        y: 88
+        width: 17
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,20 +225,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c40d6ba20177f530800000000000000
-      internalID: 3888701059537634496
+      spriteID: e912d58ff760270a0800000000000000
+      internalID: -6885433733598600802
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_4
+      name: Bat_Attack_4
       rect:
         serializedVersion: 2
-        x: 38
-        y: 64
-        width: 59
-        height: 37
+        x: 25
+        y: 21
+        width: 14
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,20 +246,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0568024f52e08180800000000000000
-      internalID: -9115036747040266995
+      spriteID: 289022cf7a70ab4e0800000000000000
+      internalID: -1965249869322778238
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_5
+      name: Bat_Attack_5
       rect:
         serializedVersion: 2
-        x: 165
-        y: 64
-        width: 51
-        height: 37
+        x: 92
+        y: 22
+        width: 9
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,20 +267,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b413d201008c6f390800000000000000
-      internalID: -7784815003266371253
+      spriteID: c245c99b88be01ce0800000000000000
+      internalID: -1436389308669078484
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_6
+      name: Bat_Attack_6
       rect:
         serializedVersion: 2
-        x: 37
-        y: 0
-        width: 41
-        height: 38
+        x: 155
+        y: 23
+        width: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -252,8 +288,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6996edd248d3c08b0800000000000000
-      internalID: -5184701433095755370
+      spriteID: 957e8213eefe4c1a0800000000000000
+      internalID: -6790038531861846183
       vertices: []
       indices: 
       edges: []
