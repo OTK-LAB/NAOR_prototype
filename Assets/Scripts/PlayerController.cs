@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
             foreach (Collider2D enemy in hitEnemies)
             {
-                enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
             }
 
             attack_time = 0f;

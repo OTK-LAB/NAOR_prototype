@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Minion_wfireball : MonoBehaviour
+public class Minion_wpoke : MonoBehaviour
 {
     //Animations
     private Animator animator;
@@ -16,6 +16,7 @@ public class Minion_wfireball : MonoBehaviour
     //Move
     private Rigidbody2D rb;
     Vector3 movement;
+    public float speed = 5;
     bool Moveright = false;
 
     //Hit
@@ -28,7 +29,7 @@ public class Minion_wfireball : MonoBehaviour
     public float TimeBtwEachShot;
     public GameObject Fireball;
     bool playerOnline = false;
-    Transform PlayerPosition;
+    public Transform PlayerPosition;
     public float minimumFiringDistance;
     public float maxFiringDistance;
     public float damage = 12.5f;
@@ -66,9 +67,10 @@ public class Minion_wfireball : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
+            if(!playerOnline) cr = transform.position.x;
             playerOnline = true;          
             if (Moveright) { transform.Rotate(0f, 180f, 0f); Moveright = false; }
-            FireballMexhanism();
+            AttackMexhanism();
         }
         else
         {
@@ -107,16 +109,21 @@ public class Minion_wfireball : MonoBehaviour
         }
 
     }
-    void FireballMexhanism()
+    void AttackMexhanism()
     {
-        if (CalculatedTime <= 0)
-        {
-            animator.SetBool("Attack", true);
-            Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
-            CalculatedTime = TimeBtwEachShot;
-        }
-        else
-        {
+            if (CalculatedTime <= 0)
+            {
+            
+                movement = new Vector3((PlayerPosition.position.x + 0.5f), -2.5f, 0f);
+                transform.position = movement;
+                animator.SetBool("Attack", true);
+                CalculatedTime = TimeBtwEachShot;
+                
+            }
+            else
+            {
+            movement = new Vector3(cr, -2.5f, 0f);
+            transform.position = movement;
             CalculatedTime -= Time.deltaTime;
             animator.SetBool("Attack", false);
         }
@@ -143,8 +150,6 @@ public class Minion_wfireball : MonoBehaviour
     }
     void Die()
     {
-        //cr = transform.position.y;
-        animator.applyRootMotion=false;
         ChangeAnimationState(death);
         movement = new Vector3(transform.position.x, -3.87f, transform.position.z);
         transform.position = movement;
