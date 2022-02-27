@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &272057499760610240
+--- !u!1 &5005541254157578782
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,26 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 272057499760610266}
-  - component: {fileID: 272057499760610269}
-  - component: {fileID: 272057499760610268}
-  - component: {fileID: 272057499760610271}
-  - component: {fileID: 272057499760610270}
-  - component: {fileID: 272057499760610241}
+  - component: {fileID: 7481486628171590575}
+  - component: {fileID: 6882225559678057090}
+  - component: {fileID: 3400811910382917616}
+  - component: {fileID: 4728334258730202415}
+  - component: {fileID: 7026446461569670403}
+  - component: {fileID: 995886886061494336}
   m_Layer: 7
-  m_Name: Minion
+  m_Name: Minion_fb
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &272057499760610266
+--- !u!4 &7481486628171590575
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272057499760610240}
+  m_GameObject: {fileID: 5005541254157578782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.02, y: -2.43, z: -0.4669049}
   m_LocalScale: {x: 5.722, y: 5.722, z: 0.73885006}
@@ -35,13 +35,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &272057499760610269
+--- !u!212 &6882225559678057090
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272057499760610240}
+  m_GameObject: {fileID: 5005541254157578782}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -86,36 +86,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &272057499760610268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272057499760610240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 544f8e44321bbe94d83988fab01647dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  maxHealth: 25
-  currentHealth: 0
-  CalculatedTime: 0
-  TimeBtwEachShot: 2
-  Fireball: {fileID: 6122090460482374275, guid: ad365dfeb9dcbb8469c38b9ee66ef157, type: 3}
-  PlayerPosition: {fileID: 0}
-  minimumFiringDistance: 4
-  maxFiringDistance: 0
-  damage: 12.5
---- !u!50 &272057499760610271
+--- !u!50 &3400811910382917616
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272057499760610240}
+  m_GameObject: {fileID: 5005541254157578782}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -129,14 +107,14 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!95 &272057499760610270
+--- !u!95 &4728334258730202415
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272057499760610240}
+  m_GameObject: {fileID: 5005541254157578782}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 10f93f2251e8cc44cbab581729b071d1, type: 2}
@@ -148,13 +126,13 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!61 &272057499760610241
+--- !u!61 &7026446461569670403
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272057499760610240}
+  m_GameObject: {fileID: 5005541254157578782}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -174,3 +152,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.17097887, y: 0.21866517}
   m_EdgeRadius: 0
+--- !u!114 &995886886061494336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5005541254157578782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 215225f69c857424fbc93147e0ed6150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  maxHealth: 100
+  currentHealth: 0
+  CalculatedTime: 0
+  TimeBtwEachShot: 4
+  Fireball: {fileID: 0}
+  PlayerPosition: {fileID: 0}
+  minimumFiringDistance: 7
+  maxFiringDistance: 0
+  damage: 12.5
