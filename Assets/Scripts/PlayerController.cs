@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     //Movement
     [Header("Movement")]
     public float runSpeed;
-    private bool runPressed;
     private float xAxis;
     private bool facingRight = true;
     private Rigidbody2D rb;
@@ -29,41 +28,39 @@ public class PlayerController : MonoBehaviour
     const string run = "PlayerRun";
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
-    const string attack1 = "PlayerAttack1";
-    const string attack2 = "PlayerAttack2";
-    const string attack3 = "PlayerAttack3";
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
-    public float exitTime;
+    private bool hitAnimRunning;
 
-    //Attack
-    float attack_time = 0.0f;
-    int attack_count = 0;
+    //Combat
+    [Header("Combat")]
     public float CurrentHealth = 100f;
+    private float attackTime = 0.0f;
+    private int attackCount = 0;
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
-    bool attackPressed = false;
-
-    //Die
-    Vector3 movement;
+    public bool isAttacking;
+    private bool attackPressed = false;
+    [HideInInspector] public bool dead = false;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        dead = false;
     }
 
     void Update()
     {
         CheckState();        
         CheckInputs();
+        Attack();
         ChangeAnimations();    
         FlipPlayer();
-        CheckIfAttack();
-        attack_time += Time.deltaTime;
+        attackTime += Time.deltaTime;
     }
 
     void FixedUpdate() 
@@ -85,6 +82,15 @@ public class PlayerController : MonoBehaviour
         //Get Jump Input
         if(Input.GetButtonDown("Jump") && isGrounded)
             jumpPressed = true;
+
+        //Check Attack Input  
+        if(isGrounded)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                attackPressed = true;
+            }
+        }
     }
     void Move()
     {
@@ -114,16 +120,25 @@ public class PlayerController : MonoBehaviour
     }
     void ChangeAnimations()
     {
-        //Idle and Run
-        if(isGrounded)
+        //Ground Animations --> Idle, Run and Attack
+        if(isGrounded && !hitAnimRunning)
         {
-            if(xAxis == 0)
-                ChangeAnimationState(idle);
-            else
-                ChangeAnimationState(run);    
-        }
+            if(!isAttacking)
+            { 
+                if(xAxis == 0)
+                    ChangeAnimationState(idle);
+                else
+                    ChangeAnimationState(run); 
+            }
+            if(isAttacking)
+            {                 
+                ChangeAnimationState("PlayerAttack" + attackCount);
+                if(attackTime > 1)    
+                    isAttacking = false;
+            }
 
-        //Jump and Fall
+        }
+        //Air Animations --> Jump and Fall
         if(!isGrounded)
         {
             if(rb.velocity.y > 0)
@@ -139,71 +154,56 @@ public class PlayerController : MonoBehaviour
         animator.Play(newState);
         currentState = newState;
     }
-    void OnDrawGizmos() 
-    {
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-    }
-    void CheckIfAttack()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            attackPressed = true;
-            Attack();
-        }
-    }
     void Attack()
     {
         if (attackPressed)
         {
+            isAttacking = true;
             attackDamage += 2;
-            attack_count++;
-            if (attack_count > 3)
+            attackCount++;
+            
+            if (attackCount > 3 || attackTime > 1)
             {
-                attack_count = 1;
+                attackCount = 1;
                 attackDamage = 10;
             }
 
-            if (attack_time > 1.0f)
-            {
-                attack_count = 1;
-                attackDamage = 10;
-            }
-
-            animator.SetTrigger("Attack" + attack_count);
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
             foreach (Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
             }
-
-            attack_time = 0f;
-           
+            
+            attackPressed = false;
+            attackTime = 0f;
         }
 
     }
     public virtual void DamagePlayer(float amount)
     {
         CurrentHealth -= amount;
-        animator.SetTrigger("Hit");
+        ChangeAnimationState(hit);
+        hitAnimRunning = true;
+        Invoke("CancelHitState", .33f);
         if (CurrentHealth <= 0.0f)
         {
             Die();
         }
     }
-
+    void CancelHitState()
+    {
+        hitAnimRunning = false;
+    }
     void Die()
     {
+        dead = true;
         ChangeAnimationState(death);
-        movement = new Vector3(transform.position.x, -3.83f, transform.position.z);
-        transform.position = movement;
-        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-        GetComponent<Collider2D>().enabled = false;
+        rb.simulated = false;
         this.enabled = false;
     }
-
-
     private void OnDrawGizmosSelected() 
     {
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 }

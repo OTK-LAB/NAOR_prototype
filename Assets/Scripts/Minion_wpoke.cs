@@ -27,9 +27,10 @@ public class Minion_wpoke : MonoBehaviour
     //Attack
     public float CalculatedTime;
     public float TimeBtwEachShot;
-    public GameObject Fireball;
+    private GameObject Fireball;
     bool playerOnline = false;
-    public Transform PlayerPosition;
+    private Transform PlayerPosition;
+    private GameObject player;
     public float minimumFiringDistance;
     public float maxFiringDistance;
     public float damage = 12.5f;
@@ -43,6 +44,7 @@ public class Minion_wpoke : MonoBehaviour
         currentHealth = maxHealth;
         CalculatedTime = TimeBtwEachShot; 
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player");
 
         //ChangeAnimationState(idle);
     }
@@ -57,20 +59,20 @@ public class Minion_wpoke : MonoBehaviour
     }
     void CheckPlayerDead()
     {
-        if (totalDamage == 100) //player health
+        if (player.GetComponent<PlayerController>().dead == true)
         {
             playerOnline = false;
             playerAlive = false;
         }
     }
-   void CheckAttack()
+    void CheckAttack()
     {
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
             if(!playerOnline) cr = transform.position.x;
             playerOnline = true;          
             if (Moveright) { transform.Rotate(0f, 180f, 0f); Moveright = false; }
-            AttackMexhanism();
+            AttackMechanism();
         }
         else
         {
@@ -109,7 +111,7 @@ public class Minion_wpoke : MonoBehaviour
         }
 
     }
-    void AttackMexhanism()
+    void AttackMechanism()
     {
             if (CalculatedTime <= 0)
             {
@@ -129,14 +131,14 @@ public class Minion_wpoke : MonoBehaviour
         }
     }
 
+    void ChangeAnimations()
+    {
+    }
     void ChangeAnimationState(string newState)
     {
         if (currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
-    }
-    void ChangeAnimations()
-    {
     }
     public void TakeDamage(int damage)
     {
@@ -151,7 +153,7 @@ public class Minion_wpoke : MonoBehaviour
     void Die()
     {
         ChangeAnimationState(death);
-        movement = new Vector3(transform.position.x, -3.87f, transform.position.z);
+        movement = new Vector3(transform.position.x, -3.10f, transform.position.z);
         transform.position = movement;
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;

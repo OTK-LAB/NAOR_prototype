@@ -287,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696408085}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.071, y: -0.73, z: 0}
+  m_LocalPosition: {x: 0.019, y: -0.977, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1130037621}
@@ -317,7 +317,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964435919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0.03, z: 0}
+  m_LocalPosition: {x: 0.391, y: -0.232, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1130037621}
@@ -688,20 +688,20 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 1011959347}
     m_ColliderPaths:
-    - - X: -99990488
+    - - X: -99904992
         Y: -50000000
-      - X: 99990504
+      - X: 99905008
         Y: -50000000
-      - X: 99990504
+      - X: 99905008
         Y: -40000000
-      - X: -99990488
+      - X: -99904992
         Y: -40000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 9.999021, y: -5}
-      - {x: 9.999021, y: -4}
-      - {x: -9.999049, y: -4.000029}
-      - {x: -9.99902, y: -5}
+    - - {x: 9.990471, y: -5}
+      - {x: 9.990471, y: -4}
+      - {x: -9.9904995, y: -4.000029}
+      - {x: -9.99047, y: -5}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &1011959346
@@ -840,7 +840,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1130037618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.98, y: -3.27, z: 0}
+  m_LocalPosition: {x: -4.973, y: -2.821, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 696408086}
@@ -867,14 +867,14 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  exitTime: 0
   CurrentHealth: 100
   attackPoint: {fileID: 964435920}
-  attackRange: 0.8
+  attackRange: 0.65
   attackDamage: 10
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
+  isAttacking: 0
 --- !u!61 &1130037623
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -888,18 +888,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.05707717, y: 0}
+  m_Offset: {x: 0.019631863, y: -0.24713957}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.84375, y: 1.46875}
+    oldSize: {x: 4, y: 2}
     newSize: {x: 0.27, y: 0.47}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.95790434, y: 1.46875}
+  m_Size: {x: 0.5834503, y: 1.4987066}
   m_EdgeRadius: 0
 --- !u!50 &1130037624
 Rigidbody2D:
@@ -978,6 +978,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8438777384859218190, guid: a9552e4ff95ddb84d8c8f6ca0ff06532, type: 3}
+      propertyPath: maxHealth
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438777384859218190, guid: a9552e4ff95ddb84d8c8f6ca0ff06532, type: 3}
       propertyPath: TimeBtwEachShot
       value: 2
       objectReference: {fileID: 0}
@@ -1012,7 +1016,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2084008866}
   m_Enabled: 1
-  m_CellSize: {x: 0.9999, y: 1, z: 0}
+  m_CellSize: {x: 0.999, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0

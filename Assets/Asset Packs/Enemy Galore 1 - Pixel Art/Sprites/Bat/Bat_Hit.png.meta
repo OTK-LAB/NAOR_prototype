@@ -145,10 +145,10 @@ TextureImporter:
       name: Bat_Hit_0
       rect:
         serializedVersion: 2
-        x: 23
-        y: 89
-        width: 17
-        height: 11
+        x: 0
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,10 +166,10 @@ TextureImporter:
       name: Bat_Hit_1
       rect:
         serializedVersion: 2
-        x: 87
-        y: 86
-        width: 17
-        height: 15
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,10 +187,10 @@ TextureImporter:
       name: Bat_Hit_2
       rect:
         serializedVersion: 2
-        x: 152
-        y: 85
-        width: 15
-        height: 16
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,10 +208,10 @@ TextureImporter:
       name: Bat_Hit_3
       rect:
         serializedVersion: 2
-        x: 216
-        y: 88
-        width: 14
-        height: 16
+        x: 192
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,10 +229,10 @@ TextureImporter:
       name: Bat_Hit_4
       rect:
         serializedVersion: 2
-        x: 25
-        y: 24
-        width: 13
-        height: 16
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
