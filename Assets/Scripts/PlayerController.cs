@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
     //Movement
     [Header("Movement")]
     public float runSpeed;
@@ -28,7 +29,8 @@ public class PlayerController : MonoBehaviour
     const string run = "PlayerRun";
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
-    
+    const string pray = "PlayerPray";
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -107,7 +109,17 @@ public class PlayerController : MonoBehaviour
                 ChangeAnimationState(jump);
             if(rb.velocity.y < 0)
                 ChangeAnimationState(fall);    
-        } 
+        }
+
+        /*pray
+         if (reached = GetComponent<CheckPointController>().checkpointReached)
+        {
+        if (reached == true && Input.GetKeyDown(KeyCode.C))
+            {
+                ChangeAnimationState(pray);
+            }
+        }*/
+
     }
     void ChangeAnimationState(string newState)
     {
