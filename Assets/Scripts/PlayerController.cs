@@ -9,14 +9,15 @@ public class PlayerController : MonoBehaviour
     public float runSpeed;
     private bool runPressed;
     private float xAxis;
-    private bool facingRight = true;
+    [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
+    private DudeRolling roll;
 
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
     private bool jumpPressed = false;
-    private bool isGrounded;
+    [HideInInspector] public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayer;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        roll = GetComponent<DudeRolling>();
     }
 
     void Update()
@@ -40,13 +42,17 @@ public class PlayerController : MonoBehaviour
         CheckState();        
         CheckInputs();
         ChangeAnimations();    
-        FlipPlayer();  
+        FlipPlayer();
     }
 
     void FixedUpdate() 
     {
-        Move();
-        Jump();
+        if (!roll.isRolling)
+        {
+            Move();
+            Jump();
+        }
+
     }
 
     void CheckState()
@@ -77,16 +83,18 @@ public class PlayerController : MonoBehaviour
     }
     void FlipPlayer()
     {
-
-        if(xAxis < 0 && facingRight)
+        if (!roll.isRolling)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = !facingRight;
-        }
-        else if(xAxis > 0 && !facingRight)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = !facingRight;
+            if (xAxis < 0 && facingRight)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                facingRight = !facingRight;
+            }
+            else if (xAxis > 0 && !facingRight)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                facingRight = !facingRight;
+            }
         }
     }
     void ChangeAnimations()
