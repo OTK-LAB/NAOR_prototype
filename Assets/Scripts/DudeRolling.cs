@@ -91,11 +91,11 @@ public class DudeRolling : MonoBehaviour
 
             if (Player.facingRight)
             {
-                rigidbdy.velocity = new Vector2(dodgeSpeed + rigidbdy.velocity.x, rigidbdy.velocity.y);
+                rigidbdy.velocity = new Vector2(dodgeSpeed , rigidbdy.velocity.y);
             }
             else
             {
-                rigidbdy.velocity = new Vector2(-dodgeSpeed + rigidbdy.velocity.x, rigidbdy.velocity.y);
+                rigidbdy.velocity = new Vector2(-dodgeSpeed , rigidbdy.velocity.y);
             }
 
             regularColl.enabled = false;

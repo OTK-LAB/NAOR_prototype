@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float xAxis;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
-    private DudeRolling roll;
+    private DudeRolling rollScript;
 
     //Jumping
     [Header("Jumping")]
@@ -29,12 +29,13 @@ public class PlayerController : MonoBehaviour
     const string run = "PlayerRun";
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
+    const string roll = "PlayerRoll";
     
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        roll = GetComponent<DudeRolling>();
+        rollScript = GetComponent<DudeRolling>();
     }
 
     void Update()
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if (!roll.isRolling)
+        if (!rollScript.isRolling)
         {
             Move();
             Jump();
@@ -83,7 +84,7 @@ public class PlayerController : MonoBehaviour
     }
     void FlipPlayer()
     {
-        if (!roll.isRolling)
+        if (!rollScript.isRolling)
         {
             if (xAxis < 0 && facingRight)
             {
@@ -102,10 +103,15 @@ public class PlayerController : MonoBehaviour
         //Idle and Run
         if(isGrounded)
         {
-            if(xAxis == 0)
-                ChangeAnimationState(idle);
+            if (!rollScript.isRolling)
+            {
+                if (xAxis == 0)
+                    ChangeAnimationState(idle);
+                else
+                    ChangeAnimationState(run);
+            }
             else
-                ChangeAnimationState(run);    
+                ChangeAnimationState(roll);
         }
 
         //Jump and Fall
