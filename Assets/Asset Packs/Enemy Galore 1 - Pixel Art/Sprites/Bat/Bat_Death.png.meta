@@ -1,28 +1,40 @@
 fileFormatVersion: 2
-guid: 3fcad69c95e082047ac4043ce1d888f2
+guid: 68443b992fb0f5a469c8c52f3d22de74
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5515247173311700785
-    second: crouch_attacks_0
+      213: -814240688519052003
+    second: Bat_Death_0
   - first:
-      213: -4572076308115362940
-    second: crouch_attacks_1
+      213: 1923745999123379502
+    second: Bat_Death_1
   - first:
-      213: -1006885749875651793
-    second: crouch_attacks_2
+      213: 5378553513453784260
+    second: Bat_Death_2
   - first:
-      213: 3888701059537634496
-    second: crouch_attacks_3
+      213: 8383716821535948698
+    second: Bat_Death_3
   - first:
-      213: -9115036747040266995
-    second: crouch_attacks_4
+      213: -7104068672811533271
+    second: Bat_Death_4
   - first:
-      213: -7784815003266371253
-    second: crouch_attacks_5
+      213: 2523576383600347038
+    second: Bat_Death_5
   - first:
-      213: -5184701433095755370
-    second: crouch_attacks_6
+      213: -226754148749362003
+    second: Bat_Death_6
+  - first:
+      213: -7611513637328349544
+    second: Bat_Death_7
+  - first:
+      213: -7843432018593599576
+    second: Bat_Death_8
+  - first:
+      213: 7527247024264144055
+    second: Bat_Death_9
+  - first:
+      213: -5329346862873411509
+    second: Bat_Death_10
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -53,7 +65,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -67,7 +79,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -89,7 +101,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,7 +113,43 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -112,54 +160,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crouch_attacks_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 128
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 13f98b545181a8c40800000000000000
-      internalID: 5515247173311700785
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crouch_attacks_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 192
-        width: 128
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 48bedc852d8bc80c0800000000000000
-      internalID: -4572076308115362940
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crouch_attacks_2
+      name: Bat_Death_0
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 128
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -168,19 +174,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f2b4245ceb2d602f0800000000000000
-      internalID: -1006885749875651793
+      spriteID: d150727686c33b4f0800000000000000
+      internalID: -814240688519052003
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_3
+      name: Bat_Death_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e25f3d33bc482ba10800000000000000
+      internalID: 1923745999123379502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_Death_2
       rect:
         serializedVersion: 2
         x: 128
         y: 128
-        width: 128
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -189,19 +216,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c40d6ba20177f530800000000000000
-      internalID: 3888701059537634496
+      spriteID: 4cc87d67ce574aa40800000000000000
+      internalID: 5378553513453784260
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_4
+      name: Bat_Death_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9ffd15c702f85470800000000000000
+      internalID: 8383716821535948698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_Death_4
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 128
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -210,19 +258,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0568024f52e08180800000000000000
-      internalID: -9115036747040266995
+      spriteID: 92c76195e27496d90800000000000000
+      internalID: -7104068672811533271
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_5
+      name: Bat_Death_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e974014b95b850320800000000000000
+      internalID: 2523576383600347038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_Death_6
       rect:
         serializedVersion: 2
         x: 128
         y: 64
-        width: 128
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -231,19 +300,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b413d201008c6f390800000000000000
-      internalID: -7784815003266371253
+      spriteID: dacb2789d486adcf0800000000000000
+      internalID: -226754148749362003
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_attacks_6
+      name: Bat_Death_7
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8969004aca87e5690800000000000000
+      internalID: -7611513637328349544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_Death_8
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -252,8 +342,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6996edd248d3c08b0800000000000000
-      internalID: -5184701433095755370
+      spriteID: 8afadc7a228862390800000000000000
+      internalID: -7843432018593599576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_Death_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b461e99947267860800000000000000
+      internalID: 7527247024264144055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_Death_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b408699a34b5a06b0800000000000000
+      internalID: -5329346862873411509
       vertices: []
       indices: 
       edges: []
