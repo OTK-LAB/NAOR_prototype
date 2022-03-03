@@ -24,6 +24,7 @@ public class CheckPointController : MonoBehaviour
     void Update()
     {
         ChangeAnimations();
+        SetCheckpoint();
     }
 
     void ChangeAnimations()
@@ -51,6 +52,18 @@ public class CheckPointController : MonoBehaviour
         currentState = newState;
     }
 
+    void SetCheckpoint()
+    {
+        if (checkpointReached == true)
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                levelManager.currentCheckPoint = gameObject;
+                Debug.Log("Checkpoint Degisti");
+            }
+        }
+    }
+
     /* void OnTriggerEnter2D(Collider2D other)
      {
          if (other.tag == "Player")
@@ -64,7 +77,6 @@ public class CheckPointController : MonoBehaviour
         if (other.tag == "Player")
         {
             checkpointReached = true;
-
         }
     }
 
@@ -75,14 +87,17 @@ public class CheckPointController : MonoBehaviour
             checkpointReached = false ;
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
+    /*void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "Player" )
+        if (other.name == "Player")
         {
             
-            levelManager.currentCheckPoint = gameObject; 
+            levelManager.currentCheckPoint = gameObject;
+            Debug.Log("Checkpoint Degisti");
+            
+            
         }
-    }
+    }*/
 
 
 }
