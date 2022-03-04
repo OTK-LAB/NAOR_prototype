@@ -144,10 +144,10 @@ public class Minion_wfireball : MonoBehaviour
             StartCoroutine(backtoIdle());
         }
       
-
+        //hit
         if (hurt && alive)
         {
-            Debug.Log("hurt");
+
             ChangeAnimationState(hit);
             StartCoroutine(backtoIdle());
         }
@@ -155,6 +155,7 @@ public class Minion_wfireball : MonoBehaviour
     }
     IEnumerator backtoIdle()
     {
+       
         yield return new WaitForSeconds(0.5f);
         ChangeAnimationState(idle);
         hurt = false;
@@ -162,24 +163,25 @@ public class Minion_wfireball : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        hurt = true;
-        ChangeAnimations();
-        //animator.SetTrigger("Hurt");
         if (currentHealth <= 0)
         {
             alive = false;
             hurt = false;
-            animator.SetBool("Alive", false);
             Die();           
+        }
+        else {
+            Debug.Log("ölmedim");
+            hurt = true;
+            ChangeAnimations();
         }
     }
     void Die()
     {
         ChangeAnimationState(death);
-        movement = new Vector3(transform.position.x, -3.07f, transform.position.z);
+        movement = new Vector3(transform.position.x, -3.17f, transform.position.z);
         transform.position = movement;
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+
     }
-    
 }
