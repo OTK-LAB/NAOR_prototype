@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour
     public void DeathDefiance()
     {
         player.transform.position = player.transform.position;
+
     }
 
     public void RespawnPlayer()
