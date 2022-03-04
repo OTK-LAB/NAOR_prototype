@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         FlipPlayer();
         attackTime += Time.deltaTime;
     }
-
+    
     void FixedUpdate() 
     {
         if(!rollScript.isRolling && !isAttacking)

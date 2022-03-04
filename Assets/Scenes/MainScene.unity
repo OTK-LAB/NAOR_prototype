@@ -362,6 +362,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8481426808659785532, guid: 228998b2ceec634448737a4696c5b796, type: 3}
     - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
       propertyPath: TimeBtwEachShot
       value: 2
       objectReference: {fileID: 0}
@@ -372,6 +376,10 @@ PrefabInstance:
     - target: {fileID: 5005541254157578782, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
       propertyPath: m_Name
       value: Minion_fb
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005541254157578782, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7481486628171590575, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
       propertyPath: m_RootOrder
