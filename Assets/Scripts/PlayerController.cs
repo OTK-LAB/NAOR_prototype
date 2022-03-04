@@ -111,15 +111,6 @@ public class PlayerController : MonoBehaviour
                 ChangeAnimationState(fall);    
         }
 
-        /*pray
-         if (reached = GetComponent<CheckPointController>().checkpointReached)
-        {
-        if (reached == true && Input.GetKeyDown(KeyCode.C))
-            {
-                ChangeAnimationState(pray);
-            }
-        }*/
-
     }
     void ChangeAnimationState(string newState)
     {
