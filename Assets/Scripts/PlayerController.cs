@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if(!rollScript.isRolling)
+        if(!rollScript.isRolling && !isAttacking)
         {
             Move();
             Jump();
@@ -85,17 +85,13 @@ public class PlayerController : MonoBehaviour
         //Get Horizontal Input
         xAxis = Input.GetAxisRaw("Horizontal"); 
 
-        //Get Jump Input
-        if(Input.GetButtonDown("Jump") && isGrounded)
-            jumpPressed = true;
-
-        //Check Attack Input  
+        //Check Jump and Attack Input  
         if(isGrounded)
         {
+            if(Input.GetButtonDown("Jump"))
+                jumpPressed = true;
             if (Input.GetMouseButtonDown(0))
-            {
                 attackPressed = true;
-            }
         }
     }
     void Move()

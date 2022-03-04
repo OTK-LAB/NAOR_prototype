@@ -1004,7 +1004,6 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
-  isAttacking: 0
   dead: 0
 --- !u!61 &1130037623
 BoxCollider2D:
@@ -1065,13 +1064,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa89380624522645ba49addbb74e820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1130037622}
   isRolling: 0
-  rigidbdy: {fileID: 1130037624}
-  anim: {fileID: 1130037619}
   regularColl: {fileID: 1130037623}
   worldColl: {fileID: 145794099}
-  dodgeSpeed: 6
+  dodgeSpeed: 10
   IsAvailable: 1
   CooldownDuration: 6
   iFrame: 0.3
