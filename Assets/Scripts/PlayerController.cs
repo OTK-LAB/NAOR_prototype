@@ -11,7 +11,17 @@ public class PlayerController : MonoBehaviour
     private float xAxis;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
-    private PlayerRoll rollScript;
+
+    [Header("Roll")]
+    public float dodgeSpeed;
+    public float CooldownDuration;
+    private float Cooldown;
+    private bool IsAvailable;
+    private bool isRolling = false;
+    public BoxCollider2D regularColl;
+    public BoxCollider2D rollColl;
+    public float iFrame = 0.3f;
+
 
     //Jumping
     [Header("Jumping")]
@@ -52,7 +62,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        rollScript = GetComponent<PlayerRoll>();
         dead = false;
     }
 
@@ -68,7 +77,8 @@ public class PlayerController : MonoBehaviour
     
     void FixedUpdate() 
     {
-        if(!rollScript.isRolling && !isAttacking)
+        RollCooldown();
+        if(!isRolling && !isAttacking)
         {
             Move();
             Jump();
@@ -92,6 +102,9 @@ public class PlayerController : MonoBehaviour
                 jumpPressed = true;
             if (Input.GetMouseButtonDown(0))
                 attackPressed = true;
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                performRoll();
+            
         }
     }
     void Move()
@@ -106,9 +119,76 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
+    private void performRoll()
+    {
+
+        // if not available to use (still cooling down) just exit    
+        if (!IsAvailable)     //ground check here tooo
+        {
+            return;
+        }
+
+        if (!isRolling)
+        {
+            // made it here then ability is available to use...
+            isRolling = true;
+            // start the cooldown timer
+            StartCooldown();
+
+
+
+            if (facingRight)
+            {
+                rb.velocity = new Vector2(dodgeSpeed, rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(-dodgeSpeed, rb.velocity.y);
+            }
+
+            regularColl.enabled = false;
+
+            StartCoroutine(RollFrameTimer());     //iframe
+            StartCoroutine(stopDodge());
+        }
+    }
+    public void StartCooldown()        //roll cooldown
+    {
+        Cooldown += CooldownDuration / 2;
+    }
+    void RollCooldown()
+    {
+        if (Cooldown <= CooldownDuration / 2)
+        {
+            IsAvailable = true;
+        }
+        else if (Cooldown > CooldownDuration / 2)
+        {
+            IsAvailable = false;
+        }
+
+
+        if (Cooldown > 0)
+        {
+            Cooldown -= 1 * Time.deltaTime;
+        }
+    }
+    IEnumerator RollFrameTimer()        //iframe cooldown
+    {
+        yield return new WaitForSeconds(iFrame);
+
+        regularColl.enabled = true;                //after I frame 
+    }
+    IEnumerator stopDodge()
+    {
+        yield return new WaitForSeconds(0.4f);            //dodge duration                               
+        regularColl.enabled = true;
+
+        isRolling = false;
+    }
     void FlipPlayer()
     {
-        if(!rollScript.isRolling)
+        if(!isRolling)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -127,7 +207,7 @@ public class PlayerController : MonoBehaviour
         //Ground Animations --> Idle, Run, Attack and Roll
         if(isGrounded && !hitAnimRunning)
         {
-            if(!rollScript.isRolling)
+            if(!isRolling)
             {
                 if(!isAttacking)
                 { 
