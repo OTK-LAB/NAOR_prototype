@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CheckPoint
+  - Enemy
+  - turn
+  - fire
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Enemy
   - 
   - 
   - 

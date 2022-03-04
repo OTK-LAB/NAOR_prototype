@@ -1,23 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    
     //Movement
     [Header("Movement")]
     public float runSpeed;
-    private bool runPressed;
     private float xAxis;
-    private bool facingRight = true;
+    [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
+
+    [Header("Roll")]
+    public float dodgeSpeed;
+    public float CooldownDuration;
+    private float Cooldown;
+    private bool IsAvailable;
+    private bool isRolling = false;
+    public BoxCollider2D regularColl;
+    public BoxCollider2D rollColl;
+    public float iFrame = 0.3f;
+
 
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
     private bool jumpPressed = false;
-    private bool isGrounded;
+    [HideInInspector] public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayer;
@@ -29,26 +39,50 @@ public class PlayerController : MonoBehaviour
     const string run = "PlayerRun";
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
-    const string pray = "PlayerPray";
+    const string roll = "PlayerRoll";
+    const string hit = "PlayerHit";
+    const string death = "PlayerDeath";
+    private bool hitAnimRunning;
+
+    //Combat
+    [Header("Combat")]
+    public float CurrentHealth = 100f;
+    private float attackTime = 0.0f;
+    private int attackCount = 0;
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public int attackDamage = 10;
+    public LayerMask enemyLayers;
+    private bool isAttacking;
+    private bool attackPressed = false;
+    [HideInInspector] public bool dead = false;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        dead = false;
     }
 
     void Update()
     {
         CheckState();        
         CheckInputs();
+        Attack();
         ChangeAnimations();    
-        FlipPlayer();  
+        FlipPlayer();
+        attackTime += Time.deltaTime;
     }
-
+    
     void FixedUpdate() 
     {
-        Move();
-        Jump();
+        RollCooldown();
+        if(!isRolling && !isAttacking)
+        {
+            Move();
+            Jump();
+        }
     }
 
     void CheckState()
@@ -61,9 +95,17 @@ public class PlayerController : MonoBehaviour
         //Get Horizontal Input
         xAxis = Input.GetAxisRaw("Horizontal"); 
 
-        //Get Jump Input
-        if(Input.GetButtonDown("Jump") && isGrounded)
-            jumpPressed = true;
+        //Check Jump and Attack Input  
+        if(isGrounded)
+        {
+            if(Input.GetButtonDown("Jump"))
+                jumpPressed = true;
+            if (Input.GetMouseButtonDown(0))
+                attackPressed = true;
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                performRoll();
+            
+        }
     }
     void Move()
     {
@@ -77,32 +119,115 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
-    void FlipPlayer()
+    private void performRoll()
     {
 
-        if(xAxis < 0 && facingRight)
+        // if not available to use (still cooling down) just exit    
+        if (!IsAvailable)     //ground check here tooo
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = !facingRight;
+            return;
         }
-        else if(xAxis > 0 && !facingRight)
+
+        if (!isRolling)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = !facingRight;
+            // made it here then ability is available to use...
+            isRolling = true;
+            // start the cooldown timer
+            StartCooldown();
+
+
+
+            if (facingRight)
+            {
+                rb.velocity = new Vector2(dodgeSpeed, rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(-dodgeSpeed, rb.velocity.y);
+            }
+
+            regularColl.enabled = false;
+
+            StartCoroutine(RollFrameTimer());     //iframe
+            StartCoroutine(stopDodge());
+        }
+    }
+    public void StartCooldown()        //roll cooldown
+    {
+        Cooldown += CooldownDuration / 2;
+    }
+    void RollCooldown()
+    {
+        if (Cooldown <= CooldownDuration / 2)
+        {
+            IsAvailable = true;
+        }
+        else if (Cooldown > CooldownDuration / 2)
+        {
+            IsAvailable = false;
+        }
+
+
+        if (Cooldown > 0)
+        {
+            Cooldown -= 1 * Time.deltaTime;
+        }
+    }
+    IEnumerator RollFrameTimer()        //iframe cooldown
+    {
+        yield return new WaitForSeconds(iFrame);
+
+        regularColl.enabled = true;                //after I frame 
+    }
+    IEnumerator stopDodge()
+    {
+        yield return new WaitForSeconds(0.4f);            //dodge duration                               
+        regularColl.enabled = true;
+
+        isRolling = false;
+    }
+    void FlipPlayer()
+    {
+        if(!isRolling)
+        {
+            if(xAxis < 0 && facingRight)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                facingRight = !facingRight;
+            }
+            else if(xAxis > 0 && !facingRight)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                facingRight = !facingRight;
+            }
         }
     }
     void ChangeAnimations()
     {
-        //Idle and Run
-        if(isGrounded)
+        //Ground Animations --> Idle, Run, Attack and Roll
+        if(isGrounded && !hitAnimRunning)
         {
-            if(xAxis == 0)
-                ChangeAnimationState(idle);
+            if(!isRolling)
+            {
+                if(!isAttacking)
+                { 
+                    if(xAxis == 0)
+                        ChangeAnimationState(idle);
+                    else
+                        ChangeAnimationState(run); 
+                }
+                if(isAttacking)
+                {                 
+                    ChangeAnimationState("PlayerAttack" + attackCount);
+                    if(attackTime > 1)    
+                        isAttacking = false;
+                }
+            }
             else
-                ChangeAnimationState(run);    
+                ChangeAnimationState(roll);
         }
 
-        //Jump and Fall
+        //Air Animations --> Jump and Fall
         if(!isGrounded)
         {
             if(rb.velocity.y > 0)
@@ -110,16 +235,64 @@ public class PlayerController : MonoBehaviour
             if(rb.velocity.y < 0)
                 ChangeAnimationState(fall);    
         }
-
-    }
+   
+     }
     void ChangeAnimationState(string newState)
     {
         if(currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
     }
-    void OnDrawGizmos() 
+    void Attack()
     {
+        if (attackPressed)
+        {
+            isAttacking = true;
+            attackDamage += 2;
+            attackCount++;
+            
+            if (attackCount > 3 || attackTime > 1)
+            {
+                attackCount = 1;
+                attackDamage = 10;
+            }
+
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+            }
+            
+            attackPressed = false;
+            attackTime = 0f;
+        }
+
+    }
+    public virtual void DamagePlayer(float amount)
+    {
+        CurrentHealth -= amount;
+        ChangeAnimationState(hit);
+        hitAnimRunning = true;
+        Invoke("CancelHitState", .33f);
+        if (CurrentHealth <= 0.0f)
+        {
+            Die();
+        }
+    }
+    void CancelHitState()
+    {
+        hitAnimRunning = false;
+    }
+    void Die()
+    {
+        dead = true;
+        ChangeAnimationState(death);
+        rb.simulated = false;
+        this.enabled = false;
+    }
+    private void OnDrawGizmosSelected() 
+    {
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 }
