@@ -9,14 +9,15 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float runSpeed;
     private float xAxis;
-    private bool facingRight = true;
+    [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
+    private PlayerRoll rollScript;
 
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
     private bool jumpPressed = false;
-    private bool isGrounded;
+    [HideInInspector] public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayer;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     const string run = "PlayerRun";
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
+    const string roll = "PlayerRoll";
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
     private bool hitAnimRunning;
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
-    public bool isAttacking;
+    private bool isAttacking;
     private bool attackPressed = false;
     [HideInInspector] public bool dead = false;
 
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        rollScript = GetComponent<PlayerRoll>();
         dead = false;
     }
 
@@ -65,8 +68,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() 
     {
-        Move();
-        Jump();
+        if(!rollScript.isRolling)
+        {
+            Move();
+            Jump();
+        }
     }
 
     void CheckState()
@@ -106,38 +112,45 @@ public class PlayerController : MonoBehaviour
     }
     void FlipPlayer()
     {
-
-        if(xAxis < 0 && facingRight)
+        if(!rollScript.isRolling)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = !facingRight;
-        }
-        else if(xAxis > 0 && !facingRight)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = !facingRight;
+            if(xAxis < 0 && facingRight)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                facingRight = !facingRight;
+            }
+            else if(xAxis > 0 && !facingRight)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                facingRight = !facingRight;
+            }
         }
     }
     void ChangeAnimations()
     {
-        //Ground Animations --> Idle, Run and Attack
+        //Ground Animations --> Idle, Run, Attack and Roll
         if(isGrounded && !hitAnimRunning)
         {
-            if(!isAttacking)
-            { 
-                if(xAxis == 0)
-                    ChangeAnimationState(idle);
-                else
-                    ChangeAnimationState(run); 
+            if(!rollScript.isRolling)
+            {
+                if(!isAttacking)
+                { 
+                    if(xAxis == 0)
+                        ChangeAnimationState(idle);
+                    else
+                        ChangeAnimationState(run); 
+                }
+                if(isAttacking)
+                {                 
+                    ChangeAnimationState("PlayerAttack" + attackCount);
+                    if(attackTime > 1)    
+                        isAttacking = false;
+                }
             }
-            if(isAttacking)
-            {                 
-                ChangeAnimationState("PlayerAttack" + attackCount);
-                if(attackTime > 1)    
-                    isAttacking = false;
-            }
-
+            else
+                ChangeAnimationState(roll);
         }
+
         //Air Animations --> Jump and Fall
         if(!isGrounded)
         {

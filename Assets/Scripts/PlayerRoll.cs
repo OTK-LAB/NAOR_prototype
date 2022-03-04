@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DudeRolling : MonoBehaviour
+public class PlayerRoll : MonoBehaviour
 {
 
-    public PlayerController Player;         //ground check pls
+    private PlayerController Player;         //ground check pls
 
     public bool isRolling = false;
 
-    public Rigidbody2D rigidbdy;
+    private Rigidbody2D rigidbdy;
 
-    public Animator anim;
+    private Animator anim;
 
     public BoxCollider2D regularColl;
 
@@ -41,6 +41,9 @@ public class DudeRolling : MonoBehaviour
 
     void Start()
     {
+        Player = GetComponent<PlayerController>();
+        rigidbdy = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
     }
 
@@ -91,11 +94,11 @@ public class DudeRolling : MonoBehaviour
 
             if (Player.facingRight)
             {
-                rigidbdy.velocity = new Vector2(dodgeSpeed , rigidbdy.velocity.y);
+                rigidbdy.velocity = new Vector2(dodgeSpeed, rigidbdy.velocity.y);
             }
             else
             {
-                rigidbdy.velocity = new Vector2(-dodgeSpeed , rigidbdy.velocity.y);
+                rigidbdy.velocity = new Vector2(-dodgeSpeed, rigidbdy.velocity.y);
             }
 
             regularColl.enabled = false;
@@ -108,8 +111,7 @@ public class DudeRolling : MonoBehaviour
     public IEnumerator stopDodge()
     {
         yield return new WaitForSeconds(0.4f);            //dodge duration
-        anim.Play("Idle");                                
-        anim.SetBool("Roll", false);
+        //anim.Play("Idle");                                
         regularColl.enabled = true;
 
         isRolling = false;
