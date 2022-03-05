@@ -16,11 +16,13 @@ public class Minion_wfireball : MonoBehaviour
     //Move
     private Rigidbody2D rb;
     Vector3 movement;
-    bool Moveright = false;
+    bool Moveright = true;
 
     //Hit
     public int maxHealth = 100;
     public int currentHealth;
+    bool hurt = false;
+    bool alive = true;
 
 
     //Attack
@@ -50,7 +52,7 @@ public class Minion_wfireball : MonoBehaviour
 
     void Update()
     {
-        if(playerAlive)
+        if (playerAlive)
             CheckAttack();
         AutoMove();
         CheckPlayerDead();
@@ -71,7 +73,7 @@ public class Minion_wfireball : MonoBehaviour
         {
             playerOnline = true;          
             if (Moveright) { transform.Rotate(0f, 180f, 0f); Moveright = false; }
-            FireballMexhanism();
+            FireballMechanism();
         }
         else
         {
@@ -110,18 +112,20 @@ public class Minion_wfireball : MonoBehaviour
         }
 
     }
-    void FireballMexhanism()
+    void FireballMechanism()
     {
         if (CalculatedTime <= 0)
         {
-            animator.SetBool("Attack", true);
+            ChangeAnimations();
+            // animator.SetBool("Attack", true);
             Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
         else
         {
             CalculatedTime -= Time.deltaTime;
-            animator.SetBool("Attack", false);
+            ChangeAnimations();
+            //animator.SetBool("Attack", false);
         }
     }
 
@@ -133,32 +137,51 @@ public class Minion_wfireball : MonoBehaviour
     }
     void ChangeAnimations()
     {
+        //attack
+        if (playerOnline && CalculatedTime <= 0)
+        { 
+            ChangeAnimationState(attack);
+            StartCoroutine(backtoIdle());
+        }
+      
+        //hit
+        if (hurt && alive)
+        {
+
+            ChangeAnimationState(hit);
+            StartCoroutine(backtoIdle());
+        }
+
+    }
+    IEnumerator backtoIdle()
+    {
+       
+        yield return new WaitForSeconds(0.5f);
+        ChangeAnimationState(idle);
+        hurt = false;
     }
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        animator.SetTrigger("Hurt");
         if (currentHealth <= 0)
         {
-            animator.SetBool("Alive", false);
+            alive = false;
+            hurt = false;
             Die();           
+        }
+        else {
+            Debug.Log("ölmedim");
+            hurt = true;
+            ChangeAnimations();
         }
     }
     void Die()
     {
-        //cr = transform.position.y;
-        animator.applyRootMotion=false;
         ChangeAnimationState(death);
-        StartCoroutine(waitingDarling());
-
+        movement = new Vector3(transform.position.x, -3.17f, transform.position.z);
+        transform.position = movement;
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
-    }
-    IEnumerator waitingDarling()
-    {
-        yield return new WaitForSeconds(0.2f);
-        movement = new Vector3(transform.position.x, -3.10f, transform.position.z);
-        transform.position = movement;
-    }
 
+    }
 }
