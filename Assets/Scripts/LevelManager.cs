@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
     {
         player.transform.position = player.transform.position;
         player.GetComponent<PlayerController>().dead = false;
-        Invoke("CancelDamageAble", 0f);
+        player.GetComponent<PlayerController>().damageable = false;
         Invoke("ActiveDamageAble", 3f);
 
     }
@@ -39,10 +39,7 @@ public class LevelManager : MonoBehaviour
 
 
     }
-    void CancelDamageAble()
-    {
-        player.GetComponent<PlayerController>().damageable  = false;
-    }
+    
     void ActiveDamageAble()
     {
         player.GetComponent<PlayerController>().damageable = true;
