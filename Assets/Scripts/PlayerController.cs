@@ -278,21 +278,24 @@ public class PlayerController : MonoBehaviour
     }
     public virtual void DamagePlayer(float damage)
     {
-        
-        if ((CurrentHealth - damage) >= 0)
+        if (damageable == true) 
         {
-            CurrentHealth -= damage;
-        }
-        else
-        {
-            CurrentHealth = 0;
+            if ((CurrentHealth - damage) >= 0)
+            {
+                CurrentHealth -= damage;
+            }
+            else
+            {
+                CurrentHealth = 0;
 
+            }
+            Die();
+            //CurrentHealth -= damage;
+            ChangeAnimationState(hit);
+            hitAnimRunning = true;
+            Invoke("CancelHitState", .33f); 
         }
-        Die();
-        //CurrentHealth -= damage;
-        ChangeAnimationState(hit);
-        hitAnimRunning = true;
-        Invoke("CancelHitState", .33f);
+
         
 
     }
