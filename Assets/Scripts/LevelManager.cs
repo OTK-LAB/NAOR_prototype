@@ -24,14 +24,21 @@ public class LevelManager : MonoBehaviour
     public void DeathDefiance()
     {
         player.transform.position = player.transform.position;
+        player.GetComponent<PlayerController>().dead = false;
+        
 
     }
 
     public void RespawnPlayer()
     {
         player.transform.position = currentCheckPoint.transform.position;
-        
+        player.GetComponent<PlayerController>().dead = false;
+        player.GetComponent<Rigidbody2D>().simulated = true;
+        player.GetComponent<PlayerController>().enabled = true;
+
+
     }
 
+ 
 
 }

@@ -46,7 +46,10 @@ public class PlayerController : MonoBehaviour
 
     //Combat
     [Header("Combat")]
-    public float CurrentHealth = 100f;
+    public int lives = 2;
+    public float MaxHealth = 100;
+    public float CurrentHealth;
+    //public float CurrentHealth = 100f;
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public Transform attackPoint;
@@ -55,14 +58,18 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayers;
     private bool isAttacking;
     private bool attackPressed = false;
-    [HideInInspector] public bool dead = false;
+    public bool dead = false;
+    public LevelManager levelManager;
+    public bool damageable = true;
+    
 
 
     void Start()
     {
+        CurrentHealth = MaxHealth;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        dead = false;
+        //dead = false;
     }
 
     void Update()
@@ -73,6 +80,7 @@ public class PlayerController : MonoBehaviour
         ChangeAnimations();    
         FlipPlayer();
         attackTime += Time.deltaTime;
+        
     }
     
     void FixedUpdate() 
@@ -268,16 +276,25 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    public virtual void DamagePlayer(float amount)
+    public virtual void DamagePlayer(float damage)
     {
-        CurrentHealth -= amount;
+        
+        if ((CurrentHealth - damage) >= 0)
+        {
+            CurrentHealth -= damage;
+        }
+        else
+        {
+            CurrentHealth = 0;
+
+        }
+        Die();
+        //CurrentHealth -= damage;
         ChangeAnimationState(hit);
         hitAnimRunning = true;
         Invoke("CancelHitState", .33f);
-        if (CurrentHealth <= 0.0f)
-        {
-            Die();
-        }
+        
+
     }
     void CancelHitState()
     {
@@ -285,10 +302,32 @@ public class PlayerController : MonoBehaviour
     }
     void Die()
     {
-        dead = true;
-        ChangeAnimationState(death);
-        rb.simulated = false;
-        this.enabled = false;
+        
+        if (CurrentHealth <= 0)
+        {
+            lives--;
+            if (lives == 1)
+            {
+                dead = true;
+                ChangeAnimationState(death);
+                levelManager.DeathDefiance();
+                CurrentHealth = (MaxHealth * 40) / 100;
+
+            }
+            if (lives == 0)
+            {
+                dead = true;
+                ChangeAnimationState(death);
+                
+                CurrentHealth = MaxHealth;
+                lives = 2;
+                rb.simulated = false;
+                this.enabled = false;
+                levelManager.RespawnPlayer();
+            }
+
+        }
+        
     }
     private void OnDrawGizmosSelected() 
     {
