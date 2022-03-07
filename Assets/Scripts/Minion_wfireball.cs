@@ -35,7 +35,6 @@ public class Minion_wfireball : MonoBehaviour
     public float maxFiringDistance;
     public float damage = 12.5f;
     private GameObject player;
-    float totalDamage;
     bool playerAlive = true;
     float cr;
 
@@ -46,8 +45,6 @@ public class Minion_wfireball : MonoBehaviour
         CalculatedTime = TimeBtwEachShot; 
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
-
-        //ChangeAnimationState(idle);
     }
 
     void Update()
@@ -56,7 +53,25 @@ public class Minion_wfireball : MonoBehaviour
             CheckAttack();
         AutoMove();
         CheckPlayerDead();
-        //ChangeAnimations();
+    }
+    void flip()
+    {
+        if (PlayerPosition.position.x > (transform.position.x + 0.5f))
+        {
+            if (!Moveright)
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = true;
+            }
+        }
+        else
+        {
+            if (Moveright)
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = false;
+            }
+        }
     }
     void CheckPlayerDead()
     {
@@ -71,8 +86,8 @@ public class Minion_wfireball : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
+            flip();
             playerOnline = true;          
-            if (Moveright) { transform.Rotate(0f, 180f, 0f); Moveright = false; }
             FireballMechanism();
         }
         else
@@ -108,7 +123,6 @@ public class Minion_wfireball : MonoBehaviour
         if (trig.CompareTag("Player"))
         {       
             trig.transform.SendMessage("DamagePlayer", damage);
-            totalDamage += damage;
         }
 
     }
@@ -170,7 +184,6 @@ public class Minion_wfireball : MonoBehaviour
             Die();           
         }
         else {
-            Debug.Log("ölmedim");
             hurt = true;
             ChangeAnimations();
         }

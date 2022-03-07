@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking;
     private bool attackPressed = false;
     [HideInInspector] public bool dead = false;
+    [HideInInspector]  public bool isCombo = false;
 
 
     void Start()
@@ -69,7 +70,16 @@ public class PlayerController : MonoBehaviour
     {
         CheckState();        
         CheckInputs();
-        Attack();
+        attackTime += Time.deltaTime;
+        if (attackTime > 1f)
+            isCombo = false;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isCombo == true && attackTime > 0.8f)
+                Attack();
+            else if (isCombo == false)
+                Attack();
+        }
         ChangeAnimations();    
         FlipPlayer();
         attackTime += Time.deltaTime;
@@ -250,7 +260,8 @@ public class PlayerController : MonoBehaviour
             isAttacking = true;
             attackDamage += 2;
             attackCount++;
-            
+            isCombo = true;
+
             if (attackCount > 3 || attackTime > 1)
             {
                 attackCount = 1;
