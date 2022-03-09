@@ -171,7 +171,8 @@ public class Minion_wfireball : MonoBehaviour
     {
        
         yield return new WaitForSeconds(0.5f);
-        ChangeAnimationState(idle);
+        if(alive)
+            ChangeAnimationState(idle);
         hurt = false;
     }
     public void TakeDamage(int damage)
