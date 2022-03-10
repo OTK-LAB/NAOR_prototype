@@ -17,6 +17,7 @@ public class Fireball : MonoBehaviour
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         target = new Vector2(PlayerPosition.position.x, PlayerPosition.position.y);
         current = new Vector2(transform.position.x, transform.position.y);
+
         if (PlayerPosition.position.x > (transform.position.x + 0.5f))
             distance = 100;
         else if (PlayerPosition.position.x < (transform.position.x + 0.5f))

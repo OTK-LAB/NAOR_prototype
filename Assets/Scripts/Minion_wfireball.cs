@@ -81,6 +81,8 @@ public class Minion_wfireball : MonoBehaviour
             playerAlive = false;
             animator.SetBool("Attack", false);
         }
+        else
+            playerAlive = true;
     }
     void CheckAttack()
     {
@@ -91,9 +93,7 @@ public class Minion_wfireball : MonoBehaviour
             FireballMechanism();
         }
         else
-        {
             playerOnline = false;
-        }
     }
     void AutoMove()
     {
@@ -131,7 +131,6 @@ public class Minion_wfireball : MonoBehaviour
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
-            // animator.SetBool("Attack", true);
             Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
@@ -139,7 +138,6 @@ public class Minion_wfireball : MonoBehaviour
         {
             CalculatedTime -= Time.deltaTime;
             ChangeAnimations();
-            //animator.SetBool("Attack", false);
         }
     }
 
@@ -161,7 +159,6 @@ public class Minion_wfireball : MonoBehaviour
         //hit
         if (hurt && alive)
         {
-
             ChangeAnimationState(hit);
             StartCoroutine(backtoIdle());
         }
