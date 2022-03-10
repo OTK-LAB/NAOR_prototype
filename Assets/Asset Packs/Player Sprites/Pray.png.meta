@@ -130,10 +130,10 @@ TextureImporter:
       name: Pray_0
       rect:
         serializedVersion: 2
-        x: 56
+        x: 0
         y: 128
-        width: 20
-        height: 44
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,10 +151,10 @@ TextureImporter:
       name: Pray_1
       rect:
         serializedVersion: 2
-        x: 182
+        x: 128
         y: 128
-        width: 20
-        height: 40
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,10 +172,10 @@ TextureImporter:
       name: Pray_2
       rect:
         serializedVersion: 2
-        x: 310
+        x: 256
         y: 128
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,10 +193,10 @@ TextureImporter:
       name: Pray_3
       rect:
         serializedVersion: 2
-        x: 438
+        x: 384
         y: 128
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,10 +214,10 @@ TextureImporter:
       name: Pray_4
       rect:
         serializedVersion: 2
-        x: 54
+        x: 0
         y: 64
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -235,10 +235,10 @@ TextureImporter:
       name: Pray_5
       rect:
         serializedVersion: 2
-        x: 182
+        x: 128
         y: 64
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -256,10 +256,10 @@ TextureImporter:
       name: Pray_6
       rect:
         serializedVersion: 2
-        x: 310
+        x: 256
         y: 64
-        width: 25
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -277,10 +277,10 @@ TextureImporter:
       name: Pray_7
       rect:
         serializedVersion: 2
-        x: 438
+        x: 384
         y: 64
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -298,10 +298,10 @@ TextureImporter:
       name: Pray_8
       rect:
         serializedVersion: 2
-        x: 54
+        x: 0
         y: 0
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -319,10 +319,10 @@ TextureImporter:
       name: Pray_9
       rect:
         serializedVersion: 2
-        x: 182
+        x: 128
         y: 0
-        width: 24
-        height: 38
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -340,10 +340,10 @@ TextureImporter:
       name: Pray_10
       rect:
         serializedVersion: 2
-        x: 310
+        x: 256
         y: 0
-        width: 20
-        height: 40
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -361,10 +361,10 @@ TextureImporter:
       name: Pray_11
       rect:
         serializedVersion: 2
-        x: 440
+        x: 384
         y: 0
-        width: 20
-        height: 44
+        width: 128
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

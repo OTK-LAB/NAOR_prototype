@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private float xAxis;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
+    private bool isPraying;
 
     [Header("Roll")]
     public float dodgeSpeed;
@@ -40,16 +41,10 @@ public class PlayerController : MonoBehaviour
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
     const string roll = "PlayerRoll";
-    const string hit = "PlayerHit";
-    const string death = "PlayerDeath";
-    private bool hitAnimRunning;
+    const string pray = "PlayerPray";
 
     //Combat
     [Header("Combat")]
-    public int lives = 2;
-    public float MaxHealth = 100;
-    public float CurrentHealth;
-    //public float CurrentHealth = 100f;
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public Transform attackPoint;
@@ -58,18 +53,16 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayers;
     private bool isAttacking;
     private bool attackPressed = false;
-    public bool dead = false;
-    public LevelManager levelManager;
-    public bool damageable = true;
+    private PlayerManager playerManager;
+    [HideInInspector] public bool inCheckpointRange;
     
 
 
     void Start()
     {
-        CurrentHealth = MaxHealth;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        //dead = false;
+        playerManager = GetComponent<PlayerManager>();
     }
 
     void Update()
@@ -80,13 +73,12 @@ public class PlayerController : MonoBehaviour
         ChangeAnimations();    
         FlipPlayer();
         attackTime += Time.deltaTime;
-        
     }
     
     void FixedUpdate() 
     {
         RollCooldown();
-        if(!isRolling && !isAttacking)
+        if(!isRolling && !isAttacking && !isPraying)
         {
             Move();
             Jump();
@@ -103,8 +95,8 @@ public class PlayerController : MonoBehaviour
         //Get Horizontal Input
         xAxis = Input.GetAxisRaw("Horizontal"); 
 
-        //Check Jump and Attack Input  
-        if(isGrounded)
+        //Check Jump, Attack, Roll, Pray Input  
+        if(isGrounded && !isPraying)
         {
             if(Input.GetButtonDown("Jump"))
                 jumpPressed = true;
@@ -112,7 +104,8 @@ public class PlayerController : MonoBehaviour
                 attackPressed = true;
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 performRoll();
-            
+            if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
+                isPraying = true;    
         }
     }
     void Move()
@@ -196,7 +189,7 @@ public class PlayerController : MonoBehaviour
     }
     void FlipPlayer()
     {
-        if(!isRolling)
+        if(!isRolling && !isPraying)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -213,11 +206,11 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !hitAnimRunning)
+        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
         {
             if(!isRolling)
             {
-                if(!isAttacking)
+                if(!isAttacking && !isPraying)
                 { 
                     if(xAxis == 0)
                         ChangeAnimationState(idle);
@@ -229,6 +222,11 @@ public class PlayerController : MonoBehaviour
                     ChangeAnimationState("PlayerAttack" + attackCount);
                     if(attackTime > 1)    
                         isAttacking = false;
+                }
+                if(isPraying)
+                {
+                    ChangeAnimationState(pray);
+                    StartCoroutine(StopPraying());
                 }
             }
             else
@@ -244,16 +242,21 @@ public class PlayerController : MonoBehaviour
                 ChangeAnimationState(fall);    
         }
    
-     }
-    void ChangeAnimationState(string newState)
+    }
+    public void ChangeAnimationState(string newState)
     {
         if(currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
     }
+    IEnumerator StopPraying()
+    {
+        yield return new WaitForSeconds(1.7f);
+        isPraying = false;
+    }
     void Attack()
     {
-        if (attackPressed)
+        if (attackPressed && !isPraying)
         {
             isAttacking = true;
             attackDamage += 2;
@@ -275,62 +278,6 @@ public class PlayerController : MonoBehaviour
             attackTime = 0f;
         }
 
-    }
-    public virtual void DamagePlayer(float damage)
-    {
-        if (damageable == true) 
-        {
-            if ((CurrentHealth - damage) >= 0)
-            {
-                CurrentHealth -= damage;
-            }
-            else
-            {
-                CurrentHealth = 0;
-
-            }
-            Die();
-            //CurrentHealth -= damage;
-            ChangeAnimationState(hit);
-            hitAnimRunning = true;
-            Invoke("CancelHitState", .33f); 
-        }
-
-        
-
-    }
-    void CancelHitState()
-    {
-        hitAnimRunning = false;
-    }
-    void Die()
-    {
-        
-        if (CurrentHealth <= 0)
-        {
-            lives--;
-            if (lives == 1)
-            {
-                dead = true;
-                ChangeAnimationState(death);
-                levelManager.DeathDefiance();
-                CurrentHealth = (MaxHealth * 40) / 100;
-
-            }
-            if (lives == 0)
-            {
-                dead = true;
-                ChangeAnimationState(death);
-                
-                CurrentHealth = MaxHealth;
-                lives = 2;
-                rb.simulated = false;
-                this.enabled = false;
-                levelManager.RespawnPlayer();
-            }
-
-        }
-        
     }
     private void OnDrawGizmosSelected() 
     {

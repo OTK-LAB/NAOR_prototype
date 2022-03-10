@@ -5,19 +5,21 @@ using UnityEngine;
 public class CheckPointController : MonoBehaviour
 {
     public bool checkpointReached;
+    private PlayerManager playerManager;
+    private PlayerController playerController;
 
     //Animations
     private Animator animator;
     private string currentState;
     const string idle = "CheckPoint";
     const string activated = "CheckPointActivated";
-    public LevelManager levelManager;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        levelManager = FindObjectOfType<LevelManager>();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -30,7 +32,7 @@ public class CheckPointController : MonoBehaviour
     void ChangeAnimations()
     {
 
-        if (checkpointReached == true)
+        if (checkpointReached)
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
@@ -38,10 +40,6 @@ public class CheckPointController : MonoBehaviour
             }
 
         }
-        /*else if (checkpointReached == false)
-        {
-            ChangeAnimationState(idle);
-        }*/
     }
 
 
@@ -54,29 +52,29 @@ public class CheckPointController : MonoBehaviour
 
     void SetCheckpoint()
     {
-        if (checkpointReached == true)
+        if (checkpointReached)
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
-                levelManager.currentCheckPoint = gameObject;
+                playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
             }
         }
+        if(!checkpointReached)
+        {
+            if(playerManager.currentCheckPoint != gameObject)
+            {
+                ChangeAnimationState(idle);
+            }
+        }
     }
-
-    /* void OnTriggerEnter2D(Collider2D other)
-     {
-         if (other.tag == "Player")
-         {
-            checkpointReached = false;
-         }
-     }*/
 
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
             checkpointReached = true;
+            playerController.inCheckpointRange = true;
         }
     }
 
@@ -85,19 +83,8 @@ public class CheckPointController : MonoBehaviour
         if (other.tag == "Player")
         {
             checkpointReached = false ;
+            playerController.inCheckpointRange = false;
         }
     }
-    /*void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.name == "Player")
-        {
-            
-            levelManager.currentCheckPoint = gameObject;
-            Debug.Log("Checkpoint Degisti");
-            
-            
-        }
-    }*/
-
 
 }
