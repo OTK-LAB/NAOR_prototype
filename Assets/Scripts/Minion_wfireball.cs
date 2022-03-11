@@ -16,6 +16,7 @@ public class Minion_wfireball : MonoBehaviour
     //Move
     private Rigidbody2D rb;
     Vector3 movement;
+    Vector2 current;
     bool Moveright = true;
 
     //Hit
@@ -131,7 +132,8 @@ public class Minion_wfireball : MonoBehaviour
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
-            Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
+            current = new Vector2(transform.position.x, transform.position.y - 0.4f);
+            Instantiate(Fireball, current, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
         else
