@@ -72,7 +72,7 @@ public class Minion_wfireball : MonoBehaviour
     }
     void CheckPlayerDead()
     {
-        if (player.GetComponent<PlayerController>().dead == true)
+        if (player.GetComponent<PlayerManager>().dead == true)
         {
             playerOnline = false;
             playerAlive = false;

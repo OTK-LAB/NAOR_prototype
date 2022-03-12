@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private float xAxis;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
+    private bool isPraying;
 
     [Header("Roll")]
     public float dodgeSpeed;
@@ -40,13 +41,10 @@ public class PlayerController : MonoBehaviour
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
     const string roll = "PlayerRoll";
-    const string hit = "PlayerHit";
-    const string death = "PlayerDeath";
-    private bool hitAnimRunning;
+    const string pray = "PlayerPray";
 
     //Combat
     [Header("Combat")]
-    public float CurrentHealth = 100f;
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public Transform attackPoint;
@@ -55,6 +53,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayers;
     private bool isAttacking;
     private bool attackPressed = false;
+    private PlayerManager playerManager;
+    [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
     [HideInInspector]  public bool isCombo = false;
 
@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        playerManager = GetComponent<PlayerManager>();
         dead = false;
     }
 
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate() 
     {
         RollCooldown();
-        if(!isRolling && !isAttacking)
+        if(!isRolling && !isAttacking && !isPraying)
         {
             Move();
             Jump();
@@ -104,8 +105,8 @@ public class PlayerController : MonoBehaviour
         //Get Horizontal Input
         xAxis = Input.GetAxisRaw("Horizontal"); 
 
-        //Check Jump and Attack Input  
-        if(isGrounded)
+        //Check Jump, Attack, Roll, Pray Input  
+        if(isGrounded && !isPraying)
         {
             if(Input.GetButtonDown("Jump"))
                 jumpPressed = true;
@@ -113,6 +114,8 @@ public class PlayerController : MonoBehaviour
                 attackPressed = true;
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 performRoll();
+            if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
+                isPraying = true;    
             
         }
     }
@@ -197,7 +200,7 @@ public class PlayerController : MonoBehaviour
     }
     void FlipPlayer()
     {
-        if(!isRolling)
+        if(!isRolling && !isPraying)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -214,11 +217,11 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !hitAnimRunning)
+        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
         {
             if(!isRolling)
             {
-                if(!isAttacking)
+                if(!isAttacking && !isPraying)
                 { 
                     if(xAxis == 0)
                         ChangeAnimationState(idle);
@@ -230,6 +233,11 @@ public class PlayerController : MonoBehaviour
                     ChangeAnimationState("PlayerAttack" + attackCount);
                     if(attackTime > 0.6f)    
                         isAttacking = false;
+                }
+                if(isPraying)
+                {
+                    ChangeAnimationState(pray);
+                    StartCoroutine(StopPraying());
                 }
             }
             else
@@ -246,15 +254,20 @@ public class PlayerController : MonoBehaviour
         }
    
      }
-    void ChangeAnimationState(string newState)
+    public void ChangeAnimationState(string newState)
     {
         if(currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
     }
+    IEnumerator StopPraying()
+    {
+        yield return new WaitForSeconds(1.7f);
+        isPraying = false;
+    }
     void Attack()
     {
-        if (attackPressed)
+        if (attackPressed && !isPraying)
         {
             isAttacking = true;
             attackDamage += 2;
@@ -277,28 +290,6 @@ public class PlayerController : MonoBehaviour
             attackTime = 0f;
         }
 
-    }
-    public virtual void DamagePlayer(float amount)
-    {
-        CurrentHealth -= amount;
-        ChangeAnimationState(hit);
-        hitAnimRunning = true;
-        Invoke("CancelHitState", .33f);
-        if (CurrentHealth <= 0.0f)
-        {
-            Die();
-        }
-    }
-    void CancelHitState()
-    {
-        hitAnimRunning = false;
-    }
-    void Die()
-    {
-        dead = true;
-        ChangeAnimationState(death);
-        rb.simulated = false;
-        this.enabled = false;
     }
     private void OnDrawGizmosSelected() 
     {
