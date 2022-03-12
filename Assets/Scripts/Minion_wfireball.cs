@@ -14,9 +14,7 @@ public class Minion_wfireball : MonoBehaviour
     
     
     //Move
-    private Rigidbody2D rb;
     Vector3 movement;
-    Vector2 current;
     bool Moveright = true;
 
     //Hit
@@ -33,11 +31,9 @@ public class Minion_wfireball : MonoBehaviour
     bool playerOnline = false;
     Transform PlayerPosition;
     public float minimumFiringDistance;
-    public float maxFiringDistance;
     public float damage = 12.5f;
     private GameObject player;
     bool playerAlive = true;
-    float cr;
 
     void Start()
     {
@@ -80,7 +76,6 @@ public class Minion_wfireball : MonoBehaviour
         {
             playerOnline = false;
             playerAlive = false;
-            animator.SetBool("Attack", false);
         }
         else
             playerAlive = true;
@@ -132,8 +127,8 @@ public class Minion_wfireball : MonoBehaviour
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
-            current = new Vector2(transform.position.x, transform.position.y - 0.4f);
-            Instantiate(Fireball, current, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
+            //current = new Vector2(transform.position.x, transform.position.y - 0.4f);
+            Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
         else
