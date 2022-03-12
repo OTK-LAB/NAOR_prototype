@@ -55,7 +55,8 @@ public class PlayerController : MonoBehaviour
     private bool attackPressed = false;
     private PlayerManager playerManager;
     [HideInInspector] public bool inCheckpointRange;
-    
+    [HideInInspector] public bool dead = false;
+    [HideInInspector]  public bool isCombo = false;
 
 
     void Start()
@@ -63,13 +64,22 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
+        dead = false;
     }
 
     void Update()
     {
         CheckState();        
         CheckInputs();
-        Attack();
+        if (attackTime > 0.6f)
+            isCombo = false;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isCombo == true && attackTime > 0.4f)
+                Attack();
+            else if (isCombo == false)
+                Attack();
+        }
         ChangeAnimations();    
         FlipPlayer();
         attackTime += Time.deltaTime;
@@ -106,6 +116,7 @@ public class PlayerController : MonoBehaviour
                 performRoll();
             if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
                 isPraying = true;    
+            
         }
     }
     void Move()
@@ -220,7 +231,7 @@ public class PlayerController : MonoBehaviour
                 if(isAttacking)
                 {                 
                     ChangeAnimationState("PlayerAttack" + attackCount);
-                    if(attackTime > 1)    
+                    if(attackTime > 0.6f)    
                         isAttacking = false;
                 }
                 if(isPraying)
@@ -242,7 +253,7 @@ public class PlayerController : MonoBehaviour
                 ChangeAnimationState(fall);    
         }
    
-    }
+     }
     public void ChangeAnimationState(string newState)
     {
         if(currentState == newState) return;
@@ -261,8 +272,9 @@ public class PlayerController : MonoBehaviour
             isAttacking = true;
             attackDamage += 2;
             attackCount++;
-            
-            if (attackCount > 3 || attackTime > 1)
+            isCombo = true;
+
+            if (attackCount > 3 || attackTime > 0.6f)
             {
                 attackCount = 1;
                 attackDamage = 10;
