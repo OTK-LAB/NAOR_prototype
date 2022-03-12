@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 1011959345}
   m_Layer: 6
   m_Name: Tilemap
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1017,6 +1017,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   dead: 0
+  isCombo: 0
 --- !u!61 &1130037623
 BoxCollider2D:
   m_ObjectHideFlags: 0

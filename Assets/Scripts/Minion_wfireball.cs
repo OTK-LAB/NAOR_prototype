@@ -14,7 +14,6 @@ public class Minion_wfireball : MonoBehaviour
     
     
     //Move
-    private Rigidbody2D rb;
     Vector3 movement;
     bool Moveright = true;
 
@@ -32,12 +31,9 @@ public class Minion_wfireball : MonoBehaviour
     bool playerOnline = false;
     Transform PlayerPosition;
     public float minimumFiringDistance;
-    public float maxFiringDistance;
     public float damage = 12.5f;
     private GameObject player;
-    float totalDamage;
     bool playerAlive = true;
-    float cr;
 
     void Start()
     {
@@ -46,8 +42,6 @@ public class Minion_wfireball : MonoBehaviour
         CalculatedTime = TimeBtwEachShot; 
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
-
-        //ChangeAnimationState(idle);
     }
 
     void Update()
@@ -56,7 +50,25 @@ public class Minion_wfireball : MonoBehaviour
             CheckAttack();
         AutoMove();
         CheckPlayerDead();
-        //ChangeAnimations();
+    }
+    void flip()
+    {
+        if (PlayerPosition.position.x > (transform.position.x + 0.5f))
+        {
+            if (!Moveright)
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = true;
+            }
+        }
+        else
+        {
+            if (Moveright)
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = false;
+            }
+        }
     }
     void CheckPlayerDead()
     {
@@ -64,21 +76,20 @@ public class Minion_wfireball : MonoBehaviour
         {
             playerOnline = false;
             playerAlive = false;
-            animator.SetBool("Attack", false);
         }
+        else
+            playerAlive = true;
     }
     void CheckAttack()
     {
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
+            flip();
             playerOnline = true;          
-            if (Moveright) { transform.Rotate(0f, 180f, 0f); Moveright = false; }
             FireballMechanism();
         }
         else
-        {
             playerOnline = false;
-        }
     }
     void AutoMove()
     {
@@ -108,7 +119,6 @@ public class Minion_wfireball : MonoBehaviour
         if (trig.CompareTag("Player"))
         {       
             trig.transform.SendMessage("DamagePlayer", damage);
-            totalDamage += damage;
         }
 
     }
@@ -117,7 +127,7 @@ public class Minion_wfireball : MonoBehaviour
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
-            // animator.SetBool("Attack", true);
+            //current = new Vector2(transform.position.x, transform.position.y - 0.4f);
             Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
@@ -125,7 +135,6 @@ public class Minion_wfireball : MonoBehaviour
         {
             CalculatedTime -= Time.deltaTime;
             ChangeAnimations();
-            //animator.SetBool("Attack", false);
         }
     }
 
@@ -147,7 +156,6 @@ public class Minion_wfireball : MonoBehaviour
         //hit
         if (hurt && alive)
         {
-
             ChangeAnimationState(hit);
             StartCoroutine(backtoIdle());
         }
@@ -157,7 +165,8 @@ public class Minion_wfireball : MonoBehaviour
     {
        
         yield return new WaitForSeconds(0.5f);
-        ChangeAnimationState(idle);
+        if(alive)
+            ChangeAnimationState(idle);
         hurt = false;
     }
     public void TakeDamage(int damage)
@@ -170,7 +179,6 @@ public class Minion_wfireball : MonoBehaviour
             Die();           
         }
         else {
-            Debug.Log("ölmedim");
             hurt = true;
             ChangeAnimations();
         }
