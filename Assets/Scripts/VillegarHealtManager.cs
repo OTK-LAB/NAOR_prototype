@@ -8,6 +8,7 @@ public class VillegarHealtManager : MonoBehaviour
     public Animator animator;
     
     public int maxHealth = 100;
+    [SerializeField]
     int currentHealth;
     
     // Start is called before the first frame update

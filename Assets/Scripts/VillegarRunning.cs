@@ -10,22 +10,21 @@ public class VillegarRunning : MonoBehaviour
     public LayerMask WhatIsPlayer;
     
     public float speed;
-    
-    public float EnemyDistanceRun = 4.0f;
 
     private Transform playerPos;
     
     public bool PlayerFacingRight = true;
 
     private int b = 0;
-    private float a = 0;
 
-    private float timer = 0.0f;
-    public float resettime = 5.0f;
+    private bool playerGroundDetected;
+    public Transform groundDetection;
+    public float distance;
+    public LayerMask WhatIsGround;
 
 
 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -37,9 +36,6 @@ public class VillegarRunning : MonoBehaviour
     void Update()
     {
         CheckInputDirection();
-        //RunningTiming();
-        //RunAway();
-        Timer();
         Detected();
 
     }
@@ -63,23 +59,6 @@ public class VillegarRunning : MonoBehaviour
 
     void RunAway()
     {
-
-        /*
-        float distance = Vector2.Distance(transform.position, playerPos.position);
-        //Debug.Log("Distance : " + distance);
-        Vector2 position = transform.position;
-        Vector2 dirToPlayer = transform.position - playerPos.position;
-        Vector2 newPos = position + dirToPlayer;
-        */
-        //if (distance < EnemyDistanceRun)
-        /*
-        {
-            //transform.position = Vector2.MoveTowards(transform.position, newPos, speed * Time.deltaTime);
-
-           
-        }
-        */
-
         if (playerPos.position.x > gameObject.transform.position.x )
             transform.position = new Vector2(transform.position.x - speed * Time.deltaTime, transform.position.y);
 
@@ -90,52 +69,42 @@ public class VillegarRunning : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(transform.position, EnemyDistanceRun);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, detectedarearadius);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundDetection.position, distance);
     }
 
-    /*
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        playerDetected = Physics2D.OverlapBox(gameObject.transform.position, new Vector2(width, height), 0, WhatIsPlayer);
-
-        if (playerDetected == true) 
-        {
-            if (collision.gameObject.tag == "Player")
-            {
-                RunAway();
-            }
-        }
-    }
-    */
-
-    
     void Detected()
     {
         playerDetected = Physics2D.OverlapCircle(gameObject.transform.position, detectedarearadius, WhatIsPlayer);
 
+        playerGroundDetected = Physics2D.OverlapCircle(groundDetection.transform.position, distance, WhatIsGround);
 
+        if (playerGroundDetected == true)
+        {
+            if (playerDetected == true)
+            {
+                Debug.Log("Detected");
+                RunAway();
+                ControlOn();
+            }
+            else if (playerDetected == false && b == 1)
+            {
+                Debug.Log("Not Detected but run");
+                RunAway();
 
-        if (playerDetected == true )
-        {
-            Debug.Log("Detected");
-            RunAway();           
-            ControlOn();
-        }
-        else if (playerDetected == false && b == 1)
-        {
-            Debug.Log("Not Detected but run");
-            RunAway();
-        }
-        else if(playerDetected == false)
-        {
-            Debug.Log("Not Detected");
-        }
-        
+            }
 
-        
+            else if (playerDetected == false)
+            {
+                Debug.Log("Not Detected");
+            }
+        }
+        else if(playerGroundDetected == false)
+        {
+
+        }
     }
 
     void ControlOn()
@@ -143,31 +112,4 @@ public class VillegarRunning : MonoBehaviour
         b = 1;
     }
 
-    void Timer()
-    {
-        if (playerDetected == true) 
-        {
-            timer = Time.time;
-            Debug.Log(timer);
-            
-        }
-        a = timer;
-        if (playerDetected == false)
-        {
-            if (a < resettime)
-            {
-                timer = Time.time;
-                Debug.Log(timer);
-            }
-            if (a >= resettime)
-            {
-                timer = 0.0f;
-                
-                b = 0;
-                Debug.Log(timer);
-            }
-        }
-
-        
-    }
 }
