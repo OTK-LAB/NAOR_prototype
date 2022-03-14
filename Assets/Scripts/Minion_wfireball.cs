@@ -18,8 +18,8 @@ public class Minion_wfireball : MonoBehaviour
     bool Moveright = true;
 
     //Hit
-    public int maxHealth = 100;
-    public int currentHealth;
+    public float maxHealth = 100;
+    public float currentHealth;
     bool hurt = false;
     bool alive = true;
 
@@ -127,7 +127,6 @@ public class Minion_wfireball : MonoBehaviour
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
-            //current = new Vector2(transform.position.x, transform.position.y - 0.4f);
             Instantiate(Fireball, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
@@ -169,7 +168,7 @@ public class Minion_wfireball : MonoBehaviour
             ChangeAnimationState(idle);
         hurt = false;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
