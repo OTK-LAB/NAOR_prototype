@@ -112,11 +112,11 @@ public class PlayerController : MonoBehaviour
         {
             if(Input.GetButtonDown("Jump"))
                 jumpPressed = true;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !isGuarding)
                 attackPressed = true;
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 performRoll();
-            if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
+            if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange && !isGuarding)
                 isPraying = true;
             if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
                 performGuard();
