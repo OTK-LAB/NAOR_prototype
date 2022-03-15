@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     const string fall = "PlayerFall";
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
+    const string parry = "PlayerParry";
 
     //Combat
     [Header("Combat")]
@@ -56,7 +57,8 @@ public class PlayerController : MonoBehaviour
     private PlayerManager playerManager;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
-    [HideInInspector]  public bool isCombo = false;
+    [HideInInspector] public bool isCombo = false;
+    [HideInInspector] public bool isGuarding = false;
 
 
     void Start()
@@ -115,13 +117,26 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 performRoll();
             if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
-                isPraying = true;    
+                isPraying = true;
+            if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
+                performGuard();
+            if (Input.GetMouseButtonUp(1))
+                isGuarding = false;
             
         }
     }
     void Move()
     {
-        rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+        if (!isGuarding)
+        {
+            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(xAxis * runSpeed/2, rb.velocity.y);
+        }
+
+
     }
     void Jump()
     {
@@ -131,6 +146,14 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
+
+    void performGuard()
+    {
+        ChangeAnimationState(parry);
+        //guard collision
+        isGuarding = true;
+    }
+
     private void performRoll()
     {
 
@@ -217,7 +240,7 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
+        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving && !isGuarding)
         {
             if(!isRolling)
             {
@@ -296,4 +319,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
+
+
 }

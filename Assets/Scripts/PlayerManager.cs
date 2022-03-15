@@ -21,12 +21,14 @@ public class PlayerManager : MonoBehaviour
     //[HideInInspector] 
     public bool dead = false;
     [HideInInspector] public bool isReviving;
+    [HideInInspector] public int status;
 
 
     //Animations
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
     const string revive = "PlayerRevive";
+    const string counter = "PlayerCounter";
     [HideInInspector] public bool hitAnimRunning;
 
 
@@ -57,10 +59,30 @@ public class PlayerManager : MonoBehaviour
         {
             if ((CurrentHealth - damage) >= 0)
             {
-                CurrentHealth -= damage;
-                player.ChangeAnimationState(hit);
-                hitAnimRunning = true;
-                Invoke("CancelHitState", .33f); 
+                switch (status)
+                {
+                    case 1:
+                        CurrentHealth -= damage;
+                        player.ChangeAnimationState(hit);
+                        hitAnimRunning = true;
+                        Invoke("CancelHitState", .33f);
+                        break;
+                    case 2:
+                        CurrentHealth -= damage / 2;       //kalkan hasar azaltma
+                        player.ChangeAnimationState(hit);
+                        hitAnimRunning = true;
+                        Invoke("CancelHitState", .33f);
+                        break;
+                    case 3:
+                        player.ChangeAnimationState(counter);
+                        //invoke?
+                        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
+                        foreach (Collider2D enemy in hitEnemies)
+                        {
+                            enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 3);    //parry dealt damage
+                        }
+                        break;
+                }
             }
             else
             {
@@ -100,6 +122,11 @@ public class PlayerManager : MonoBehaviour
                 StartCoroutine(RespawnPlayer());
             }
         }
+    }
+
+    void StatusChanger(int a)
+    {
+        status = a;
     }
 
     IEnumerator DeathDefiance()
