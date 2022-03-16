@@ -34,7 +34,7 @@ public class CheckPointController : MonoBehaviour
 
         if (checkpointReached)
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.C) && !playerController.isGuarding)
             {
                 ChangeAnimationState(activated);
             }
@@ -54,7 +54,7 @@ public class CheckPointController : MonoBehaviour
     {
         if (checkpointReached)
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.C) && !playerController.isGuarding)
             {
                 playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
