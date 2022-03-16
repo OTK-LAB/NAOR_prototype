@@ -21,12 +21,14 @@ public class PlayerManager : MonoBehaviour
     //[HideInInspector] 
     public bool dead = false;
     [HideInInspector] public bool isReviving;
+    [HideInInspector] public int status;
 
 
     //Animations
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
     const string revive = "PlayerRevive";
+    const string counter = "PlayerCounter";
     [HideInInspector] public bool hitAnimRunning;
 
 
@@ -40,6 +42,7 @@ public class PlayerManager : MonoBehaviour
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        currentCheckPoint = gameObject;
     }
 
     // Update is called once per frame
@@ -57,10 +60,33 @@ public class PlayerManager : MonoBehaviour
         {
             if ((CurrentHealth - damage) >= 0)
             {
-                CurrentHealth -= damage;
-                player.ChangeAnimationState(hit);
-                hitAnimRunning = true;
-                Invoke("CancelHitState", .33f); 
+                switch (status)
+                {
+                    //normal damage status
+                    case 1:
+                        CurrentHealth -= damage;
+                        player.ChangeAnimationState(hit);
+                        hitAnimRunning = true;
+                        Invoke("CancelHitState", .33f);
+                        break;
+                    //blocking damage status
+                    case 2:
+                        CurrentHealth -= damage / 2;
+                        player.ChangeAnimationState(hit);
+                        hitAnimRunning = true;
+                        Invoke("CancelHitState", .33f);
+                        break;
+                    //parry status
+                    case 3:
+                        player.ChangeAnimationState(counter);
+                        //invoke?
+                        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
+                        foreach (Collider2D enemy in hitEnemies)
+                        {
+                            enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 3);    //parry dealt damage
+                        }
+                        break;
+                }
             }
             else
             {
@@ -82,7 +108,7 @@ public class PlayerManager : MonoBehaviour
             if (lives == 1)
             {
                 dead = true;
-                rb.simulated = false;
+                //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
@@ -95,11 +121,16 @@ public class PlayerManager : MonoBehaviour
                 player.ChangeAnimationState(death);
                 CurrentHealth = MaxHealth;
                 lives = 2;
-                rb.simulated = false;
+                //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
                 StartCoroutine(RespawnPlayer());
             }
         }
+    }
+
+    void StatusChanger(int a)
+    {
+        status = a;
     }
 
     IEnumerator DeathDefiance()
@@ -112,7 +143,7 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isReviving = false;
         dead = false;
-        rb.simulated = true;
+        //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
         flickering = true;
         yield return new WaitForSeconds(3f);
@@ -125,7 +156,7 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, transform.position.y, currentCheckPoint.transform.position.z);
         dead = false;
-        rb.simulated = true;
+        //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
     }
 

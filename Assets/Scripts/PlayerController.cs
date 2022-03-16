@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private bool IsAvailable;
     private bool isRolling = false;
     public BoxCollider2D regularColl;
-    public BoxCollider2D rollColl;
+    public CircleCollider2D rollColl;
     public float iFrame = 0.3f;
 
 
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     const string fall = "PlayerFall";
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
+    const string parry = "PlayerParry";
 
     //Combat
     [Header("Combat")]
@@ -56,7 +57,8 @@ public class PlayerController : MonoBehaviour
     private PlayerManager playerManager;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
-    [HideInInspector]  public bool isCombo = false;
+    [HideInInspector] public bool isCombo = false;
+    [HideInInspector] public bool isGuarding = false;
 
 
     void Start()
@@ -69,22 +71,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        CheckState();        
+        CheckState();
         CheckInputs();
-        if (attackTime > 0.6f)
-            isCombo = false;
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (isCombo == true && attackTime > 0.4f)
-                Attack();
-            else if (isCombo == false)
-                Attack();
-        }
-        ChangeAnimations();    
+        CheckAttack();
+        ChangeAnimations();
         FlipPlayer();
-        attackTime += Time.deltaTime;
     }
-    
+
+
     void FixedUpdate() 
     {
         RollCooldown();
@@ -108,20 +102,49 @@ public class PlayerController : MonoBehaviour
         //Check Jump, Attack, Roll, Pray Input  
         if(isGrounded && !isPraying)
         {
-            if(Input.GetButtonDown("Jump"))
-                jumpPressed = true;
-            if (Input.GetMouseButtonDown(0))
-                attackPressed = true;
+            if(!isGuarding)
+            {
+                if(Input.GetButtonDown("Jump"))
+                    jumpPressed = true;
+                if (Input.GetMouseButtonDown(0))
+                    attackPressed = true;
+                if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
+                    isPraying = true;
+            }
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 performRoll();
-            if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
-                isPraying = true;    
+            if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
+                performGuard();
+            if (Input.GetMouseButtonUp(1))
+                isGuarding = false;
             
+        }
+    }
+    private void CheckAttack()
+    {
+        attackTime += Time.deltaTime;
+        if (attackTime > 0.6f)
+            isCombo = false;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isCombo == true && attackTime > 0.3f)
+                Attack();
+            else if (isCombo == false)
+                Attack();
         }
     }
     void Move()
     {
-        rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+        if (!isGuarding)
+        {
+            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(xAxis * runSpeed/2, rb.velocity.y);
+        }
+
+
     }
     void Jump()
     {
@@ -131,6 +154,15 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
+
+    void performGuard()
+    {
+        if(!isRolling)
+            ChangeAnimationState(parry);
+        //guard collision
+        isGuarding = true;
+    }
+
     private void performRoll()
     {
 
@@ -221,23 +253,26 @@ public class PlayerController : MonoBehaviour
         {
             if(!isRolling)
             {
-                if(!isAttacking && !isPraying)
-                { 
-                    if(xAxis == 0)
-                        ChangeAnimationState(idle);
-                    else
-                        ChangeAnimationState(run); 
-                }
-                if(isAttacking)
-                {                 
-                    ChangeAnimationState("PlayerAttack" + attackCount);
-                    if(attackTime > 0.6f)    
-                        isAttacking = false;
-                }
-                if(isPraying)
+                if(!isGuarding)
                 {
-                    ChangeAnimationState(pray);
-                    StartCoroutine(StopPraying());
+                    if(!isAttacking && !isPraying)
+                    { 
+                        if(xAxis == 0)
+                            ChangeAnimationState(idle);
+                        else
+                            ChangeAnimationState(run); 
+                    }
+                    if(isAttacking)
+                    {                 
+                        ChangeAnimationState("PlayerAttack" + attackCount);
+                        if(attackTime > 0.6f)    
+                            isAttacking = false;
+                    }
+                    if(isPraying)
+                    {
+                        ChangeAnimationState(pray);
+                        StartCoroutine(StopPraying());
+                    }
                 }
             }
             else
@@ -296,4 +331,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
+
+
 }
