@@ -332,5 +332,11 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 
-
+    public bool isBusy()
+    {
+        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning)
+            return true;
+        else
+            return false;
+    }    
 }
