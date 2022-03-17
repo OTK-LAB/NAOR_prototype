@@ -18,6 +18,7 @@ public class Sword_Behaviour : MonoBehaviour
     #endregion
 
     #region private variables
+    private GameObject player;
     private Animator anim;
     private float distance; //distance btween enemy and player
 
@@ -25,6 +26,11 @@ public class Sword_Behaviour : MonoBehaviour
     private float intTimer;
 
     private bool attackMode;
+    
+    bool playerAlive = true;
+    bool playerOnline = false;
+
+    Transform PlayerPosition;
     #endregion
 
     private void Awake()
@@ -33,6 +39,10 @@ public class Sword_Behaviour : MonoBehaviour
         SelectTarget();
         intTimer = timer;
         anim = GetComponent<Animator>();
+
+            currentHealth = maxHealth;
+            PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
@@ -57,6 +67,9 @@ public class Sword_Behaviour : MonoBehaviour
         {
             Cooldown();
         }
+
+        if (playerAlive)
+        CheckPlayerDead();
     }
 
     void EnemyLogic()
@@ -166,5 +179,48 @@ public class Sword_Behaviour : MonoBehaviour
         {
             attackMode = false;
         }
+    }
+
+    //Hit
+    public float maxHealth = 100;
+    public float currentHealth;
+    bool hurt = false;
+    bool alive = true;
+
+    void CheckPlayerDead()
+    {
+        if (player.GetComponent<PlayerManager>().dead == true)
+        {
+            playerOnline = false;
+            playerAlive = false;
+        }
+        else
+            playerAlive = true;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            alive = false;
+            hurt = false;
+            Die();
+        }
+        else
+        {
+            hurt = true;
+            //ChangeAnimations();
+        }
+    }
+
+    void Die()
+    {
+        //ChangeAnimationState(death);
+        //movement = new Vector3(transform.position.x, -3.17f, transform.position.z);   check here for cool
+        //transform.position = movement;
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
+
     }
 }

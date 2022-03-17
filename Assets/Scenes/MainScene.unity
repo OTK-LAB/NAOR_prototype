@@ -315,6 +315,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &648538532 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2630335358365580258, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+  m_PrefabInstance: {fileID: 1443564227}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &648538535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648538532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73471e43af2d2d845a0d12a35de7abfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 25
 --- !u!1 &696408085
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +342,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 696408086}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1466,6 +1484,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2630335358807500783, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2630335358807500783, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 2630335359800629264, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
       propertyPath: m_Size.x
       value: 8.806688
@@ -1543,7 +1569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2084008868}
   - component: {fileID: 2084008867}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
