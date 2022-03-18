@@ -13,37 +13,34 @@ public class Minion_wpoke : MonoBehaviour
     const string death = "enemy_death";
 
     //Move
+    [Header("Movement")]
+    public int speed = 2;
+    private Rigidbody2D rb;
     Vector3 movement;
     bool Moveright = true;
-    private Rigidbody2D rb;
     float step = 2;
-    public int speed = 2;
+    
 
     //Hit
-    public float maxHealth = 100;
-    public float currentHealth;
-    bool hurt = false;
-    bool alive = true;
-
+    [Header("Health")]
+    public float maxHealth = 100, currentHealth;
+    bool hurt = false, alive = true;
 
     //Attack
-    float target;
-    bool collision = false;
-    float cr;
-    public float CalculatedTime;
+    [Header("Attack")]
     public float TimeBtwEachShot;
-    bool playerOnline = false;
+    public float minimumFiringDistance, damage = 12.5f;
+    float target, cr;
+    bool collision = false, playerOnline = false, playerAlive = true, ifAttack = false;
     Transform PlayerPosition;
-    public float minimumFiringDistance;
-    public float damage = 12.5f;
     private GameObject player;
-    bool playerAlive = true;
-    bool deneme = false;
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
-        CalculatedTime = TimeBtwEachShot;
+
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
         rb = this.GetComponent<Rigidbody2D>();
@@ -52,41 +49,53 @@ public class Minion_wpoke : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        target = Vector2.Distance(transform.position, PlayerPosition.position);
+        target = PlayerPosition.position.x - transform.position.x;
+        moveDecision();
+        CheckPlayerDead();
+    }
+    void moveDecision()
+    {
         if (!playerOnline && !collision)
         {
-            if (!deneme)
+            if (!ifAttack)
             {
                 speed = 2;
-                Debug.Log("girdim");
                 AutoMove();
                 CheckAttack();
             }
         }
-        if (!collision && playerOnline)
-        {
-            Debug.Log(playerOnline+ "saldýr" + collision);
-            Enemy_Move(PlayerPosition.position.x);
-        }
-
+        if (!collision && playerOnline && playerAlive)
+            Enemy_Move(target);
         else if (collision && playerOnline)
+            attackDirection();
+    }
+    void attackDirection()
+    {
+        flip();
+        if (!Moveright)
         {
-            Debug.Log(playerOnline + "geri çekil " + collision);
-            if (transform.position.x>=cr)
+            if (transform.position.x >= cr)
             {
                 playerOnline = false;
                 collision = false;
-                deneme = true;
+                ifAttack = true;
                 waitForAttack();
-            }   
-            else
-            {
-                Enemy_Move(cr);
             }
-               
+            else
+                Enemy_Move(cr);
         }
-        CheckPlayerDead();
-
+        else
+        {
+            if (transform.position.x < cr)
+            {
+                playerOnline = false;
+                collision = false;
+                ifAttack = true;
+                waitForAttack();
+            }
+            else
+                Enemy_Move(-cr);
+        }
     }
     void waitForAttack()
     {
@@ -96,13 +105,14 @@ public class Minion_wpoke : MonoBehaviour
     IEnumerator waitdarling()
     {
         yield return new WaitForSeconds(TimeBtwEachShot);
-        deneme = false;
+        speed = 2;
+        ifAttack = false;
         CheckAttack();
-
     }
     void Enemy_Move(float count)
     {
-        Vector3 direction = new Vector3(count, 0f, 0f);
+        Vector3 direction;
+        direction = new Vector3(count, 0f, 0f);
         direction.Normalize();
         movement = direction;
         moveCharacter(movement);
@@ -111,6 +121,7 @@ public class Minion_wpoke : MonoBehaviour
     {
         rb.MovePosition((Vector2)transform.position + (direction * speed * Time.deltaTime));
     }
+    
     void flip()
     {
         if (PlayerPosition.position.x > (transform.position.x + 0.5f))
@@ -149,9 +160,9 @@ public class Minion_wpoke : MonoBehaviour
         }
         if (trig.CompareTag("Player"))
         {
+            ChangeAnimations();
             trig.transform.SendMessage("DamagePlayer", damage);
             collision = true;
-            Debug.Log("carptim");
             flip();
         }
 
@@ -160,8 +171,7 @@ public class Minion_wpoke : MonoBehaviour
     {
         if (!playerOnline)
         {
-
-            if (target <= minimumFiringDistance)
+            if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
             {
                 speed *= 2;
                 flip();
@@ -176,10 +186,13 @@ public class Minion_wpoke : MonoBehaviour
         {
             playerOnline = false;
             playerAlive = false;
-       
+
         }
         else
+        {
             playerAlive = true;
+        }
+           
     }
     void ChangeAnimationState(string newState)
     {
@@ -190,7 +203,7 @@ public class Minion_wpoke : MonoBehaviour
     void ChangeAnimations()
     {
         //attack
-        if (playerOnline && CalculatedTime <= 0)
+        if (playerOnline /*&& CalculatedTime <= 0*/)
         {
             ChangeAnimationState(attack);
             StartCoroutine(backtoIdle());
