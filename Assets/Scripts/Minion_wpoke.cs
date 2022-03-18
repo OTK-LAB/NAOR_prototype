@@ -16,6 +16,7 @@ public class Minion_wpoke : MonoBehaviour
     [Header("Movement")]
     public int speed = 2;
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
     Vector3 movement;
     bool Moveright = true;
     float step = 2;
@@ -40,7 +41,7 @@ public class Minion_wpoke : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
-
+        sr =GetComponent<SpriteRenderer>(); 
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
         rb = this.GetComponent<Rigidbody2D>();
@@ -64,9 +65,14 @@ public class Minion_wpoke : MonoBehaviour
                 CheckAttack();
             }
         }
-        if (!collision && playerOnline && playerAlive)
+        if (!collision && playerOnline)
+        {
+            flip();
             Enemy_Move(target);
+        }
         else if (collision && playerOnline)
+            attackDirection();
+        if (collision && !playerOnline) //player hortlamýþ
             attackDirection();
     }
     void attackDirection()
@@ -74,11 +80,13 @@ public class Minion_wpoke : MonoBehaviour
         flip();
         if (!Moveright)
         {
+            turnRight();   
             if (transform.position.x >= cr)
             {
                 playerOnline = false;
                 collision = false;
                 ifAttack = true;
+                turnLeft();
                 waitForAttack();
             }
             else
@@ -86,11 +94,13 @@ public class Minion_wpoke : MonoBehaviour
         }
         else
         {
+            turnLeft();
             if (transform.position.x < cr)
             {
                 playerOnline = false;
                 collision = false;
                 ifAttack = true;
+                turnRight();
                 waitForAttack();
             }
             else
@@ -121,24 +131,27 @@ public class Minion_wpoke : MonoBehaviour
     {
         rb.MovePosition((Vector2)transform.position + (direction * speed * Time.deltaTime));
     }
-    
+    void turnRight()
+    {
+        sr.flipX = true;
+        Moveright = true;
+    }
+    void turnLeft()
+    {
+        sr.flipX = false;
+        Moveright = false;
+    }
     void flip()
     {
         if (PlayerPosition.position.x > (transform.position.x + 0.5f))
         {
             if (!Moveright)
-            {
-                transform.Rotate(0f, 180f, 0f);
-                Moveright = true;
-            }
+                turnRight();
         }
         else
         {
             if (Moveright)
-            {
-                transform.Rotate(0f, 180f, 0f);
-                Moveright = false;
-            }
+                turnLeft();
         }
     }
     void AutoMove()
@@ -186,7 +199,6 @@ public class Minion_wpoke : MonoBehaviour
         {
             playerOnline = false;
             playerAlive = false;
-
         }
         else
         {
