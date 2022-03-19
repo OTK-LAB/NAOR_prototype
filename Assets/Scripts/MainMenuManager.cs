@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 public class MainMenuManager : MonoBehaviour
@@ -51,6 +52,19 @@ public class MainMenuManager : MonoBehaviour
     {
         ExitMenu.SetActive(true);
         Menu.SetActive(false);
+    }
+    public void EnlargeButton(Button button)
+    {
+        RectTransform rt = button.GetComponent<RectTransform>();
+        float y = rt.offsetMax.y;
+        rt.offsetMax = new Vector2(240f, y);
+    }
+
+    public void ResetButton(Button button)
+    {
+        RectTransform rt = button.GetComponent<RectTransform>();
+        float y = rt.offsetMax.y;
+        rt.offsetMax = new Vector2(160f, y);
     }
 
     public void QuitGame()
