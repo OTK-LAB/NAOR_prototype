@@ -16,22 +16,23 @@ public class Minion_wpoke : MonoBehaviour
     [Header("Movement")]
     public int speed = 2;
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
     Vector3 movement;
     bool Moveright = true;
     float step = 2;
-    
+    bool change = false;
+
 
     //Hit
     [Header("Health")]
-    public float maxHealth = 100, currentHealth;
+    public float maxHealth = 100;
+    public float currentHealth;
     bool hurt = false, alive = true;
 
     //Attack
     [Header("Attack")]
     public float TimeBtwEachShot;
     public float minimumFiringDistance, damage = 12.5f;
-    float target, cr;
+    float targetx,targety, crx,cry;
     bool collision = false, playerOnline = false, playerAlive = true, ifAttack = false;
     Transform PlayerPosition;
     private GameObject player;
@@ -41,16 +42,17 @@ public class Minion_wpoke : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
-        sr =GetComponent<SpriteRenderer>(); 
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
         rb = this.GetComponent<Rigidbody2D>();
+        cry = transform.position.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        target = PlayerPosition.position.x - transform.position.x;
+        targetx = PlayerPosition.position.x - transform.position.x;
+        targety = PlayerPosition.position.y - transform.position.y;
         moveDecision();
         CheckPlayerDead();
     }
@@ -68,59 +70,62 @@ public class Minion_wpoke : MonoBehaviour
         if (!collision && playerOnline)
         {
             flip();
-            Enemy_Move(target);
+            Enemy_AttackMove(targetx, targety);
         }
         else if (collision && playerOnline)
-            attackDirection();
+            IIflip();
         if (collision && !playerOnline) //player hortlamýþ
             attackDirection();
     }
     void attackDirection()
     {
-        if (!Moveright)
+        if (Moveright)
         {
-            //turnRight();
-            if (transform.position.x >= cr)
+            if(transform.position.y >= cry)
             {
-                playerOnline = false;
-                collision = false;
-                ifAttack = true;
-                flip();
-                // turnLeft();
-                waitForAttack();
+                if (transform.position.x >= crx)
+                {
+                    playerOnline = false;
+                    collision = false;
+                    ifAttack = true;
+                    flip();
+                    waitForAttack();
+                }
+                else
+                    Enemy_Move(crx);
             }
+            else if (transform.position.x >= crx)
+                Enemy_Movey(-cry);
             else
-            {
-               // IIflip();
-                Enemy_Move(cr);
-            }
-               
+                Enemy_AttackMove(crx, -cry);
         }
         else
         {
-            //turnLeft();
-            if (transform.position.x < cr)
+            if (transform.position.y >= cry)
             {
-                playerOnline = false;
-                collision = false;
-                ifAttack = true;
-                flip();
-                //  turnRight();
-                waitForAttack();
+                if (transform.position.x < crx)
+                {
+                    playerOnline = false;
+                    collision = false;
+                    ifAttack = true;
+                    flip();
+                    waitForAttack();
+                }
+                else
+                    Enemy_Move(-crx);
             }
+            else if (transform.position.x < crx)
+                Enemy_Movey(-cry);
             else
-            {
-             //   IIflip();
-                Enemy_Move(-cr);
-
-            }
-                
+                Enemy_AttackMove(-crx, -cry);
+          
         }
     }
     void waitForAttack()
     {
-            Enemy_Move(0f);
-            StartCoroutine(waitdarling());
+        flip();
+        Enemy_Move(0f);
+        StartCoroutine(waitdarling());
     }
     IEnumerator waitdarling()
     {
@@ -137,19 +142,27 @@ public class Minion_wpoke : MonoBehaviour
         movement = direction;
         moveCharacter(movement);
     }
+    void Enemy_Movey(float count)
+    {
+        Debug.Log("calisiyorum");
+        Vector3 direction;
+        direction = new Vector3(0f, count, 0f);
+        direction.Normalize();
+        movement = direction;
+        moveCharacter(movement);
+    }
+    void Enemy_AttackMove (float x, float y)
+    {
+
+        Vector3 direction;
+        direction = new Vector3(x, y, 0f);
+        direction.Normalize();
+        movement = direction;
+        moveCharacter(movement);
+    }
     void moveCharacter(Vector2 direction)
     {
         rb.MovePosition((Vector2)transform.position + (direction * speed * Time.deltaTime));
-    }
-    void turnRight()
-    {
-        sr.flipX = true;
-        Moveright = true;
-    }
-    void turnLeft()
-    {
-        sr.flipX = false;
-        Moveright = false;
     }
     void flip()
     {
@@ -172,16 +185,21 @@ public class Minion_wpoke : MonoBehaviour
     }
     void IIflip()
     {
-        if (PlayerPosition.position.x > (transform.position.x + 0.5f))
-        {
-            transform.Rotate(0f, 180f, 0f);
-            Moveright = false;
+        if(!change)
+        { 
+            if (PlayerPosition.position.x > (transform.position.x + 0.5f))
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = false;
+            }
+            else
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = true;
+            }
+            change = true;
         }
-        else
-        {
-            transform.Rotate(0f, 180f, 0f);
-            Moveright = true;
-        }
+        attackDirection();
     }
     void AutoMove()
     {
@@ -205,6 +223,7 @@ public class Minion_wpoke : MonoBehaviour
             ChangeAnimations();
             trig.transform.SendMessage("DamagePlayer", damage);
             collision = true;
+            change = false;
         }
 
     }
@@ -214,10 +233,11 @@ public class Minion_wpoke : MonoBehaviour
         {
             if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
             {
-                speed *= 2;
-                flip();
-                cr = transform.position.x;
+                speed *= 3;
+                crx = transform.position.x;
+
                 playerOnline = true;
+                flip();             
             }
         }
     }
@@ -259,7 +279,6 @@ public class Minion_wpoke : MonoBehaviour
     }
     IEnumerator backtoIdle()
     {
-
         yield return new WaitForSeconds(0.5f);
         if (alive)
             ChangeAnimationState(idle);
