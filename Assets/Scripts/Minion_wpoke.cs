@@ -77,34 +77,44 @@ public class Minion_wpoke : MonoBehaviour
     }
     void attackDirection()
     {
-        flip();
         if (!Moveright)
         {
-            turnRight();   
+            //turnRight();
             if (transform.position.x >= cr)
             {
                 playerOnline = false;
                 collision = false;
                 ifAttack = true;
-                turnLeft();
+                flip();
+                // turnLeft();
                 waitForAttack();
             }
             else
+            {
+               // IIflip();
                 Enemy_Move(cr);
+            }
+               
         }
         else
         {
-            turnLeft();
+            //turnLeft();
             if (transform.position.x < cr)
             {
                 playerOnline = false;
                 collision = false;
                 ifAttack = true;
-                turnRight();
+                flip();
+                //  turnRight();
                 waitForAttack();
             }
             else
+            {
+             //   IIflip();
                 Enemy_Move(-cr);
+
+            }
+                
         }
     }
     void waitForAttack()
@@ -146,12 +156,31 @@ public class Minion_wpoke : MonoBehaviour
         if (PlayerPosition.position.x > (transform.position.x + 0.5f))
         {
             if (!Moveright)
-                turnRight();
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = true;
+            }
         }
         else
         {
             if (Moveright)
-                turnLeft();
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = false;
+            }
+        }
+    }
+    void IIflip()
+    {
+        if (PlayerPosition.position.x > (transform.position.x + 0.5f))
+        {
+            transform.Rotate(0f, 180f, 0f);
+            Moveright = false;
+        }
+        else
+        {
+            transform.Rotate(0f, 180f, 0f);
+            Moveright = true;
         }
     }
     void AutoMove()
@@ -176,7 +205,6 @@ public class Minion_wpoke : MonoBehaviour
             ChangeAnimations();
             trig.transform.SendMessage("DamagePlayer", damage);
             collision = true;
-            flip();
         }
 
     }
