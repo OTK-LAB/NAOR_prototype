@@ -8,6 +8,7 @@ public class CheckPointController : MonoBehaviour
     private PlayerManager playerManager;
     private PlayerController playerController;
 
+
     //Animations
     private Animator animator;
     private string currentState;
@@ -58,6 +59,7 @@ public class CheckPointController : MonoBehaviour
             {
                 playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
+                playerManager.dataforhealth = playerManager.CurrentHealth; 
             }
         }
         if(!checkpointReached)

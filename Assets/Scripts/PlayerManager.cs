@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public bool hitAnimRunning;
 
 
-
+    public float dataforhealth;
 
 
     // Start is called before the first frame update
@@ -43,6 +43,7 @@ public class PlayerManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentCheckPoint = gameObject;
+        LoadPlayer();
     }
 
     // Update is called once per frame
@@ -51,7 +52,9 @@ public class PlayerManager : MonoBehaviour
         if(flickering)
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, Mathf.PingPong(Time.time * flickerSpeed, 1));
         else
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);    
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);
+        SavePlayer();
+        Debug.Log(dataforhealth);
     }
 
     public virtual void DamagePlayer(float damage)
@@ -160,4 +163,27 @@ public class PlayerManager : MonoBehaviour
         player.enabled = true;
     }
 
+    public void SavePlayer()
+    {
+        SaveSystem.SavePlayer(this);
+    }
+
+    public void LoadPlayer()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+
+        //leevvel = data.level;
+        CurrentHealth = data.health;
+
+        Vector3 position;
+        position.x = data.position[0];
+        position.y = data.position[1];
+        position.z = data.position[2];
+        transform.position = position;
+    }
+
+    private void A()
+    {
+        
+    }
 }
