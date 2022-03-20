@@ -143,7 +143,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.17, y: 0.11}
+    oldSize: {x: 0.64, y: 0.64}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -164,13 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 215225f69c857424fbc93147e0ed6150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
   maxHealth: 100
   currentHealth: 0
   CalculatedTime: 0
   TimeBtwEachShot: 4
-  Fireball: {fileID: 0}
-  PlayerPosition: {fileID: 0}
+  Fireball: {fileID: 8481426808659785532, guid: 228998b2ceec634448737a4696c5b796, type: 3}
   minimumFiringDistance: 7
-  maxFiringDistance: 0
   damage: 12.5

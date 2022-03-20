@@ -144,7 +144,6 @@ public class Minion_wpoke : MonoBehaviour
     }
     void Enemy_Movey(float count)
     {
-        Debug.Log("calisiyorum");
         Vector3 direction;
         direction = new Vector3(0f, count, 0f);
         direction.Normalize();

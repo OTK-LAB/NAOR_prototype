@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
     [HideInInspector] public bool isGuarding = false;
+    [HideInInspector] public Collider2D enemyColliderName;
 
 
     void Start()
@@ -300,6 +301,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1.7f);
         isPraying = false;
     }
+   
     void Attack()
     {
         if (attackPressed && !isPraying)
@@ -314,13 +316,27 @@ public class PlayerController : MonoBehaviour
                 attackCount = 1;
                 attackDamage = 10;
             }
-
+        
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-            foreach (Collider2D enemy in hitEnemies)
+            for (int i=0; i< hitEnemies.Length; i++)
             {
-               // enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
-                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
+                enemyColliderName = hitEnemies[i];
+                if(enemyColliderName.ToString()== "Minion_fb (UnityEngine.BoxCollider2D)")
+                {
+                    foreach (Collider2D enemy in hitEnemies)
+                    {
+                        enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+                    }
+                }
+                else if(enemyColliderName.ToString()== "Minion_p (UnityEngine.BoxCollider2D)")
+                {
+                    foreach (Collider2D enemy in hitEnemies)
+                    {
+                        enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
+                    }
+                }   
             }
+       
             
             attackPressed = false;
             attackTime = 0f;
