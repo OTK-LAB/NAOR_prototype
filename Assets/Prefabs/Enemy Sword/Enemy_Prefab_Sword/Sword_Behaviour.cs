@@ -15,6 +15,11 @@ public class Sword_Behaviour : MonoBehaviour
 
     public Transform leftLimit;
     public Transform rightLimit;
+    public Collider2D[] colliders;
+    //Hit
+    public float maxHealth = 100;
+    public float currentHealth;
+    Vector3 movement;
     #endregion
 
     #region private variables
@@ -24,11 +29,11 @@ public class Sword_Behaviour : MonoBehaviour
 
     private bool isAvailable;
     private float intTimer;
+    private bool isHurt;
 
     private bool attackMode;
     
-    bool playerAlive = true;
-    bool playerOnline = false;
+    
 
     Transform PlayerPosition;
     #endregion
@@ -40,9 +45,14 @@ public class Sword_Behaviour : MonoBehaviour
         intTimer = timer;
         anim = GetComponent<Animator>();
 
-            currentHealth = maxHealth;
-            PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
-            player = GameObject.FindGameObjectWithTag("Player");
+        
+    }
+    void Start()
+    {
+        currentHealth = maxHealth;
+        PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player");
+        colliders = gameObject.GetComponentsInChildren<Collider2D>();
     }
 
     void Update()
@@ -68,8 +78,7 @@ public class Sword_Behaviour : MonoBehaviour
             Cooldown();
         }
 
-        if (playerAlive)
-        CheckPlayerDead();
+        
     }
 
     void EnemyLogic()
@@ -106,7 +115,10 @@ public class Sword_Behaviour : MonoBehaviour
 
     void Attack()
     {
-
+        if (isHurt)
+        {
+            return;
+        }
         if (!isAvailable)
         {
             anim.Play("Enemy_idle");
@@ -116,7 +128,7 @@ public class Sword_Behaviour : MonoBehaviour
         {
             anim.Play("Enemy_attack");
         }
-
+        
         timer = intTimer; //reset timer when player attacks
 
     }
@@ -181,46 +193,35 @@ public class Sword_Behaviour : MonoBehaviour
         }
     }
 
-    //Hit
-    public float maxHealth = 100;
-    public float currentHealth;
-    bool hurt = false;
-    bool alive = true;
-
-    void CheckPlayerDead()
-    {
-        if (player.GetComponent<PlayerManager>().dead == true)
-        {
-            playerOnline = false;
-            playerAlive = false;
-        }
-        else
-            playerAlive = true;
-    }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
         if (currentHealth <= 0)
         {
-            alive = false;
-            hurt = false;
             Die();
         }
         else
         {
-            hurt = true;
-            //ChangeAnimations();
+            isHurt = true;
+            anim.Play("Enemy_hit");    
         }
+    }
+    public void isHurta()
+    {
+        isHurt = false;
     }
 
     void Die()
     {
-        //ChangeAnimationState(death);
-        //movement = new Vector3(transform.position.x, -3.17f, transform.position.z);   check here for cool
-        //transform.position = movement;
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
-
+        anim.Play("Enemy_dead");
+        Invoke("Eliminate", 1.5f);     
+    }
+    private void Eliminate()
+    {
+         Destroy(gameObject);
     }
 }

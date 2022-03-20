@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public CircleCollider2D rollColl;
     public float iFrame = 0.3f;
 
+    Collider2D enemyColliderName;
+
 
     //Jumping
     [Header("Jumping")]
@@ -315,13 +317,26 @@ public class PlayerController : MonoBehaviour
                 attackDamage = 10;
             }
 
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-            foreach (Collider2D enemy in hitEnemies)
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);           
+            for (int i = 0; i < hitEnemies.Length; i++)
             {
-                enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);  //really?
-                enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
+                enemyColliderName = hitEnemies[i];              
+                if (enemyColliderName.ToString() == "Minion_fb (UnityEngine.BoxCollider2D)")
+                {
+                    foreach (Collider2D enemy in hitEnemies)
+                    {
+                        enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+                    }                   
+                }
+                else if(enemyColliderName.ToString()== "Enemy (UnityEngine.BoxCollider2D)")
+                {                   
+                    foreach (Collider2D enemy in hitEnemies)
+                    {
+                        
+                        enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
+                    }
+                }
             }
-            
             attackPressed = false;
             attackTime = 0f;
         }
