@@ -4758,7 +4758,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 88f953939823185498835825f8f15ed0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4920,7 +4920,6 @@ GameObject:
   - component: {fileID: 6519138941615273169}
   - component: {fileID: 3824674398280477326}
   - component: {fileID: 425104856}
-  - component: {fileID: 683475911}
   m_Layer: 6
   m_Name: Torch
   m_TagString: Untagged
@@ -5015,24 +5014,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &425104856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607931076586939294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 674ed7027cea3954ea502bf5fa2820fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localPosition: {x: 0, y: -1.8, z: 0}
-  localRotation: {x: 0, y: 0, z: -180}
-  localScale: {x: -1, y: 0.5, z: 1}
-  sprite: {fileID: 0}
-  spriteLayer: Default
-  spriteLayerOrder: -1
---- !u!114 &683475911
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

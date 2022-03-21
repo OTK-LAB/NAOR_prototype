@@ -305,6 +305,7 @@ public class PlayerController : MonoBehaviour
         if (attackPressed && !isPraying)
         {
             isAttacking = true;
+            rb.velocity = new Vector2(0,0);
             attackDamage += 2;
             attackCount++;
             isCombo = true;
