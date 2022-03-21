@@ -8,6 +8,8 @@ TagManager:
   - turn
   - fire
   - Ground
+  - Dagger
+  - CheckPoint
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
-  - 
+  - Player
+  - Foreground
   - 
   - 
   - 

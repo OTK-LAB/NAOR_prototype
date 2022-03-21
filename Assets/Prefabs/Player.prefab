@@ -18,7 +18,10 @@ GameObject:
   - component: {fileID: 2303616365481814408}
   - component: {fileID: 2303616365481814415}
   - component: {fileID: 2303616365481814414}
-  m_Layer: 0
+  - component: {fileID: 2142956823}
+  - component: {fileID: 2142956813}
+  - component: {fileID: 2142956822}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -62,7 +65,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,7 +132,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2.5
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 117bea04202fd384b913248af21f7798, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -258,6 +261,167 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c6e255207c0cb44b55a5806d64e2fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &2142956823
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303616365481814406}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: baf829683feec7a45b5443e463d3ee7d, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &2142956813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303616365481814406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -0.103645325, y: 0.19651031, z: 0}
+  - {x: -0.26975632, y: -0.007129669, z: 0}
+  - {x: -0.21707916, y: -0.07485676, z: 0}
+  - {x: -0.23965454, y: -0.3683405, z: 0}
+  - {x: -0.19450378, y: -0.7671766, z: 0}
+  - {x: -0.22460175, y: -1.0078297, z: 0}
+  - {x: -0.08036804, y: -0.9950514, z: 0}
+  - {x: -0.07361984, y: -0.8253164, z: 0}
+  - {x: -0.006372452, y: -0.7145004, z: 0}
+  - {x: 0.09897995, y: -0.7348032, z: 0}
+  - {x: 0.10972786, y: -1.0078297, z: 0}
+  - {x: 0.26960945, y: -1.0003395, z: 0}
+  - {x: 0.2559719, y: -0.9298754, z: 0}
+  - {x: 0.19005203, y: -0.8753233, z: 0}
+  - {x: 0.27996063, y: -0.5889387, z: 0}
+  - {x: 0.29351425, y: -0.35582352, z: 0}
+  - {x: 0.38025475, y: -0.35040283, z: 0}
+  - {x: 0.4007206, y: -0.2898121, z: 0}
+  - {x: 0.29893494, y: -0.20402813, z: 0}
+  - {x: 0.24195862, y: 0.0831728, z: 0}
+  - {x: 0.18928337, y: 0.18852615, z: 0}
+  - {x: 0.19680786, y: 0.27130318, z: 0}
+  - {x: 0.2720604, y: 0.39170647, z: 0}
+  - {x: 0.19394875, y: 0.51086044, z: 0}
+  - {x: -0.03591919, y: 0.4431343, z: 0}
+  m_ShapePathHash: 83554175
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 57668
+--- !u!114 &2142956822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303616365481814406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 674ed7027cea3954ea502bf5fa2820fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localPosition: {x: 0, y: -3.48, z: 0}
+  localRotation: {x: 0, y: 0, z: -180}
+  localScale: {x: -1, y: 0.7, z: 1}
+  sprite: {fileID: 0}
+  spriteLayer: Default
+  spriteLayerOrder: -1
 --- !u!1 &2303616366078244559
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2303616366078244552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2303616366377848006}
   - component: {fileID: 2303616366377848007}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RollCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2303616366658647844}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +538,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2303616366928244962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
