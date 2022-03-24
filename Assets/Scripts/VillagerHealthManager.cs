@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VillegarHealtManager : MonoBehaviour
+public class VillagerHealthManager : MonoBehaviour
 {
 
     public Animator animator;
     
-    public int maxHealth = 100;
+    public float maxHealth = 100;
     [SerializeField]
-    int currentHealth;
+    float currentHealth;
     
     // Start is called before the first frame update
     void Start()
@@ -46,8 +46,8 @@ public class VillegarHealtManager : MonoBehaviour
 
         
         GetComponent<Collider2D>().enabled = false;
-        GetComponent<VillegarRunning>().enabled = false;
-        GetComponent<VillegarHealtManager>().enabled = false;
+        GetComponent<VillagerRunning>().enabled = false;
+        GetComponent<VillagerHealthManager>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         
     }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VillegarRunning : MonoBehaviour
+public class VillagerRunning : MonoBehaviour
 {
     private bool playerDetected;
-    public float detectedarearadius;
+    public float detectedAreaRadius;
 
     public LayerMask WhatIsPlayer;
     
@@ -13,14 +13,20 @@ public class VillegarRunning : MonoBehaviour
 
     private Transform playerPos;
     
-    public bool PlayerFacingRight = true;
+    public bool facingRight = true;
 
     private int b = 0;
 
-    private bool playerGroundDetected;
+    private bool isGrounded;
     public Transform groundDetection;
     public float distance;
     public LayerMask WhatIsGround;
+    private Animator animator;
+    private string currentState;
+    const string idle = "VillagerIdle";
+    const string run = "VillagerRun";
+    const string hurt = "VillagerHurt";
+    const string death = "VillagerDeath";
 
 
 
@@ -30,6 +36,7 @@ public class VillegarRunning : MonoBehaviour
     void Start()
     {
         playerPos = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -37,23 +44,20 @@ public class VillegarRunning : MonoBehaviour
     {
         CheckInputDirection();
         Detected();
-
     }
 
     void CheckInputDirection()
     {
-        if (playerPos.position.x > gameObject.transform.position.x && PlayerFacingRight) 
+        if (playerPos.position.x > gameObject.transform.position.x && facingRight) 
             Flip();
-        if (playerPos.position.x < gameObject.transform.position.x && !PlayerFacingRight)
+        if (playerPos.position.x < gameObject.transform.position.x && !facingRight)
             Flip();
-
-        Debug.Log(PlayerFacingRight);
     }
 
     void Flip()
     {
         transform.Rotate(0f, 180f, 0f);
-        PlayerFacingRight = !PlayerFacingRight;
+        facingRight = !facingRight;
     }
 
 
@@ -61,7 +65,6 @@ public class VillegarRunning : MonoBehaviour
     {
         if (playerPos.position.x > gameObject.transform.position.x )
             transform.position = new Vector2(transform.position.x - speed * Time.deltaTime, transform.position.y);
-
         if (playerPos.position.x < gameObject.transform.position.x )
             transform.position = new Vector2(transform.position.x + speed * Time.deltaTime, transform.position.y);
     }
@@ -70,43 +73,50 @@ public class VillegarRunning : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, detectedarearadius);
-        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, detectedAreaRadius);
+        Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(groundDetection.position, distance);
     }
 
     void Detected()
     {
-        playerDetected = Physics2D.OverlapCircle(gameObject.transform.position, detectedarearadius, WhatIsPlayer);
+        playerDetected = Physics2D.OverlapCircle(gameObject.transform.position, detectedAreaRadius, WhatIsPlayer);
 
-        playerGroundDetected = Physics2D.OverlapCircle(groundDetection.transform.position, distance, WhatIsGround);
+        isGrounded = Physics2D.OverlapCircle(groundDetection.transform.position, distance, WhatIsGround);
 
-        if (playerGroundDetected == true)
+        if (isGrounded == true)
         {
             if (playerDetected == true)
             {
                 Debug.Log("Detected");
                 RunAway();
                 ControlOn();
+                ChangeAnimationState(run);
             }
             else if (playerDetected == false && b == 1)
             {
                 Debug.Log("Not Detected but run");
                 RunAway();
-
+                ChangeAnimationState(run);
             }
 
             else if (playerDetected == false)
             {
                 Debug.Log("Not Detected");
+                ChangeAnimationState(idle);
             }
         }
-        else if(playerGroundDetected == false)
+        else if(isGrounded == false)
         {
 
         }
     }
-
+    void ChangeAnimationState(string newState)
+    {
+        if(currentState == newState) return;
+        animator.Play(newState);
+        currentState = newState;
+    }
     void ControlOn()
     {
         b = 1;
