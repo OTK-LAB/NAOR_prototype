@@ -6,7 +6,7 @@ public class VillagerDoor : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if(other.gameObject.CompareTag("Enemy"))
+        if(other.gameObject.CompareTag("Villager"))
             Destroy(other.gameObject);
     }
 }

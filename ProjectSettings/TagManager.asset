@@ -4,20 +4,25 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - VillegarEnemy
   - Enemy
+  - turn
+  - fire
+  - Ground
+  - Dagger
+  - CheckPoint
+  - Villager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
   - Ground
+  - Enemy
+  - Player
+  - 
+  - 
   - 
   - 
   - 

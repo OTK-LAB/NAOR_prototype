@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 308689577505062311}
   - component: {fileID: 308689577505062310}
   - component: {fileID: 2940437687880455939}
-  m_Layer: 15
+  m_Layer: 0
   m_Name: Villager
-  m_TagString: Enemy
+  m_TagString: Villager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,14 +165,14 @@ MonoBehaviour:
   detectedAreaRadius: 3.87
   WhatIsPlayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 256
   speed: 2
   facingRight: 1
   groundDetection: {fileID: 308689577867027374}
   distance: 0.41
   WhatIsGround:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 64
 --- !u!95 &2940437687880455939
 Animator:
   serializedVersion: 3
