@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 308689577505062311}
   - component: {fileID: 308689577505062310}
   - component: {fileID: 2940437687880455939}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Villager
   m_TagString: Villager
   m_Icon: {fileID: 0}
@@ -147,9 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2cfe7da91cbab4ab59cbe9d7846923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  maxHealth: 100
+  maxHealth: 1
   currentHealth: 0
+  isHurting: 0
 --- !u!114 &308689577505062310
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class VillagerHealthManager : MonoBehaviour
 {
-
-    public Animator animator;
-    
+    Animator animator;
+    string currentState;
+    const string hurt = "VillagerHurt";
+    const string death = "VillagerDeath";
     public float maxHealth = 100;
     [SerializeField]
     float currentHealth;
+    [HideInInspector] public bool isHurting;
+
+
     
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         currentHealth = maxHealth;
     }
 
@@ -29,26 +34,26 @@ public class VillagerHealthManager : MonoBehaviour
     {
 
         currentHealth -= damage;
-
-        animator.SetTrigger("Hurt");
-
+        ChangeAnimationState(hurt);
+        isHurting = true;
         if (currentHealth <= 0)
         {
             Die();
         }
     }
-
     void Die()
     {
         Debug.Log("Enemy died!");
-
-        animator.SetBool("IsDead", true);
-
-        
         GetComponent<Collider2D>().enabled = false;
         GetComponent<VillagerRunning>().enabled = false;
         GetComponent<VillagerHealthManager>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         
+    }
+    void ChangeAnimationState(string newState)
+    {
+        if(currentState == newState) return;
+        animator.Play(newState);
+        currentState = newState;
     }
 }

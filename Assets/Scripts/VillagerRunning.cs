@@ -25,8 +25,6 @@ public class VillagerRunning : MonoBehaviour
     private string currentState;
     const string idle = "VillagerIdle";
     const string run = "VillagerRun";
-    const string hurt = "VillagerHurt";
-    const string death = "VillagerDeath";
 
 
 
@@ -86,30 +84,30 @@ public class VillagerRunning : MonoBehaviour
 
         if (isGrounded == true)
         {
-            if (playerDetected == true)
+            if (playerDetected == true || b == 1)
             {
                 Debug.Log("Detected");
                 RunAway();
                 ControlOn();
-                ChangeAnimationState(run);
+                if(!GetComponent<VillagerHealthManager>().isHurting)
+                    ChangeAnimationState(run);
             }
             else if (playerDetected == false && b == 1)
             {
                 Debug.Log("Not Detected but run");
                 RunAway();
-                ChangeAnimationState(run);
+                if(!GetComponent<VillagerHealthManager>().isHurting)
+                    ChangeAnimationState(run);
             }
 
             else if (playerDetected == false)
             {
                 Debug.Log("Not Detected");
-                ChangeAnimationState(idle);
+                if(!GetComponent<VillagerHealthManager>().isHurting)
+                    ChangeAnimationState(idle);
             }
         }
-        else if(isGrounded == false)
-        {
 
-        }
     }
     void ChangeAnimationState(string newState)
     {
