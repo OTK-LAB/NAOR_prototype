@@ -8,6 +8,9 @@ public class LevelChange : MonoBehaviour
     public float timer;
     public float stayInZone = 2f;
 
+    public GameObject zoneCam;
+    public GameObject nextZoneCam;
+
     public float corX, corY;
 
     bool playerinside;
@@ -29,19 +32,6 @@ public class LevelChange : MonoBehaviour
             player.transform.position = new Vector2(corX, corY);
         }
 
-        if (timer <= stayInZone / 2 && playerinside)
-        {
-            player.disabled = true;
-            if (player.facingRight)
-            {
-                player.xAxis = 1;
-            }
-            else
-            {
-                player.xAxis = -1;
-            }
-
-        }
     }
 
 
@@ -50,6 +40,16 @@ public class LevelChange : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
             playerinside = true;
+
+        player.disabled = true;
+        if (player.facingRight)
+        {
+            player.xAxis = 1;
+        }
+        else
+        {
+            player.xAxis = -1;
+        }
     }
 
     public void OnTriggerExit2D(Collider2D collision)
@@ -57,9 +57,26 @@ public class LevelChange : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             timer = stayInZone;
-            player.disabled = false;
             playerinside = false;
+            zoneCam.SetActive(false);
+            nextZoneCam.SetActive(true);
+            StartCoroutine(ExitTeleport());
         }
 
+    }
+
+    IEnumerator ExitTeleport()
+    {
+        player.disabled = true;
+        if (player.facingRight)
+        {
+            player.xAxis = 1;
+        }
+        else
+        {
+            player.xAxis = -1;
+        }
+        yield return new WaitForSeconds(1f);
+        player.disabled = false;
     }
 }
