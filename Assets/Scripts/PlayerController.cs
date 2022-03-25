@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     //Movement
     [Header("Movement")]
     public float runSpeed;
-    private float xAxis;
+    [HideInInspector] public float xAxis;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
     [HideInInspector] public bool isGuarding = false;
+    [HideInInspector] public bool disabled = false;
 
 
     void Start()
@@ -96,29 +97,34 @@ public class PlayerController : MonoBehaviour
     }
     void CheckInputs()
     {
-        //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal"); 
-
-        //Check Jump, Attack, Roll, Pray Input  
-        if(isGrounded && !isPraying)
+        if (!disabled)
         {
-            if(!isGuarding)
+            //Get Horizontal Input
+            xAxis = Input.GetAxisRaw("Horizontal");
+
+            //Check Jump, Attack, Roll, Pray Input  
+            if (isGrounded && !isPraying)
             {
-                if(Input.GetButtonDown("Jump"))
-                    jumpPressed = true;
-                if (Input.GetMouseButtonDown(0))
-                    attackPressed = true;
-                if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
-                    isPraying = true;
+                if (!isGuarding)
+                {
+                    if (Input.GetButtonDown("Jump"))
+                        jumpPressed = true;
+                    if (Input.GetMouseButtonDown(0))
+                        attackPressed = true;
+                    if (Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
+                        isPraying = true;
+                }
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                    performRoll();
+                if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
+                    performGuard();
+                if (Input.GetMouseButtonUp(1))
+                    isGuarding = false;
+
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-                performRoll();
-            if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
-                performGuard();
-            if (Input.GetMouseButtonUp(1))
-                isGuarding = false;
-            
         }
+
+        
     }
     private void CheckAttack()
     {
