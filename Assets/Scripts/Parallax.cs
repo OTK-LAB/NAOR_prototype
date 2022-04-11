@@ -4,28 +4,24 @@ using UnityEngine;
 
 public class Parallax : MonoBehaviour
 {
-    [SerializeField] float multiplier = 0.0f;
-    [SerializeField] bool horizontalOnly = true;
-
-    private Transform cameraTransform;
-
-    private Vector3 startCameraPos;
-    private Vector3 startPos;
-
-    void Start()
+   private float length, startPos;
+    public GameObject cam;
+    public float parallaxEffect;
+    
+    void Start() 
     {
-        cameraTransform = Camera.main.transform;
-        startCameraPos = cameraTransform.position;
-        startPos = transform.position;
+        startPos = transform.position.x;
+        length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
-    private void Update()
-    {
-        var position = startPos;
-        if (horizontalOnly)
-            position.x += multiplier * (cameraTransform.position.x - startCameraPos.x);
-        else
-            position += multiplier * (cameraTransform.position - startCameraPos);
 
-        transform.position = position;
+    void Update()
+    {
+        float temp = (cam.transform.position.x * (1-parallaxEffect));
+        float dist = (cam.transform.position.x * parallaxEffect);
+        transform.position = new Vector3(startPos + dist, transform.position.y, transform.position.z);
+        if(temp > startPos + length)
+            startPos += length;
+        else if (temp < startPos - length)
+            startPos -= length;    
     }
 }
