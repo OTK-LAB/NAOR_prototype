@@ -12,17 +12,13 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
+    [HideInInspector] public bool canMove = true;
 
     [Header("Roll")]
-    public float dodgeSpeed;
-    public float CooldownDuration;
-    private float Cooldown;
-    private bool IsAvailable;
+    public float rollSpeed;
     private bool isRolling = false;
-    public BoxCollider2D regularColl;
     public CircleCollider2D rollColl;
     public float iFrame = 0.3f;
-
 
     //Jumping
     [Header("Jumping")]
@@ -53,7 +49,6 @@ public class PlayerController : MonoBehaviour
     public int attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
-    private bool attackPressed = false;
     private PlayerManager playerManager;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
@@ -68,168 +63,94 @@ public class PlayerController : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         dead = false;
     }
-
     void Update()
     {
-        CheckState();
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         CheckInputs();
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
     }
-
-
-    void FixedUpdate() 
+    void FixedUpdate()
     {
-        RollCooldown();
-        if(!isRolling && !isAttacking && !isPraying)
-        {
-            Move();
-            Jump();
-        }
-    }
-
-    void CheckState()
-    {
-        //Check if grounded
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Move();
+        Jump();
     }
     void CheckInputs()
     {
         //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal"); 
+        xAxis = Input.GetAxisRaw("Horizontal");
 
-        //Check Jump, Attack, Roll, Pray Input  
-        if(isGrounded && !isPraying)
-        {
-            if(!isGuarding)
-            {
-                if(Input.GetButtonDown("Jump"))
-                    jumpPressed = true;
-                if (Input.GetMouseButtonDown(0))
-                    attackPressed = true;
-                if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
-                    isPraying = true;
-            }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-                performRoll();
-            if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
+        //Check Jump, Attack, Roll, Pray, Parry Input 
+        if (Input.GetButtonDown("Jump"))
+            if (isGrounded && !isRolling && !isPraying && !isAttacking)
+                jumpPressed = true;
+        if (Input.GetKeyDown(KeyCode.C)) // Pray
+            if (inCheckpointRange && isGrounded && !isPraying && !isGuarding)
+                isPraying = true;
+        if (Input.GetKeyDown(KeyCode.LeftShift)) // Roll
+            if (!isRolling && isGrounded && !isPraying)
+                StartCoroutine(Roll());            
+        if (Input.GetMouseButton(1)) //Guard
+            if (isGrounded && !playerManager.hitAnimRunning)
                 performGuard();
-            if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1))
+            if (isGuarding)
                 isGuarding = false;
-            
-        }
     }
-    private void CheckAttack()
-    {
-        attackTime += Time.deltaTime;
-        if (attackTime > 0.6f)
-            isCombo = false;
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (isCombo == true && attackTime > 0.3f)
-                Attack();
-            else if (isCombo == false)
-                Attack();
-        }
-    }
+    
+  
     void Move()
     {
-        if (!isGuarding)
-        {
-            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
-        }
-        else
-        {
-            rb.velocity = new Vector2(xAxis * runSpeed/2, rb.velocity.y);
-        }
-
-
-    }
-    void Jump()
-    {
-        if (jumpPressed)
-        {
-            jumpPressed = false;
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
-    }
-
-    void performGuard()
-    {
-        if(!isRolling)
-            ChangeAnimationState(parry);
-        //guard collision
-        isGuarding = true;
-    }
-
-    private void performRoll()
-    {
-
-        // if not available to use (still cooling down) just exit    
-        if (!IsAvailable)     //ground check here tooo
-        {
+        if (!canMove)
             return;
-        }
 
-        if (!isRolling)
+        if (!isRolling && !isAttacking && !isPraying)
         {
-            // made it here then ability is available to use...
-            isRolling = true;
-            // start the cooldown timer
-            StartCooldown();
-
-
-
-            if (facingRight)
+            if (!isGuarding)
             {
-                rb.velocity = new Vector2(dodgeSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
             }
             else
             {
-                rb.velocity = new Vector2(-dodgeSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
             }
-
-            regularColl.enabled = false;
-
-            StartCoroutine(RollFrameTimer());     //iframe
-            StartCoroutine(stopDodge());
         }
     }
-    public void StartCooldown()        //roll cooldown
+    void Jump()
     {
-        Cooldown += CooldownDuration / 2;
-    }
-    void RollCooldown()
-    {
-        if (Cooldown <= CooldownDuration / 2)
+        if (jumpPressed) //isGuarding eklenebilir
         {
-            IsAvailable = true;
-        }
-        else if (Cooldown > CooldownDuration / 2)
-        {
-            IsAvailable = false;
-        }
-
-
-        if (Cooldown > 0)
-        {
-            Cooldown -= 1 * Time.deltaTime;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumpPressed = false;
+            isGuarding = false;
         }
     }
-    IEnumerator RollFrameTimer()        //iframe cooldown
+    IEnumerator Roll()
     {
-        yield return new WaitForSeconds(iFrame);
+        isRolling = true;
+        rollColl.enabled = true;
+        GetComponent<BoxCollider2D>().enabled = false;
+        
+        if (facingRight)
+            rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
+        else
+            rb.velocity = new Vector2(-rollSpeed, rb.velocity.y);
 
-        regularColl.enabled = true;                //after I frame 
-    }
-    IEnumerator stopDodge()
-    {
-        yield return new WaitForSeconds(0.4f);            //dodge duration                               
-        regularColl.enabled = true;
-
+        yield return new WaitForSeconds(.5f);
         isRolling = false;
+        rollColl.enabled = false;
+        GetComponent<BoxCollider2D>().enabled = true;
+
+
     }
+    void performGuard()
+    {
+        if(!isRolling && isGrounded && !isPraying && !isAttacking)
+            ChangeAnimationState(parry);
+            isGuarding = true;
+    }
+    
     void FlipPlayer()
     {
         if(!isRolling && !isPraying)
@@ -300,35 +221,42 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1.7f);
         isPraying = false;
     }
+    private void CheckAttack()
+    {
+        attackTime += Time.deltaTime;
+        if (attackTime > 0.6f)
+            isCombo = false;
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (!isPraying && !isGuarding && isGrounded && !isRolling)
+                if (isCombo && attackTime > 0.3f)
+                    Attack();
+                else if (!isCombo)
+                    Attack();
+        }
+    }
     void Attack()
     {
-        if (attackPressed && !isPraying)
+        isAttacking = true;
+        attackDamage += 2;
+        attackCount++;
+        isCombo = true;
+
+        if (attackCount > 3 || attackTime > 0.6f)
         {
-            isAttacking = true;
-            attackDamage += 2;
-            attackCount++;
-            isCombo = true;
-
-            if (attackCount > 3 || attackTime > 0.6f)
-            {
-                attackCount = 1;
-                attackDamage = 10;
-            }
-
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-            foreach (Collider2D enemy in hitEnemies)
-            {
-                if(enemy.CompareTag("Enemy"))
-                    enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
-                if(enemy.CompareTag("Villager"))
-                    enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
-            }
-            
-            
-            attackPressed = false;
-            attackTime = 0f;
+            attackCount = 1;
+            attackDamage = 10;
         }
 
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if(enemy.CompareTag("Enemy"))
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Villager"))
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
+        }
+        attackTime = 0f;
     }
     private void OnDrawGizmosSelected() 
     {
