@@ -11,6 +11,8 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - health
+  - GroundX
   layers:
   - Default
   - TransparentFX

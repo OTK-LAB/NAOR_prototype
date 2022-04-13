@@ -58,6 +58,7 @@ public class CheckPointController : MonoBehaviour
             {
                 playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
+                //RestartLevel();
             }
         }
         if(!checkpointReached)
@@ -87,4 +88,12 @@ public class CheckPointController : MonoBehaviour
         }
     }
 
+   /* public void RestartLevel()
+    {
+        Debug.Log("restart function called");
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        
+    }
+   */
 }

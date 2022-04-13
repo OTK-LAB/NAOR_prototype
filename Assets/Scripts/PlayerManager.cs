@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     public float flickerSpeed;
     private bool flickering;
 
-    private int lives = 2;
+    public int lives = 2;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
     //[HideInInspector] 
@@ -51,7 +51,23 @@ public class PlayerManager : MonoBehaviour
         if(flickering)
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, Mathf.PingPong(Time.time * flickerSpeed, 1));
         else
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);    
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);
+
+        if (lives == 2)
+        {
+            if (CurrentHealth >= 100)
+            {
+                CurrentHealth = 100;
+            }
+        }
+
+        if (lives == 1)
+        {
+            if (CurrentHealth >= 40)
+            {
+                CurrentHealth = 40;
+            }
+        }
     }
 
     public virtual void DamagePlayer(float damage)
@@ -113,6 +129,7 @@ public class PlayerManager : MonoBehaviour
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
                 CurrentHealth = (MaxHealth * 40) / 100;
+                
 
             }
             if (lives == 0)
@@ -160,4 +177,14 @@ public class PlayerManager : MonoBehaviour
         player.enabled = true;
     }
 
+    //deneme
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+
+        if (other.tag == "health")
+        {
+            CurrentHealth = CurrentHealth + 10;
+            
+        }
+    }
 }

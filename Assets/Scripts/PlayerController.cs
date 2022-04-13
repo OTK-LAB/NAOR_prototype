@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundLayer;
 
+
     //Animations
     private Animator animator;
     private string currentState;
@@ -79,10 +80,10 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void FixedUpdate() 
+    void FixedUpdate()
     {
         RollCooldown();
-        if(!isRolling && !isAttacking && !isPraying)
+        if (!isRolling && !isAttacking && !isPraying)
         {
             Move();
             Jump();
@@ -97,18 +98,18 @@ public class PlayerController : MonoBehaviour
     void CheckInputs()
     {
         //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal"); 
+        xAxis = Input.GetAxisRaw("Horizontal");
 
         //Check Jump, Attack, Roll, Pray Input  
-        if(isGrounded && !isPraying)
+        if (isGrounded && !isPraying)
         {
-            if(!isGuarding)
+            if (!isGuarding)
             {
-                if(Input.GetButtonDown("Jump"))
+                if (Input.GetButtonDown("Jump"))
                     jumpPressed = true;
                 if (Input.GetMouseButtonDown(0))
                     attackPressed = true;
-                if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
+                if (Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
                     isPraying = true;
             }
             if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -117,7 +118,7 @@ public class PlayerController : MonoBehaviour
                 performGuard();
             if (Input.GetMouseButtonUp(1))
                 isGuarding = false;
-            
+
         }
     }
     private void CheckAttack()
@@ -141,7 +142,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            rb.velocity = new Vector2(xAxis * runSpeed/2, rb.velocity.y);
+            rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
         }
 
 
@@ -157,7 +158,7 @@ public class PlayerController : MonoBehaviour
 
     void performGuard()
     {
-        if(!isRolling)
+        if (!isRolling)
             ChangeAnimationState(parry);
         //guard collision
         isGuarding = true;
@@ -232,14 +233,14 @@ public class PlayerController : MonoBehaviour
     }
     void FlipPlayer()
     {
-        if(!isRolling && !isPraying)
+        if (!isRolling && !isPraying)
         {
-            if(xAxis < 0 && facingRight)
+            if (xAxis < 0 && facingRight)
             {
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 facingRight = !facingRight;
             }
-            else if(xAxis > 0 && !facingRight)
+            else if (xAxis > 0 && !facingRight)
             {
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 facingRight = !facingRight;
@@ -249,26 +250,26 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
+        if (isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
         {
-            if(!isRolling)
+            if (!isRolling)
             {
-                if(!isGuarding)
+                if (!isGuarding)
                 {
-                    if(!isAttacking && !isPraying)
-                    { 
-                        if(xAxis == 0)
+                    if (!isAttacking && !isPraying)
+                    {
+                        if (xAxis == 0)
                             ChangeAnimationState(idle);
                         else
-                            ChangeAnimationState(run); 
+                            ChangeAnimationState(run);
                     }
-                    if(isAttacking)
-                    {                 
+                    if (isAttacking)
+                    {
                         ChangeAnimationState("PlayerAttack" + attackCount);
-                        if(attackTime > 0.6f)    
+                        if (attackTime > 0.6f)
                             isAttacking = false;
                     }
-                    if(isPraying)
+                    if (isPraying)
                     {
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
@@ -280,18 +281,18 @@ public class PlayerController : MonoBehaviour
         }
 
         //Air Animations --> Jump and Fall
-        if(!isGrounded)
+        if (!isGrounded)
         {
-            if(rb.velocity.y > 0)
+            if (rb.velocity.y > 0)
                 ChangeAnimationState(jump);
-            if(rb.velocity.y < 0)
-                ChangeAnimationState(fall);    
+            if (rb.velocity.y < 0)
+                ChangeAnimationState(fall);
         }
-   
-     }
+
+    }
     public void ChangeAnimationState(string newState)
     {
-        if(currentState == newState) return;
+        if (currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
     }
@@ -318,19 +319,19 @@ public class PlayerController : MonoBehaviour
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
             foreach (Collider2D enemy in hitEnemies)
             {
-                if(enemy.CompareTag("Enemy"))
+                if (enemy.CompareTag("Enemy"))
                     enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
-                if(enemy.CompareTag("Villager"))
-                    enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
+                if (enemy.CompareTag("Villager"))
+                    enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
             }
-            
-            
+
+
             attackPressed = false;
             attackTime = 0f;
         }
 
     }
-    private void OnDrawGizmosSelected() 
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
@@ -342,5 +343,26 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }    
+    }
+
+    private void OnTriggerStay2D(Collider2D trigger)
+    {
+        if (trigger.gameObject.CompareTag("GroundX"))
+        {
+            Debug.Log("1.ÝF");
+            if (Input.GetKeyDown(KeyCode.S)) {
+                Debug.Log("AAAAAAAAA");
+            trigger.gameObject.transform.parent.gameObject.GetComponent<Collider2D>().enabled = false; 
+            }
+
+        }
+    }
+    
+    
+    
+
+    
+
+
+
 }
