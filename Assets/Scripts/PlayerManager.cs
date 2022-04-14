@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     public float flickerSpeed;
     private bool flickering;
 
+    public static PlayerManager instance;
+
     private int lives = 2;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
@@ -55,6 +57,24 @@ public class PlayerManager : MonoBehaviour
         if (status == 1 || status == 2) // continue moving after a parry
             player.canMove = true;
     }
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+   public void HealthPotion(float heal)
+    {
+        if(CurrentHealth < 100)
+        {
+            CurrentHealth += heal;
+        }
+        if (CurrentHealth > 100)
+        {
+            CurrentHealth = 100;
+        }
+            
+    } 
 
     public virtual void DamagePlayer(float damage)
     {
