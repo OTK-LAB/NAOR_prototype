@@ -8,6 +8,9 @@ TagManager:
   - turn
   - fire
   - Ground
+  - Dagger
+  - CheckPoint
+  - Villager
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
+  - Player
   - 
   - 
   - 

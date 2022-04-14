@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     //[HideInInspector] 
     public bool dead = false;
     [HideInInspector] public bool isReviving;
-    [HideInInspector] public int status;
+     public int status;
 
 
     //Animations
@@ -53,7 +53,9 @@ public class PlayerManager : MonoBehaviour
         if(flickering)
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, Mathf.PingPong(Time.time * flickerSpeed, 1));
         else
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);    
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);
+        if (status == 1 || status == 2) // continue moving after a parry
+            player.canMove = true;
     }
 
     private void Awake()
@@ -98,6 +100,7 @@ public class PlayerManager : MonoBehaviour
                         break;
                     //parry status
                     case 3:
+                        player.canMove = false;             // stop when parrying
                         player.ChangeAnimationState(counter);
                         //invoke?
                         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
