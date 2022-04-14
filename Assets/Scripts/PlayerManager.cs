@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour
         {
             CurrentHealth += heal;
         }
-       if (CurrentHealth > 100)
+        if (CurrentHealth > 100)
         {
             CurrentHealth = 100;
         }

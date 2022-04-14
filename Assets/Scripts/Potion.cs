@@ -26,14 +26,14 @@ public class Potion : MonoBehaviour
     {
 
         //checkpoint fonksiyonu
-        //farklý scriptte çaðýrmak için
+        //farklÄ± scriptte Ã§aÄŸÄ±rmak iÃ§in
         //Potion.instance.CheckPoint();
         if (Input.GetKeyDown(KeyCode.K))
         {
             CheckPoint();            
         }
         //iksir ekleme fonksiyonu
-        //farklý scriptte çaðýrmak için
+        //farklÄ± scriptte Ã§aÄŸÄ±rmak iÃ§in
         //Potion.instance.AddCure();
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -85,7 +85,7 @@ public class Potion : MonoBehaviour
     {
         maxCure = 4;
         potions[3].gameObject.SetActive(true);
-        if (cure != 3)
+        if (cure != 4)
         {
             cure = maxCure;
             potions[0].gameObject.SetActive(true);

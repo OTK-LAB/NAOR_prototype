@@ -6,7 +6,7 @@ public class StaminaBar : MonoBehaviour
 {
     public Slider staminaBar;
 
-    private int maxStamina = 100;
+    private float maxStamina = 100;
     private float currentStamina;
 
     private WaitForSeconds regenTick = new WaitForSeconds(0.1f);
@@ -21,15 +21,12 @@ public class StaminaBar : MonoBehaviour
     {
         instance = this;
     }
-    // Start is called before the first frame update
     void Start()
     {
         currentStamina = maxStamina;
         staminaBar.maxValue = maxStamina;
         staminaBar.value = maxStamina;
     }
-
-
     public void useStamina(int amount)
     {
         if (currentStamina - amount >= 0)
@@ -49,7 +46,6 @@ public class StaminaBar : MonoBehaviour
             Debug.Log("Not enough stamina");
         }
     }
-    // Update is called once per frame
     void Update()
     {
         if (currentStamina != staminaBar.value)
@@ -57,7 +53,7 @@ public class StaminaBar : MonoBehaviour
             staminaBar.value = Mathf.Lerp(staminaBar.value, currentStamina, smoothing * Time.deltaTime);
         }
         //stamina kullanma fonksiyonu
-        //baþka scriptte çaðýrmak için 
+        //baÅŸka scriptte Ã§aÄŸÄ±rmak iÃ§in 
         //StaminaBar.instance.useStamina(12);
         if (Input.GetKeyDown(KeyCode.F))
         {
