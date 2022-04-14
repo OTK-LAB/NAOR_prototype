@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &335873504 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2303616366078244552, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
+  m_PrefabInstance: {fileID: 2303616366500571380}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &355262643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4812996013848051062, guid: 131ee2c6090411a44a01309c515eb5a4, type: 3}
@@ -1098,8 +1103,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: rollSpeed
-      value: 10
+      propertyPath: daggerobj
+      value: 
+      objectReference: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
+    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 335873504}
+    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
+      propertyPath: cooldownTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
+      propertyPath: daggerAmount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814406, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: m_Name

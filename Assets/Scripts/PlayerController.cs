@@ -54,27 +54,53 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
     [HideInInspector] public bool isGuarding = false;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject daggerobj;
+    [SerializeField] private int daggerAmount;
+    [SerializeField] private float cooldownTime;
+    private CooldownController daggerCooldownController;
+    private ItemStack daggerStack;
 
+    private void Awake()
+    {
+        daggerStack = GetComponent<ItemStack>();
+        daggerStack.SetItem(daggerobj, daggerAmount);
+
+        daggerCooldownController = GetComponent<CooldownController>();
+        daggerCooldownController.SetCooldown(cooldownTime);
+    }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
-        dead = false;
     }
     void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        CheckState();
         CheckInputs();
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
+
+        if (daggerCooldownController.GetQueue().Count > 0)
+        {
+            if (Time.time >= daggerCooldownController.GetDequeueTime())
+            {
+                //DequeueLastItem() fonksiyonuyla Queue'dan çýkardýðýn dagger'ý Stack'e koy
+                daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
+            }
+        }
     }
     void FixedUpdate()
     {
         Move();
         Jump();
+    }
+    void CheckState()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
     void CheckInputs()
     {
@@ -97,6 +123,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
                 isGuarding = false;
+        if (Input.GetMouseButtonDown(2))
+            if (!isBusy())
+                ThrowDagger();
+        
     }
     
   
@@ -257,6 +287,41 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
         }
         attackTime = 0f;
+    }
+    public void ThrowDagger()
+    {
+        //Stack'ten gir dagger çýkar ve dagger objesine ata
+        GameObject dagger = daggerStack.PopFromStack();
+
+        if (dagger != null)
+        {
+            if (GetComponent<PlayerController>().facingRight)
+            {
+                dagger.transform.position = firePoint.position;
+                dagger.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                dagger.GetComponent<Dagger>().Initialize(Vector2.right);
+                dagger.SetActive(true);
+                StartCoroutine(startDaggerLifeTime());
+                //Stack'ten çýkarmýþ olduðun dagger objesini Queue'ya yerleþtir
+                daggerCooldownController.EnqueueItem(dagger);
+            }
+            else
+            {
+                dagger.transform.position = firePoint.position;
+                dagger.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                dagger.GetComponent<Dagger>().Initialize(Vector2.left);
+                dagger.SetActive(true);
+                StartCoroutine(startDaggerLifeTime());
+                //Stack'ten çýkarmýþ olduðun dagger objesini Queue'ya yerleþtir
+                daggerCooldownController.EnqueueItem(dagger);
+            }
+            //Daggerlarýn 3 saniye sonra sahneden çýkmasýna yarayan coroutine
+            IEnumerator startDaggerLifeTime()
+            {
+                yield return new WaitForSeconds(10f);
+                dagger.SetActive(false);
+            }
+        }
     }
     private void OnDrawGizmosSelected() 
     {
