@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 2303616365481814403}
   - component: {fileID: 2303616365481814402}
   - component: {fileID: 2303616365481814413}
-  - component: {fileID: 2303616365481814408}
   - component: {fileID: 2303616365481814415}
   - component: {fileID: 2303616365481814414}
   m_Layer: 8
@@ -174,9 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 4
   facingRight: 1
-  dodgeSpeed: 10
-  CooldownDuration: 6
-  regularColl: {fileID: 2303616365481814403}
+  canMove: 1
+  rollSpeed: 10
   rollColl: {fileID: 2303616366377848007}
   iFrame: 0.3
   jumpForce: 10
@@ -218,22 +216,6 @@ MonoBehaviour:
   isReviving: 0
   status: 0
   hitAnimRunning: 0
---- !u!114 &2303616365481814408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2303616365481814406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68671aad1ef42924a935827f9ca6405a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 2303616366078244552}
-  daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
-  daggerAmount: 3
-  cooldownTime: 5
 --- !u!114 &2303616365481814415
 MonoBehaviour:
   m_ObjectHideFlags: 0
