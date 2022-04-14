@@ -7,7 +7,7 @@ public class StaminaBar : MonoBehaviour
     public Slider staminaBar;
 
     private float maxStamina = 100;
-    private float currentStamina;
+    public float currentStamina;
 
     private WaitForSeconds regenTick = new WaitForSeconds(0.1f);
     private Coroutine regen;
@@ -27,6 +27,21 @@ public class StaminaBar : MonoBehaviour
         staminaBar.maxValue = maxStamina;
         staminaBar.value = maxStamina;
     }
+    void Update()
+    {
+        if (currentStamina != staminaBar.value)
+        {
+            staminaBar.value = Mathf.Lerp(staminaBar.value, currentStamina, smoothing * Time.deltaTime);
+        }
+        //stamina kullanma fonksiyonu
+        //başka scriptte çağırmak için 
+        //StaminaBar.instance.useStamina(12);
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            useStamina(15);
+        }
+
+    }
     public void useStamina(int amount)
     {
         if (currentStamina - amount >= 0)
@@ -45,21 +60,6 @@ public class StaminaBar : MonoBehaviour
         {
             Debug.Log("Not enough stamina");
         }
-    }
-    void Update()
-    {
-        if (currentStamina != staminaBar.value)
-        {
-            staminaBar.value = Mathf.Lerp(staminaBar.value, currentStamina, smoothing * Time.deltaTime);
-        }
-        //stamina kullanma fonksiyonu
-        //başka scriptte çağırmak için 
-        //StaminaBar.instance.useStamina(12);
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            useStamina(15);
-        }
-
     }
 
 

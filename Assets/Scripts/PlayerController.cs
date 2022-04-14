@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayers;
     private bool isAttacking;
     private PlayerManager playerManager;
+    private float stamina;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
@@ -83,12 +84,12 @@ public class PlayerController : MonoBehaviour
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
-
+        stamina = StaminaBar.instance.currentStamina;
         if (daggerCooldownController.GetQueue().Count > 0)
         {
             if (Time.time >= daggerCooldownController.GetDequeueTime())
             {
-                //DequeueLastItem() fonksiyonuyla Queue'dan çýkardýðýn dagger'ý Stack'e koy
+                //DequeueLastItem() fonksiyonuyla Queue'dan ï¿½ï¿½kardï¿½ï¿½ï¿½n dagger'ï¿½ Stack'e koy
                 daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
             }
         }
@@ -115,8 +116,8 @@ public class PlayerController : MonoBehaviour
             if (inCheckpointRange && isGrounded && !isPraying && !isGuarding)
                 isPraying = true;
         if (Input.GetKeyDown(KeyCode.LeftShift)) // Roll
-            if (!isRolling && isGrounded && !isPraying)
-                StartCoroutine(Roll());            
+            if (!isRolling && isGrounded && !isPraying && stamina >= 30)
+                StartCoroutine(Roll());           
         if (Input.GetMouseButton(1)) //Guard
             if (isGrounded && !playerManager.hitAnimRunning)
                 performGuard();
@@ -161,7 +162,7 @@ public class PlayerController : MonoBehaviour
         isRolling = true;
         rollColl.enabled = true;
         GetComponent<BoxCollider2D>().enabled = false;
-        
+        StaminaBar.instance.useStamina(30);
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
@@ -171,8 +172,6 @@ public class PlayerController : MonoBehaviour
         isRolling = false;
         rollColl.enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
-
-
     }
     void performGuard()
     {
@@ -258,7 +257,7 @@ public class PlayerController : MonoBehaviour
             isCombo = false;
         if (Input.GetButtonDown("Fire1"))
         {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling)
+            if (!isPraying && !isGuarding && isGrounded && !isRolling && stamina >= 15)
                 if (isCombo && attackTime > 0.3f)
                     Attack();
                 else if (!isCombo)
@@ -267,6 +266,7 @@ public class PlayerController : MonoBehaviour
     }
     void Attack()
     {
+        StaminaBar.instance.useStamina(15);
         isAttacking = true;
         attackDamage += 2;
         attackCount++;
@@ -290,7 +290,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ThrowDagger()
     {
-        //Stack'ten gir dagger çýkar ve dagger objesine ata
+        //Stack'ten gir dagger ï¿½ï¿½kar ve dagger objesine ata
         GameObject dagger = daggerStack.PopFromStack();
 
         if (dagger != null)
@@ -302,7 +302,7 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.right);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten çýkarmýþ olduðun dagger objesini Queue'ya yerleþtir
+                //Stack'ten ï¿½ï¿½karmï¿½ï¿½ olduï¿½un dagger objesini Queue'ya yerleï¿½tir
                 daggerCooldownController.EnqueueItem(dagger);
             }
             else
@@ -312,10 +312,10 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.left);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten çýkarmýþ olduðun dagger objesini Queue'ya yerleþtir
+                //Stack'ten ï¿½ï¿½karmï¿½ï¿½ olduï¿½un dagger objesini Queue'ya yerleï¿½tir
                 daggerCooldownController.EnqueueItem(dagger);
             }
-            //Daggerlarýn 3 saniye sonra sahneden çýkmasýna yarayan coroutine
+            //Daggerlarï¿½n 3 saniye sonra sahneden ï¿½ï¿½kmasï¿½na yarayan coroutine
             IEnumerator startDaggerLifeTime()
             {
                 yield return new WaitForSeconds(10f);

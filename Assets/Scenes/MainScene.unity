@@ -929,8 +929,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   staminaBar: {fileID: 567952221}
+  currentStamina: 0
   smoothing: 5
-  staminaIncreasingSpeed: 1
+  staminaIncreasingSpeed: 5
 --- !u!114 &904580662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1587,9 +1588,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 4
   facingRight: 1
-  dodgeSpeed: 10
-  CooldownDuration: 6
-  regularColl: {fileID: 1130037623}
+  canMove: 1
+  rollSpeed: 10
   rollColl: {fileID: 145794099}
   iFrame: 0.3
   jumpForce: 10
@@ -1609,6 +1609,10 @@ MonoBehaviour:
   dead: 0
   isCombo: 0
   isGuarding: 0
+  firePoint: {fileID: 1725193788}
+  daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
+  daggerAmount: 3
+  cooldownTime: 3
 --- !u!61 &1130037623
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1714,10 +1718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68671aad1ef42924a935827f9ca6405a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 1725193788}
-  daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
-  daggerAmount: 3
-  cooldownTime: 5
 --- !u!1001 &1318580751
 PrefabInstance:
   m_ObjectHideFlags: 0
