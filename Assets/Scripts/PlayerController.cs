@@ -29,6 +29,21 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundLayer;
 
+    [Header("Wall Slide")]
+    public Transform wallGrabPoint;
+    public float wallSlideSpeed = 0.2f;
+    private bool isWallSliding = false;
+    private bool canGrab;
+    public float wallDistance = 0.05f;
+
+    [Header("Wall Jump")]
+    public float wallJumpTime = 0.1f;
+    public float xWallForce = 5f;
+    public float wallJumpLerp = 10f;
+    private float jumpTime;
+    private bool wallJumpPressed = false;
+    private bool wallJumped = false;
+
     //Animations
     private Animator animator;
     private string currentState;
@@ -97,10 +112,14 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Jump();
+        WallSlide();
     }
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        canGrab = Physics2D.OverlapCircle(wallGrabPoint.position, wallDistance, groundLayer);
+        if (isGrounded) // buraya tekrar tutunma durumunda false etme durumlarýný ekle
+            wallJumped = false;
     }
     void CheckInputs()
     {
@@ -109,8 +128,12 @@ public class PlayerController : MonoBehaviour
 
         //Check Jump, Attack, Roll, Pray, Parry Input 
         if (Input.GetButtonDown("Jump"))
-            if (isGrounded && !isRolling && !isPraying && !isAttacking)
+        {
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isWallSliding)
                 jumpPressed = true;
+            if (isWallSliding)
+                wallJumpPressed = true;
+        }
         if (Input.GetKeyDown(KeyCode.C)) // Pray
             if (inCheckpointRange && isGrounded && !isPraying && !isGuarding)
                 isPraying = true;
@@ -126,7 +149,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(2))
             if (!isBusy())
                 ThrowDagger();
-        
     }
     
   
@@ -134,28 +156,58 @@ public class PlayerController : MonoBehaviour
     {
         if (!canMove)
             return;
-
-        if (!isRolling && !isAttacking && !isPraying)
+        if (!wallJumped)
         {
-            if (!isGuarding)
+            if (!isRolling && !isAttacking && !isPraying)
             {
-                rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                if (!isGuarding)
+                {
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
+                }
             }
-            else
-            {
-                rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
-            }
+        }
+        else
+        {
+            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(xAxis * runSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
         }
     }
     void Jump()
     {
-        if (jumpPressed) //isGuarding eklenebilir
+        if (jumpPressed)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             jumpPressed = false;
             isGuarding = false;
         }
+        if (wallJumpPressed)
+        {
+            int wallDirection = xAxis > 0 ? 1 : -1;
+            rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
+            wallJumpPressed = false;
+            wallJumped = true;
+        }
     }
+    void WallSlide()
+    {
+        if (canGrab && !isGrounded && xAxis != 0)
+        {
+            isWallSliding = true;
+            jumpTime = Time.time + wallJumpTime;
+        }
+        else if (jumpTime < Time.time) //önce ters yön sonra space olduðunda, süzülme yaþanýyor
+        {
+            isWallSliding = false;
+        }       
+        if (isWallSliding)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
+        }
+    }
+    
     IEnumerator Roll()
     {
         isRolling = true;
