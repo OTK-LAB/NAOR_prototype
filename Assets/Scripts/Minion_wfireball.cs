@@ -18,7 +18,7 @@ public class Minion_wfireball : MonoBehaviour
     bool Moveright = true;
 
     //Hit
-    public float maxHealth = 100;
+    public float maxHealth = 20;
     public float currentHealth;
     bool hurt = false;
     bool alive = true;
@@ -31,7 +31,7 @@ public class Minion_wfireball : MonoBehaviour
     bool playerOnline = false;
     Transform PlayerPosition;
     public float minimumFiringDistance;
-    public float damage = 12.5f;
+    public float damage = 15;
     private GameObject player;
     bool playerAlive = true;
 

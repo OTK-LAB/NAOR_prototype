@@ -713,6 +713,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
+      propertyPath: damage
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
       propertyPath: Fireball
       value: 
       objectReference: {fileID: 8481426808659785532, guid: 228998b2ceec634448737a4696c5b796, type: 3}
@@ -721,8 +725,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
+      propertyPath: maxHealth
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
       propertyPath: TimeBtwEachShot
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 995886886061494336, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
       propertyPath: minimumFiringDistance
@@ -1476,7 +1484,6 @@ GameObject:
   - component: {fileID: 1130037623}
   - component: {fileID: 1130037622}
   - component: {fileID: 1130037625}
-  - component: {fileID: 1130037628}
   - component: {fileID: 1130037627}
   - component: {fileID: 1130037626}
   m_Layer: 0
@@ -1587,12 +1594,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 4
+  walkSpeed: 1.8
   facingRight: 1
   canMove: 1
   rollSpeed: 10
   rollColl: {fileID: 145794099}
   iFrame: 0.3
-  jumpForce: 10
+  jumpForce: 7
+  jumpTimer: 0.25
   isGrounded: 0
   groundCheck: {fileID: 696408086}
   groundCheckRadius: 0.08
@@ -1601,7 +1610,7 @@ MonoBehaviour:
     m_Bits: 64
   attackPoint: {fileID: 964435920}
   attackRange: 0.91
-  attackDamage: 10
+  attackDamage: 20
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
@@ -1704,18 +1713,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e02b6eceb9045b4294b41fdb60e91bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1130037628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1130037618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68671aad1ef42924a935827f9ca6405a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1318580751

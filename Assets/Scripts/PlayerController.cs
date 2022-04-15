@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PlayerController : MonoBehaviour
 {
     //Movement
     [Header("Movement")]
     public float runSpeed;
+    public float walkSpeed;
     private float xAxis;
+    private bool walkToggle;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
@@ -23,7 +26,9 @@ public class PlayerController : MonoBehaviour
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
-    private bool jumpPressed = false;
+    private bool jumpPressing = false;
+    public float jumpTimer;
+    private float jumpTimeCounter;
     [HideInInspector] public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -55,6 +60,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
     [HideInInspector] public bool isGuarding = false;
+    private float guardTimer;
+    private bool parryStamina;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject daggerobj;
     [SerializeField] private int daggerAmount;
@@ -97,21 +104,40 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        Jump();
+        //Jump();
     }
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
     void CheckInputs()
-    {
+    {     
         //Get Horizontal Input
         xAxis = Input.GetAxisRaw("Horizontal");
 
-        //Check Jump, Attack, Roll, Pray, Parry Input 
-        if (Input.GetButtonDown("Jump"))
+        //Check Jump, Attack, Roll, Pray, Parry Input
+        if(Input.GetButtonDown("Jump"))
+        {
             if (isGrounded && !isRolling && !isPraying && !isAttacking)
-                jumpPressed = true;
+            {
+                jumpPressing = true;
+                jumpTimeCounter = jumpTimer;
+                Jump();
+            }
+        } 
+        if (Input.GetButton("Jump") && jumpPressing)
+            if (jumpTimeCounter > 0)
+            {
+                jumpTimeCounter -= Time.deltaTime;
+                Jump();
+            }
+            else 
+                jumpPressing = false;
+                
+        if(Input.GetButtonUp("Jump"))
+        {
+            jumpPressing = false;
+        }
         if (Input.GetKeyDown(KeyCode.C)) // Pray
             if (inCheckpointRange && isGrounded && !isPraying && !isGuarding)
                 isPraying = true;
@@ -119,15 +145,20 @@ public class PlayerController : MonoBehaviour
             if (!isRolling && isGrounded && !isPraying && stamina >= 30)
                 StartCoroutine(Roll());           
         if (Input.GetMouseButton(1)) //Guard
-            if (isGrounded && !playerManager.hitAnimRunning)
+            if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
                 performGuard();
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
+            {
                 isGuarding = false;
+                parryStamina = false;
+                guardTimer = 0;
+            }
         if (Input.GetMouseButtonDown(2))
             if (!isBusy())
                 ThrowDagger();
-        
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+            walkToggle = !walkToggle;        
     }
     
   
@@ -140,22 +171,24 @@ public class PlayerController : MonoBehaviour
         {
             if (!isGuarding)
             {
-                rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                if(!walkToggle)
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                else
+                    rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
             }
             else
-            {
                 rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
-            }
         }
     }
     void Jump()
     {
-        if (jumpPressed) //isGuarding eklenebilir
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        isGuarding = false;
+        /*if (jumpPressing && jumpTimer < 1) //isGuarding eklenebilir
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            jumpPressed = false;
-            isGuarding = false;
-        }
+            jumpTimer += Time.fixedDeltaTime;
+            jumpForce = Math.Round(jumpTimer,2);
+        }*/
     }
     IEnumerator Roll()
     {
@@ -175,9 +208,22 @@ public class PlayerController : MonoBehaviour
     }
     void performGuard()
     {
+        if(!parryStamina)
+        {
+            StaminaBar.instance.useStamina(10);
+            parryStamina = true;
+        }
+        guardTimer += Time.deltaTime;
+        if(guardTimer > 1)
+        {
+            guardTimer = 0;
+            StaminaBar.instance.useStamina(12.5f);
+        }
         if(!isRolling && isGrounded && !isPraying && !isAttacking)
+        {
             ChangeAnimationState(parry);
             isGuarding = true;
+        }
     }
     
     void FlipPlayer()
@@ -201,10 +247,9 @@ public class PlayerController : MonoBehaviour
         //Ground Animations --> Idle, Run, Attack and Roll
         if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
         {
-            if(!isRolling)
+            if(!isRolling && !isGuarding)
             {
-                if(!isGuarding)
-                {
+                
                     if(!isAttacking && !isPraying)
                     { 
                         if(xAxis == 0)
@@ -223,9 +268,9 @@ public class PlayerController : MonoBehaviour
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
                     }
-                }
+                
             }
-            else
+            else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
         }
 
@@ -275,9 +320,8 @@ public class PlayerController : MonoBehaviour
         if (attackCount > 3 || attackTime > 0.6f)
         {
             attackCount = 1;
-            attackDamage = 10;
+            attackDamage = 20;
         }
-
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
