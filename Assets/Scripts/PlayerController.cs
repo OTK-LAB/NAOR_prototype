@@ -39,16 +39,20 @@ public class PlayerController : MonoBehaviour
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
+    const string fallattack = "PlayerFallAttack";
 
     //Combat
     [Header("Combat")]
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public Transform attackPoint;
+    public Transform fallattackPoint;
     public float attackRange = 0.5f;
+    public float fallattackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
+    private bool isFallAttack;
     private PlayerManager playerManager;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
@@ -101,6 +105,7 @@ public class PlayerController : MonoBehaviour
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
     }
     void CheckInputs()
     {
@@ -204,7 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             if(!isRolling)
             {
-                if(!isGuarding)
+                if(!isGuarding && !isFallAttack)
                 {
                     if(!isAttacking && !isPraying)
                     { 
@@ -238,6 +243,15 @@ public class PlayerController : MonoBehaviour
             if(rb.velocity.y < 0)
                 ChangeAnimationState(fall);    
         }
+        else
+        {
+            if (isFallAttack)    //isFallAttack = false animation event
+            {
+                rb.constraints = RigidbodyConstraints2D.FreezePosition;
+                ChangeAnimationState(fallattack);
+                FallAttack();
+            }
+        }
    
      }
     public void ChangeAnimationState(string newState)
@@ -256,13 +270,24 @@ public class PlayerController : MonoBehaviour
         attackTime += Time.deltaTime;
         if (attackTime > 0.6f)
             isCombo = false;
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Input.GetKeyDown(KeyCode.S))
         {
             if (!isPraying && !isGuarding && isGrounded && !isRolling)
                 if (isCombo && attackTime > 0.3f)
                     Attack();
                 else if (!isCombo)
                     Attack();
+
+        }
+
+
+        if (rb.velocity.y <= -0.2 && StaminaBar.instance.currentStamina > 50)
+        {
+            if (!isGrounded && Input.GetButtonDown("Fire1"))
+            {
+                isFallAttack = true;
+                rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+            }
         }
     }
     void Attack()
@@ -288,6 +313,26 @@ public class PlayerController : MonoBehaviour
         }
         attackTime = 0f;
     }
+
+    public void FallAttack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(fallattackPoint.position, fallattackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy.CompareTag("Enemy"))
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("Villager"))
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
+        }
+    }
+
+    public void FallAttackDone()      //animation event
+    {
+        isFallAttack = false;
+        rb.constraints = ~RigidbodyConstraints2D.FreezePosition;
+
+    }
+
     public void ThrowDagger()
     {
         //Stack'ten gir dagger çýkar ve dagger objesine ata
@@ -326,6 +371,7 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmosSelected() 
     {
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(fallattackPoint.position, fallattackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 
@@ -336,4 +382,9 @@ public class PlayerController : MonoBehaviour
         else
             return false;
     }    
+
+    private void UseStamina(int x)
+    {
+        StaminaBar.instance.useStamina(x);
+    }
 }
