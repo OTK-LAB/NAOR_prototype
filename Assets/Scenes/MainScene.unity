@@ -184,7 +184,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3165318464205026117, guid: b324e8b262d466c49a799b3d86b3adcf, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3165318464205026117, guid: b324e8b262d466c49a799b3d86b3adcf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -375,7 +375,7 @@ Transform:
   - {fileID: 355262643}
   - {fileID: 831287753}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &768407900
 PrefabInstance:
@@ -1149,7 +1149,7 @@ Transform:
   - {fileID: 964435920}
   - {fileID: 145794098}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1130037622
 MonoBehaviour:
@@ -1494,7 +1494,7 @@ Transform:
   m_Children:
   - {fileID: 1011959342}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2103701663 stripped
 GameObject:
@@ -1561,7 +1561,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3165318464205026117, guid: b324e8b262d466c49a799b3d86b3adcf, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3165318464205026117, guid: b324e8b262d466c49a799b3d86b3adcf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1622,7 +1622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8109495552265371769, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8109495552265371769, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1665,9 +1665,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8109495552265371770, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: timer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8109495552265371770, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
       propertyPath: leftLimit
       value: 
       objectReference: {fileID: 1032895830}
+    - target: {fileID: 8109495552265371770, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: maxHealth
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 8109495552265371770, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: moveSpeed
+      value: 2.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8109495552265371770, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
       propertyPath: rightLimit
       value: 

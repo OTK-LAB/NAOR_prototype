@@ -17,7 +17,7 @@ public class Sword_Behaviour : MonoBehaviour
     public Transform rightLimit;
     public Collider2D[] colliders;
     //Hit
-    public float maxHealth = 100;
+    public float maxHealth = 110;
     public float currentHealth;
     Vector3 movement;
     #endregion

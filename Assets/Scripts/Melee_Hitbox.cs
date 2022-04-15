@@ -6,7 +6,7 @@ public class Melee_Hitbox : MonoBehaviour
 {
     Transform PlayerPosition;
     private Vector2 target;
-    public float Damage = 25;
+    public float Damage = 33;
 
     // Start is called before the first frame update
     void Start()

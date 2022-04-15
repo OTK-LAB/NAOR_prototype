@@ -149,8 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDistance: 1.5
-  moveSpeed: 2
-  timer: 0.6
+  moveSpeed: 2.3
+  timer: 2
   target: {fileID: 0}
   inRange: 0
   hotZone: {fileID: 8109495553157177816}
@@ -158,7 +158,7 @@ MonoBehaviour:
   leftLimit: {fileID: 0}
   rightLimit: {fileID: 0}
   colliders: []
-  maxHealth: 100
+  maxHealth: 110
   currentHealth: 0
 --- !u!61 &8109495552265371775
 BoxCollider2D:
@@ -470,4 +470,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73471e43af2d2d845a0d12a35de7abfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 25
+  Damage: 33
