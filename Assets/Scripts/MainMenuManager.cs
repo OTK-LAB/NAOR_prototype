@@ -34,9 +34,12 @@ public class MainMenuManager : MonoBehaviour
     {
         Menu.SetActive(false);
         StartMenu.SetActive(true);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
     }
 
+    public void StartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
+    }
     public void Continue()
     {
         ContinueMenu.SetActive(true);
@@ -75,9 +78,9 @@ public class MainMenuManager : MonoBehaviour
     public void GenerateQuote()
     {
         RandNum = Random.Range(0, 3);
-        string[] Quotes = { "Face the bars.Solve the lock. Defeat the cage.\n\tRun to hands of freedom.(laughs)\nKahve",
-                            "But we are different kid. We are nnot fighting with cages.\n\tOur revenge oath is to destroy the cagemaker.\nKahve",
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n\tsed do eiusmod tempor incididunt ut labore et Kahve" };
+        string[] Quotes = { "\"Face the bars.Solve the lock. Defeat the cage.\n\tRun to hands of freedom.(laughs)\"\n" +"Kahve".PadLeft(80),
+                            "\"But we are different kid. We are nnot fighting with cages.\n\tOur revenge oath is to destroy the cagemaker.\"\n" +"-Kahve".PadLeft(80),
+                            "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n\tsed do eiusmod tempor incididunt ut labore et.\""+"-Kahve".PadLeft(80)};
         QuoteText.GetComponent<TMPro.TextMeshProUGUI>().text = Quotes[RandNum];
     }
 }
