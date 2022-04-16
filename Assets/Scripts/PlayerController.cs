@@ -345,18 +345,6 @@ public class PlayerController : MonoBehaviour
             return false;
     }
 
-    private void OnTriggerStay2D(Collider2D trigger)
-    {
-        if (trigger.gameObject.CompareTag("GroundX"))
-        {
-            Debug.Log("1.ÝF");
-            if (Input.GetKeyDown(KeyCode.S)) {
-                Debug.Log("AAAAAAAAA");
-            trigger.gameObject.transform.parent.gameObject.GetComponent<Collider2D>().enabled = false; 
-            }
-
-        }
-    }
     
     
     
