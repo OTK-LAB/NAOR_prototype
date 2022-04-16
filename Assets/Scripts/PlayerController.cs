@@ -30,10 +30,11 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     [Header("Wall Slide")]
-    public Transform wallGrabPoint;
+    public Transform wallGrabPointFront;
+    public Transform wallGrabPointBack;
     public float wallSlideSpeed = 0.2f;
     private bool isWallSliding = false;
-    private bool canGrab;
+    private bool grabFront, grabBack, canGrab;
     public float wallDistance = 0.05f;
 
     [Header("Wall Jump")]
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
     public float xWallForce = 5f;
     public float wallJumpLerp = 10f;
     private float jumpTime;
+    private int wallDirection;
     private bool wallJumpPressed = false;
     private bool wallJumped = false;
 
@@ -103,10 +105,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Time.time >= daggerCooldownController.GetDequeueTime())
             {
-                //DequeueLastItem() fonksiyonuyla Queue'dan çýkardýðýn dagger'ý Stack'e koy
+                //DequeueLastItem() fonksiyonuyla Queue'dan cikardigin dagger'i Stack'e koy
                 daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
             }
         }
+        Debug.Log("WallDirection: " + wallDirection);
     }
     void FixedUpdate()
     {
@@ -117,8 +120,44 @@ public class PlayerController : MonoBehaviour
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        canGrab = Physics2D.OverlapCircle(wallGrabPoint.position, wallDistance, groundLayer);
-        if (isGrounded) // buraya tekrar tutunma durumunda false etme durumlarýný ekle
+
+        grabFront = Physics2D.OverlapCircle(wallGrabPointFront.position, wallDistance, groundLayer);
+        grabBack = Physics2D.OverlapCircle(wallGrabPointBack.position, wallDistance, groundLayer);
+
+        if(grabFront || grabBack)
+        {
+            canGrab = true;
+            Debug.Log("Can Grab!");
+        }
+        else
+        {
+            canGrab = false;
+        }
+
+        if(grabFront && !grabBack)
+        {
+            if(wallGrabPointFront.transform.position.x > wallGrabPointBack.transform.position.x)
+            {
+                wallDirection = -1;
+            }
+            else
+            {
+                wallDirection = 1;
+            }
+        }
+        else if(!grabFront && grabBack)
+        {
+            if(wallGrabPointBack.transform.position.x > wallGrabPointFront.transform.position.x)
+            {
+                wallDirection = -1;
+            }
+            else
+            {
+                wallDirection = 1;
+            }
+        }
+
+        if (isGrounded) // buraya tekrar tutunma durumunda false etme durumlarini ekle
             wallJumped = false;
     }
     void CheckInputs()
@@ -185,7 +224,6 @@ public class PlayerController : MonoBehaviour
         }
         if (wallJumpPressed)
         {
-            int wallDirection = xAxis > 0 ? 1 : -1;
             rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
             wallJumpPressed = false;
             wallJumped = true;
@@ -193,12 +231,12 @@ public class PlayerController : MonoBehaviour
     }
     void WallSlide()
     {
-        if (canGrab && !isGrounded && xAxis != 0)
+        if (canGrab && !isGrounded)
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
         }
-        else if (jumpTime < Time.time) //önce ters yön sonra space olduðunda, süzülme yaþanýyor
+        else if (jumpTime < Time.time) //ï¿½nce ters yï¿½n sonra space olduï¿½unda, sï¿½zï¿½lme yaï¿½anï¿½yor
         {
             isWallSliding = false;
         }       
@@ -342,7 +380,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ThrowDagger()
     {
-        //Stack'ten gir dagger çýkar ve dagger objesine ata
+        //Stack'ten gir dagger ï¿½ï¿½kar ve dagger objesine ata
         GameObject dagger = daggerStack.PopFromStack();
 
         if (dagger != null)
@@ -354,7 +392,7 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.right);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten çýkarmýþ olduðun dagger objesini Queue'ya yerleþtir
+                //Stack'ten ï¿½ï¿½karmï¿½ï¿½ olduï¿½un dagger objesini Queue'ya yerleï¿½tir
                 daggerCooldownController.EnqueueItem(dagger);
             }
             else
@@ -364,10 +402,10 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.left);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten çýkarmýþ olduðun dagger objesini Queue'ya yerleþtir
+                //Stack'ten ï¿½ï¿½karmï¿½ï¿½ olduï¿½un dagger objesini Queue'ya yerleï¿½tir
                 daggerCooldownController.EnqueueItem(dagger);
             }
-            //Daggerlarýn 3 saniye sonra sahneden çýkmasýna yarayan coroutine
+            //Daggerlarï¿½n 3 saniye sonra sahneden ï¿½ï¿½kmasï¿½na yarayan coroutine
             IEnumerator startDaggerLifeTime()
             {
                 yield return new WaitForSeconds(10f);
