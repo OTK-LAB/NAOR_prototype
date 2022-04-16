@@ -24,14 +24,14 @@ public class Minion_wpoke : MonoBehaviour
 
     //Hit
     [Header("Health")]
-    public float maxHealth = 100;
+    public float maxHealth = 40;
     public float currentHealth;
     bool hurt = false, alive = true;
 
     //Attack
     [Header("Attack")]
-    public float TimeBtwEachShot;
-    public float minimumFiringDistance, damage = 12.5f;
+    public float TimeBtwEachShot=3;
+    public float minimumFiringDistance, damage = 15;
     float targetx,targety, crx,cry;
     bool collision = false, playerOnline = false, playerAlive = true, ifAttack = false;
     Transform PlayerPosition;
