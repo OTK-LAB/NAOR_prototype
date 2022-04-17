@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-
+    private VerticalPlatform verticalPlatform;
     [HideInInspector] public GameObject currentCheckPoint;
     private PlayerController player;
     private Rigidbody2D rb;
@@ -185,6 +185,22 @@ public class PlayerManager : MonoBehaviour
         {
             CurrentHealth = CurrentHealth + 10;
             
+        }
+        /*One Way Platform*/
+        if (other.gameObject.CompareTag("GroundX"))
+        {
+            verticalPlatform = other.GetComponent<VerticalPlatform>();
+            verticalPlatform.enabled = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        /*One Way Platform*/
+        if (other.gameObject.CompareTag("GroundX"))
+        {
+            verticalPlatform = other.GetComponent<VerticalPlatform>();
+            verticalPlatform.enabled = false;
         }
     }
 }

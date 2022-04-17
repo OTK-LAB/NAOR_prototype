@@ -6,38 +6,70 @@ public class VerticalPlatform : MonoBehaviour
 {
     // Start is called before the first frame update
     public PlatformEffector2D effector;
-    public float doubleTapTime;
-    public bool FirstTap;
-
+    private GameObject PlatformX;
+    public float timeOfFirstButton;
+    public bool firstButtonPressed, reset;
+   
     void Start()
     {
-        effector = GetComponent<PlatformEffector2D>();    
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S) && !FirstTap)
+        if (Input.GetKeyDown(KeyCode.S) && firstButtonPressed)
         {
-            FirstTap = true;
-            doubleTapTime = Time.time;
-        }
-
-        if (Input.GetKeyDown(KeyCode.S) && FirstTap)
-        {
-            if (Time.time - doubleTapTime < 0.4f)
+            if (Time.time - timeOfFirstButton < 0.5f)
             {
+                Debug.Log("DoubleClicked");
                 effector.rotationalOffset = 180f;
-                doubleTapTime = 0f;
+                StartCoroutine(ChangePlatform());
+                this.enabled = false;
             }
-            FirstTap = false;
+            else
+            {
+                Debug.Log("Too late");
+            }
+
+            reset = true;
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.S) && !firstButtonPressed)
         {
-            effector.rotationalOffset = 0;
+            firstButtonPressed = true;
+            timeOfFirstButton = Time.time;
+            StartCoroutine(ChangefirstButtonPressed());
         }
+
+        if (reset)
+        {
+            firstButtonPressed = false;
+            reset = false;
+        }
+
     }
 
- 
+    IEnumerator ChangefirstButtonPressed()
+    {
+        yield return new WaitForSeconds(0.5f);
+        firstButtonPressed = false;
+    }
+
+    IEnumerator ChangePlatform()
+    {
+        yield return new WaitForSeconds(0.30f);
+        effector.rotationalOffset = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("ALDI");
+            PlatformX = other.gameObject;
+            
+        }
+    }
 }
