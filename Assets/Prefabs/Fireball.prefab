@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireballSpeed: 5
-  FireballDamage: 12.5
+  FireballDamage: 15
 --- !u!58 &1485850249292959476
 CircleCollider2D:
   m_ObjectHideFlags: 0

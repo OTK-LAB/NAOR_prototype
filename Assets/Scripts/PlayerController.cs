@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
-    private bool jumpPressing = false;
+    private bool isJumping = false;
     public float jumpTimer;
     private float jumpTimeCounter;
     [HideInInspector] public bool isGrounded;
@@ -114,37 +114,42 @@ public class PlayerController : MonoBehaviour
     {     
         //Get Horizontal Input
         xAxis = Input.GetAxisRaw("Horizontal");
-
-        //Check Jump, Attack, Roll, Pray, Parry Input
+        //Walk Toggle
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+            walkToggle = !walkToggle;
+        //Jump
         if(Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !playerManager.isHealing)
             {
-                jumpPressing = true;
+                isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
             }
         } 
-        if (Input.GetButton("Jump") && jumpPressing)
+        if (Input.GetButton("Jump") && isJumping)
             if (jumpTimeCounter > 0)
             {
                 jumpTimeCounter -= Time.deltaTime;
                 Jump();
             }
             else 
-                jumpPressing = false;
+                isJumping = false;
                 
         if(Input.GetButtonUp("Jump"))
         {
-            jumpPressing = false;
+            isJumping = false;
         }
-        if (Input.GetKeyDown(KeyCode.C)) // Pray
-            if (inCheckpointRange && isGrounded && !isPraying && !isGuarding)
+        //Pray
+        if (Input.GetKeyDown(KeyCode.C))
+            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
                 isPraying = true;
-        if (Input.GetKeyDown(KeyCode.LeftShift)) // Roll
-            if (!isRolling && isGrounded && !isPraying && stamina >= 30)
-                StartCoroutine(Roll());           
-        if (Input.GetMouseButton(1)) //Guard
+        //Roll
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30)
+                StartCoroutine(Roll()); 
+        //Guard
+        if (Input.GetMouseButton(1))
             if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
                 performGuard();
         if (Input.GetMouseButtonUp(1))
@@ -154,11 +159,26 @@ public class PlayerController : MonoBehaviour
                 parryStamina = false;
                 guardTimer = 0;
             }
+        //Dagger
         if (Input.GetMouseButtonDown(2))
             if (!isBusy())
                 ThrowDagger();
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-            walkToggle = !walkToggle;        
+        //Potion
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving)
+            {
+                if (Potion.instance.potionCount > 0)
+                {
+                    PlayerManager.instance.HealthPotion(33);
+                    Potion.instance.UsePotions(1);
+                }
+                else
+                {
+                    Debug.Log("potions are over");
+                }
+            }
+        }
     }
     
   
@@ -184,7 +204,7 @@ public class PlayerController : MonoBehaviour
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         isGuarding = false;
-        /*if (jumpPressing && jumpTimer < 1) //isGuarding eklenebilir
+        /*if (isJumping && jumpTimer < 1) //isGuarding eklenebilir
         {
             jumpTimer += Time.fixedDeltaTime;
             jumpForce = Math.Round(jumpTimer,2);
@@ -193,6 +213,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator Roll()
     {
         isRolling = true;
+        playerManager.damageable = false;
         rollColl.enabled = true;
         GetComponent<BoxCollider2D>().enabled = false;
         StaminaBar.instance.useStamina(30);
@@ -203,6 +224,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
         isRolling = false;
+        playerManager.damageable = true;
         rollColl.enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
     }
@@ -245,7 +267,7 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
+        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
         {
             if(!isRolling && !isGuarding)
             {
@@ -302,7 +324,7 @@ public class PlayerController : MonoBehaviour
             isCombo = false;
         if (Input.GetButtonDown("Fire1"))
         {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling && stamina >= 15)
+            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
                 if (isCombo && attackTime > 0.3f)
                     Attack();
                 else if (!isCombo)
@@ -313,6 +335,7 @@ public class PlayerController : MonoBehaviour
     {
         StaminaBar.instance.useStamina(15);
         isAttacking = true;
+        rb.velocity = new Vector2(0,0);
         attackDamage += 2;
         attackCount++;
         isCombo = true;
@@ -375,7 +398,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isBusy()
     {
-        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning)
+        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
             return true;
         else
             return false;

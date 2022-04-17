@@ -38,7 +38,7 @@ public class Minion_wfireball : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();   
-        currentHealth = maxHealth;
+        currentHealth = maxHealth * Random.Range(1, 1.2001f);
         CalculatedTime = TimeBtwEachShot; 
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -116,10 +116,10 @@ public class Minion_wfireball : MonoBehaviour
             else Moveright = true;
             transform.Rotate(0f, 180f, 0f);
         }
-        if (trig.CompareTag("Player"))
+        /*if (trig.CompareTag("Player"))
         {       
             trig.transform.SendMessage("DamagePlayer", damage);
-        }
+        }*/
 
     }
     void FireballMechanism()
