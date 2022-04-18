@@ -67,14 +67,11 @@ public class PlayerManager : MonoBehaviour
     }
     public void HealthPotion(float health)
     {
-        if(CurrentHealth < 100)
-        {
-            if(!revived)
-                CurrentHealth += health;
-            player.ChangeAnimationState(heal);
-            isHealing = true;
-            Invoke("CancelHealState", 0.8f);
-        }
+        if(!revived)
+            CurrentHealth += health;
+        player.ChangeAnimationState(heal);
+        isHealing = true;
+        Invoke("CancelHealState", 0.8f);
         if (CurrentHealth > 100)
         {
             CurrentHealth = 100;

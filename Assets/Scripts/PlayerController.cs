@@ -166,16 +166,12 @@ public class PlayerController : MonoBehaviour
         //Potion
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving)
+            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
             {
-                if (Potion.instance.potionCount > 0)
+                if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
                 {
                     PlayerManager.instance.HealthPotion(33);
                     Potion.instance.UsePotions(1);
-                }
-                else
-                {
-                    Debug.Log("potions are over");
                 }
             }
         }
