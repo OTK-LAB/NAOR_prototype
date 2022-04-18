@@ -181,7 +181,10 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         if (!canMove)
+        {
+            rb.velocity = new Vector2 (0,0);
             return;
+        }
 
         if (!isRolling && !isAttacking && !isPraying)
         {
