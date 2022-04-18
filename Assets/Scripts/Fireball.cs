@@ -7,7 +7,7 @@ public class Fireball : MonoBehaviour
     public float fireballSpeed;
     Transform PlayerPosition;
     private Vector2 target;
-    public float FireballDamage = 12.5f;
+    public float FireballDamage = 15f;
 
     // Start is called before the first frame update
     void Start()

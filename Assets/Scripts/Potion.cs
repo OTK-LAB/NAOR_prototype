@@ -5,8 +5,8 @@ using UnityEngine;
 public class Potion : MonoBehaviour
 {
     public GameObject[] potions;
-    public int cure;
-    public int maxCure = 3;
+    public int potionCount;
+    public int maxpotionCount = 3;
 
     public static Potion instance;
 
@@ -18,13 +18,12 @@ public class Potion : MonoBehaviour
 
     void Start()
     {
-        cure = maxCure;
+        potionCount = maxpotionCount;
         potions[3].gameObject.SetActive(false);
     }
 
     void Update()
     {
-
         //checkpoint fonksiyonu
         //farklı scriptte çağırmak için
         //Potion.instance.CheckPoint();
@@ -34,34 +33,20 @@ public class Potion : MonoBehaviour
         }
         //iksir ekleme fonksiyonu
         //farklı scriptte çağırmak için
-        //Potion.instance.AddCure();
+        //Potion.instance.AddPotion();
         if (Input.GetKeyDown(KeyCode.M))
         {
-            AddCure();
-        }
-        
-        //iksir kullanma fonksiyonu
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (Potion.instance.cure > 0)
-            {
-                PlayerManager.instance.HealthPotion(40);
-                Potion.instance.UsePotions(1);
-            }
-            else
-            {
-                Debug.Log("potions are over");
-            }
+            AddPotion();
         }
     }
 
     public void UsePotions(int p)
     {
-        if (cure >= 1)
+        if (potionCount >= 1)
         {
-            cure -= p;
-            potions[cure].gameObject.SetActive(false);
-            if (cure < 1)
+            potionCount -= p;
+            potions[potionCount].gameObject.SetActive(false);
+            if (potionCount < 1)
             {
                 Debug.Log("potions are over");
             }
@@ -71,23 +56,23 @@ public class Potion : MonoBehaviour
 
     public void CheckPoint()
     {
-        cure = maxCure;
+        potionCount = maxpotionCount;
         potions[0].gameObject.SetActive(true);
         potions[1].gameObject.SetActive(true);
         potions[2].gameObject.SetActive(true);
-        if (maxCure == 4)
+        if (maxpotionCount == 4)
         {
             potions[3].gameObject.SetActive(true);
         }
 
     }
-    public void AddCure()
+    public void AddPotion()
     {
-        maxCure = 4;
+        maxpotionCount = 4;
         potions[3].gameObject.SetActive(true);
-        if (cure != 4)
+        if (potionCount != 4)
         {
-            cure = maxCure;
+            potionCount = maxpotionCount;
             potions[0].gameObject.SetActive(true);
             potions[1].gameObject.SetActive(true);
             potions[2].gameObject.SetActive(true);
