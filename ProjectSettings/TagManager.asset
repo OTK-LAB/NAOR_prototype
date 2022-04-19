@@ -11,6 +11,7 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - Miniboss
   layers:
   - Default
   - TransparentFX
