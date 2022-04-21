@@ -20,6 +20,7 @@ public class Miniboss_Run : StateMachineBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = animator.GetComponent<Rigidbody2D>();
         boss = animator.GetComponent<Boss_Manager>();
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -31,11 +32,14 @@ public class Miniboss_Run : StateMachineBehaviour
         
         LookAtPlayer();
 
+        boss.shieldcoll.SetActive(true);
+
         if (Vector2.Distance(player.position, rb.position) <= attackRange)
         {
-            
+            boss.inRange = true;
             if (boss.attackTimer <= 0)
             {
+                
                 animator.Play(attack);
                 boss.attackTimer = boss.autoAttackTimer;
             }else
@@ -44,6 +48,7 @@ public class Miniboss_Run : StateMachineBehaviour
             }
         }else
         {
+            boss.inRange = false;
             rb.MovePosition(newpos);
         }
     }
@@ -51,7 +56,7 @@ public class Miniboss_Run : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-       
+       boss.shieldcoll.SetActive(false);
     }
 
     public void LookAtPlayer()

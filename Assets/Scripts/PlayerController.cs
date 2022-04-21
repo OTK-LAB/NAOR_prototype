@@ -9,11 +9,12 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float runSpeed;
     public float walkSpeed;
+    [HideInInspector] public bool isStunned = false;
+    [HideInInspector] public bool isPraying;
     private float xAxis;
     private bool walkToggle;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
-    private bool isPraying;
     [HideInInspector] public bool canMove = true;
 
     [Header("Roll")]
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
+    const string stun = "PlayerStun";
 
     //Combat
     [Header("Combat")]
@@ -119,7 +121,7 @@ public class PlayerController : MonoBehaviour
         //Jump
         if(Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !playerManager.isHealing)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !playerManager.isHealing && !isStunned)
             {
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
@@ -141,11 +143,11 @@ public class PlayerController : MonoBehaviour
         }
         //Pray
         if (Input.GetKeyDown(KeyCode.C))
-            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
+            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned)
                 isPraying = true;
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30)
+            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isStunned)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
@@ -165,7 +167,7 @@ public class PlayerController : MonoBehaviour
         //Potion
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing && !isStunned)
             {
                 if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
                 {
@@ -185,7 +187,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isRolling && !isAttacking && !isPraying)
+        if (!isRolling && !isAttacking && !isPraying && !isStunned)
         {
             if (!isGuarding)
             {
@@ -239,7 +241,7 @@ public class PlayerController : MonoBehaviour
             guardTimer = 0;
             StaminaBar.instance.useStamina(12.5f);
         }
-        if(!isRolling && isGrounded && !isPraying && !isAttacking)
+        if(!isRolling && isGrounded && !isPraying && !isAttacking && !isStunned)
         {
             ChangeAnimationState(parry);
             isGuarding = true;
@@ -248,7 +250,7 @@ public class PlayerController : MonoBehaviour
     
     void FlipPlayer()
     {
-        if(!isRolling && !isPraying)
+        if(!isRolling && !isPraying && !isStunned)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -270,7 +272,7 @@ public class PlayerController : MonoBehaviour
             if(!isRolling && !isGuarding)
             {
                 
-                    if(!isAttacking && !isPraying)
+                    if(!isAttacking && !isPraying && !isStunned)
                     { 
                         if(xAxis == 0)
                             ChangeAnimationState(idle);
@@ -287,6 +289,10 @@ public class PlayerController : MonoBehaviour
                     {
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
+                    }
+                    if(isStunned)
+                    {
+                        ChangeAnimationState(stun);
                     }
                 
             }
@@ -322,7 +328,7 @@ public class PlayerController : MonoBehaviour
             isCombo = false;
         if (Input.GetButtonDown("Fire1"))
         {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
+            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15 && !isStunned)
                 if (isCombo && attackTime > 0.3f)
                     Attack();
                 else if (!isCombo)
@@ -348,6 +354,9 @@ public class PlayerController : MonoBehaviour
         {
             if (enemy.CompareTag("Miniboss"))
                 enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
 
             if (enemy.CompareTag("Enemy"))
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
@@ -401,7 +410,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isBusy()
     {
-        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
+        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing || isStunned)
             return true;
         else
             return false;
