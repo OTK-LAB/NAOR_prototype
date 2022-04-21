@@ -12,16 +12,20 @@ public class Legolas : MonoBehaviour
     const string hit = "legolas_hit";
     const string attack = "legolas_attack";
     const string death = "legolas_death";
+    const string run="legolas_run";
 
     //Move
     Vector3 movement;
     bool Moveright = true;
+    public Transform rightLimit;
+    public Transform leftLimit;
 
     //Hit
     public float maxHealth = 60;
     public float currentHealth;
     bool hurt = false;
     bool alive = true;
+    bool running;
 
     //Attack
     public float CalculatedTime;
@@ -47,6 +51,7 @@ public class Legolas : MonoBehaviour
     {
         if (playerAlive)
             CheckAttack();
+        AutoMove();
         CheckPlayerDead();
     }
     void CheckPlayerDead()
@@ -63,18 +68,18 @@ public class Legolas : MonoBehaviour
     {
         if (PlayerPosition.position.x > (transform.position.x + 0.5f))
         {
-            if (!Moveright)
-            {
-                transform.Rotate(0f, 180f, 0f);
-                Moveright = true;
-            }
-        }
-        else
-        {
             if (Moveright)
             {
                 transform.Rotate(0f, 180f, 0f);
                 Moveright = false;
+            }
+        }
+        else
+        {
+            if (!Moveright)
+            {
+                transform.Rotate(0f, 180f, 0f);
+                Moveright = true;
             }
         }
     }
@@ -82,9 +87,12 @@ public class Legolas : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
-           // flip();
+            
+            flip();
+            
             playerOnline = true;
             ArrowMechanism();
+            
         }
         else
             playerOnline = false;
@@ -97,6 +105,7 @@ public class Legolas : MonoBehaviour
     }
     void ArrowMechanism()
     {
+        
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
@@ -155,6 +164,42 @@ public class Legolas : MonoBehaviour
         ChangeAnimationState(death);
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+
+    }
+    void AutoMove()
+    {
+        if (!playerOnline)
+        {
+            ChangeAnimationState(run);
+            running = true;
+            if (Moveright)
+            {
+                
+                movement = new Vector3(-2, 0f, 0f);
+                transform.position = transform.position + movement * Time.deltaTime;
+            }
+            else
+            {
+                movement = new Vector3(2, 0f, 0f);
+                transform.position = transform.position + movement * Time.deltaTime;
+            }
+            
+        }
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D trig)
+    {
+        if (trig.CompareTag("turn") && !playerOnline)
+        {
+            if (Moveright) Moveright = false;
+            else Moveright = true;
+            transform.Rotate(0f, 180f, 0f);
+        }
+        /*if (trig.CompareTag("Player"))
+        {       
+            trig.transform.SendMessage("DamagePlayer", damage);
+        }*/
 
     }
 }
