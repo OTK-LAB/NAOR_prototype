@@ -14,7 +14,7 @@ public class Minion_wpoke : MonoBehaviour
 
     //Move
     [Header("Movement")]
-    public int speed = 2;
+    public float speed = 2;
     private Rigidbody2D rb;
     Vector3 movement;
     bool Moveright = true;
@@ -62,7 +62,7 @@ public class Minion_wpoke : MonoBehaviour
         {
             if (!ifAttack)
             {
-                speed = 2;
+                speed = 10;
                 AutoMove();
                 CheckAttack();
             }
@@ -74,7 +74,7 @@ public class Minion_wpoke : MonoBehaviour
         }
         else if (collision && playerOnline)
             IIflip();
-        if (collision && !playerOnline) //player hortlamýþ
+        if (collision && !playerOnline) //player hortlamï¿½ï¿½
             attackDirection();
     }
     void attackDirection()
@@ -130,7 +130,7 @@ public class Minion_wpoke : MonoBehaviour
     IEnumerator waitdarling()
     {
         yield return new WaitForSeconds(TimeBtwEachShot);
-        speed = 2;
+        speed = 10;
         ifAttack = false;
         CheckAttack();
     }
@@ -202,7 +202,7 @@ public class Minion_wpoke : MonoBehaviour
     }
     void AutoMove()
     {
-        speed = 2;
+        speed = 10;
         if (Moveright)
             Enemy_Move(step);
         else
@@ -232,7 +232,7 @@ public class Minion_wpoke : MonoBehaviour
         {
             if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
             {
-                speed *= 3;
+                speed *= 1.5f;
                 crx = transform.position.x;
 
                 playerOnline = true;
