@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     private float jumpTime;
     private int wallDirection;
     private bool wallJumpPressed = false;
-    private bool wallJumped = false;
+    private bool isWallJumping = false;
 
     //Animations
     private Animator animator;
@@ -158,13 +158,19 @@ public class PlayerController : MonoBehaviour
         }
 
         if (isGrounded) // buraya tekrar tutunma durumunda false etme durumlarini ekle
-            wallJumped = false;
+            isWallJumping = false;
     }
     void CheckInputs()
     {
         //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal");
-
+        if(!isWallJumping)
+        {
+            xAxis = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            xAxis = 0;
+        }
         //Check Jump, Attack, Roll, Pray, Parry Input 
         if (Input.GetButtonDown("Jump"))
         {
@@ -195,7 +201,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!canMove)
             return;
-        if (!wallJumped)
+        if (!isWallJumping)
         {
             if (!isRolling && !isAttacking && !isPraying)
             {
@@ -226,12 +232,22 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
             wallJumpPressed = false;
-            wallJumped = true;
+            Flip();
+            facingRight = !facingRight;
+            StartCoroutine(WallJumpWaiter());
         }
     }
+
+    IEnumerator WallJumpWaiter()
+    {
+        isWallJumping = true;
+        yield return new WaitForSeconds(0.4f);
+        isWallJumping = false;
+    }
+
     void WallSlide()
     {
-        if (canGrab && !isGrounded)
+        if (canGrab && !isGrounded && horizontalInput())
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
@@ -277,15 +293,19 @@ public class PlayerController : MonoBehaviour
         {
             if(xAxis < 0 && facingRight)
             {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                Flip();
                 facingRight = !facingRight;
             }
             else if(xAxis > 0 && !facingRight)
             {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                Flip();
                 facingRight = !facingRight;
             }
         }
+    }
+    
+    void Flip(){
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
     void ChangeAnimations()
     {
@@ -425,5 +445,17 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }    
+    }
+
+    private bool horizontalInput()
+    {
+        if(
+            Input.GetKey("a") || Input.GetKey("d")||
+            Input.GetKey("left") || Input.GetKey("right")
+            )
+        {
+            return true;
+        }
+        return false;
+    }  
 }
