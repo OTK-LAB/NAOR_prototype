@@ -230,10 +230,15 @@ public class PlayerController : MonoBehaviour
         }
         if (wallJumpPressed)
         {
+            if((wallDirection == 1 && !facingRight) || (wallDirection == -1 && facingRight))
+            {
+                Flip();
+                facingRight = !facingRight;
+            }
+
             rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
             wallJumpPressed = false;
-            Flip();
-            facingRight = !facingRight;
+
             StartCoroutine(WallJumpWaiter());
         }
     }
