@@ -21,7 +21,8 @@ public class Minion_wfireball : MonoBehaviour
     public float maxHealth = 100;
     public float currentHealth;
     bool hurt = false;
-    bool alive = true;
+    public bool alive = true;
+    
 
 
     //Attack
@@ -50,6 +51,7 @@ public class Minion_wfireball : MonoBehaviour
             CheckAttack();
         AutoMove();
         CheckPlayerDead();
+        
     }
     void flip()
     {
@@ -184,6 +186,7 @@ public class Minion_wfireball : MonoBehaviour
     }
     void Die()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().levelSystem.AddExperience(50);
         ChangeAnimationState(death);
         movement = new Vector3(transform.position.x, -3.17f, transform.position.z);
         transform.position = movement;

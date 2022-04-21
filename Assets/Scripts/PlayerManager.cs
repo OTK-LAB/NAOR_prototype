@@ -31,6 +31,9 @@ public class PlayerManager : MonoBehaviour
     const string counter = "PlayerCounter";
     [HideInInspector] public bool hitAnimRunning;
 
+    //levelSystem
+    public LevelSystem levelSystem;
+
 
 
 
@@ -38,6 +41,10 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        levelSystem = new LevelSystem();
+        
+        Debug.Log("Current level: " + levelSystem.GetLevelNumber());
+        Debug.Log("Current Exp: " + levelSystem.GetExperience());
         CurrentHealth = MaxHealth;
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
@@ -68,6 +75,9 @@ public class PlayerManager : MonoBehaviour
                 CurrentHealth = 40;
             }
         }
+
+        exp();
+
     }
 
     public virtual void DamagePlayer(float damage)
@@ -203,4 +213,14 @@ public class PlayerManager : MonoBehaviour
             verticalPlatform.enabled = false;
         }
     }
+
+   
+
+    void exp()
+    {
+        
+        Debug.Log("Current level: " + levelSystem.GetLevelNumber());
+        Debug.Log("Current Exp: " + levelSystem.GetExperience());
+    }
+
 }
