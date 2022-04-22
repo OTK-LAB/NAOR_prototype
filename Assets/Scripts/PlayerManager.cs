@@ -43,8 +43,7 @@ public class PlayerManager : MonoBehaviour
     {
         levelSystem = new LevelSystem();
         
-        Debug.Log("Current level: " + levelSystem.GetLevelNumber());
-        Debug.Log("Current Exp: " + levelSystem.GetExperience());
+        
         CurrentHealth = MaxHealth;
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
@@ -66,6 +65,7 @@ public class PlayerManager : MonoBehaviour
             {
                 CurrentHealth = 100;
             }
+
         }
 
         if (lives == 1)
@@ -181,7 +181,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator RespawnPlayer()
     {
         yield return new WaitForSeconds(1f);
-        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, transform.position.y, currentCheckPoint.transform.position.z);
+        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, currentCheckPoint.transform.position.y+3, currentCheckPoint.transform.position.z);
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
@@ -191,11 +191,7 @@ public class PlayerManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (other.tag == "health")
-        {
-            CurrentHealth = CurrentHealth + 10;
-            
-        }
+        
         /*One Way Platform*/
         if (other.gameObject.CompareTag("GroundX"))
         {
@@ -206,6 +202,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+       
         /*One Way Platform*/
         if (other.gameObject.CompareTag("GroundX"))
         {
@@ -218,7 +215,7 @@ public class PlayerManager : MonoBehaviour
 
     void exp()
     {
-        
+        Debug.Log("Current skillpoint: " + levelSystem.skillpoint);
         Debug.Log("Current level: " + levelSystem.GetLevelNumber());
         Debug.Log("Current Exp: " + levelSystem.GetExperience());
     }

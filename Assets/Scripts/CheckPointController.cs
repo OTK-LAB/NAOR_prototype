@@ -58,6 +58,8 @@ public class CheckPointController : MonoBehaviour
             {
                 playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
+                playerManager.lives = 2;
+                playerManager.CurrentHealth = 100;
                 //RestartLevel();
             }
         }
