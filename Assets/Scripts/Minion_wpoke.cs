@@ -46,6 +46,7 @@ public class Minion_wpoke : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         rb = this.GetComponent<Rigidbody2D>();
         cry = transform.position.y;
+        playerAlive = true;
     }
 
     // Update is called once per frame
@@ -62,7 +63,7 @@ public class Minion_wpoke : MonoBehaviour
         {
             if (!ifAttack)
             {
-                speed = 10;
+                speed = 7.5f;
                 AutoMove();
                 CheckAttack();
             }
@@ -130,7 +131,7 @@ public class Minion_wpoke : MonoBehaviour
     IEnumerator waitdarling()
     {
         yield return new WaitForSeconds(TimeBtwEachShot);
-        speed = 10;
+        speed = 7.5f;
         ifAttack = false;
         CheckAttack();
     }
@@ -202,7 +203,7 @@ public class Minion_wpoke : MonoBehaviour
     }
     void AutoMove()
     {
-        speed = 10;
+        speed = 7.5f;
         if (Moveright)
             Enemy_Move(step);
         else

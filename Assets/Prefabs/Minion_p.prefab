@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 529559870525095104}
   m_Layer: 7
   m_Name: Minion_p
-  m_TagString: Enemy
+  m_TagString: MinionwPoke
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -113,6 +113,7 @@ public class PlayerManager : MonoBehaviour
                         foreach (Collider2D enemy in hitEnemies)
                         {
                             enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);    //parry dealt damage
+                            enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }
