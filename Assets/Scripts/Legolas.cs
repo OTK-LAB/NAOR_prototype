@@ -15,21 +15,19 @@ public class Legolas : MonoBehaviour
     const string run="legolas_run";
 
     //Move
-    Vector3 movement;
     bool Moveright = true;
-    public Transform rightLimit;
-    public Transform leftLimit;
 
     //Hit
     public float maxHealth = 60;
     public float currentHealth;
     bool hurt = false;
     bool alive = true;
-    bool running;
 
     //Attack
-    public float CalculatedTime;
+    [HideInInspector]  public float CalculatedTime;
+    public float LaunchForce;
     public float TimeBtwEachShot;
+    [HideInInspector]  public Vector2 target;
     public GameObject Arrow;
     bool playerOnline = false;
     Transform PlayerPosition;
@@ -37,6 +35,7 @@ public class Legolas : MonoBehaviour
     public float damage = 20;
     private GameObject player;
     bool playerAlive = true;
+    bool distance = false;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -51,7 +50,6 @@ public class Legolas : MonoBehaviour
     {
         if (playerAlive)
             CheckAttack();
-        AutoMove();
         CheckPlayerDead();
     }
     void CheckPlayerDead()
@@ -87,15 +85,20 @@ public class Legolas : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
-            
             flip();
-            
             playerOnline = true;
+            if (!distance)
+            {
+                distance = true;
+                target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
+            }
             ArrowMechanism();
-            
         }
         else
+        {
             playerOnline = false;
+            distance = false;
+        }
     }
     void ChangeAnimationState(string newState)
     {
@@ -104,12 +107,13 @@ public class Legolas : MonoBehaviour
         currentState = newState;
     }
     void ArrowMechanism()
-    {
-        
+    {   
         if (CalculatedTime <= 0)
         {
             ChangeAnimations();
-            Instantiate(Arrow, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
+            GameObject ArrowIns = Instantiate(Arrow, transform.position, transform.rotation);
+            ArrowIns.GetComponent<Rigidbody2D>().AddForce(target* LaunchForce);
+            //Instantiate(Arrow, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }
         else
@@ -137,7 +141,6 @@ public class Legolas : MonoBehaviour
     }
     IEnumerator backtoIdle()
     {
-
         yield return new WaitForSeconds(0.5f);
         if (alive)
             ChangeAnimationState(idle);
@@ -166,28 +169,6 @@ public class Legolas : MonoBehaviour
         this.enabled = false;
 
     }
-    void AutoMove()
-    {
-        if (!playerOnline)
-        {
-            ChangeAnimationState(run);
-            running = true;
-            if (Moveright)
-            {
-                
-                movement = new Vector3(-2, 0f, 0f);
-                transform.position = transform.position + movement * Time.deltaTime;
-            }
-            else
-            {
-                movement = new Vector3(2, 0f, 0f);
-                transform.position = transform.position + movement * Time.deltaTime;
-            }
-            
-        }
-        
-    }
-
     private void OnTriggerEnter2D(Collider2D trig)
     {
         if (trig.CompareTag("turn") && !playerOnline)

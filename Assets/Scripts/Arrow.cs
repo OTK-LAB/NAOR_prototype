@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    public float arrowSpeed;
-    Transform PlayerPosition;
-    private Vector2 target;
+    private Vector3 fire_loc;
     public float ArrowDamage = 20f;
     private Rigidbody2D rb;
     private float travelDistance;
     private float xStartPos;
     private bool isGravityOn;
     private bool hasItGround=false;
-    public GameObject fire;
+    public GameObject fire;  
+    public GameObject legolas;  
     public static bool disabled = false;
-    
 
     [SerializeField]
     private float gravity;
@@ -29,19 +27,24 @@ public class Arrow : MonoBehaviour
     private Transform damagePosition;
     void Start()
     {
+        //target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
         rb = GetComponent<Rigidbody2D>();
-        PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
-        target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
-        Destroy(gameObject, 4f);
-        GetComponent<SpriteRenderer>().flipX = true;
-        GetComponent<Rigidbody2D>().velocity = Vector3.Normalize(target) * arrowSpeed;
-        GetComponent<Rigidbody2D>().rotation = 0;
-        rb.gravityScale = 0.0f;
+        legolas = GameObject.FindGameObjectWithTag("Legolas");
+        Destroy(gameObject, 10f);
+        rb.velocity = Vector3.Normalize(legolas.GetComponent<Legolas>().target);
+        // rb.velocity = Vector3.Normalize(target) * arrowSpeed;
+        //flip();
+        rb.rotation = 0;
         xStartPos = transform.position.x;
         isGravityOn = false;
     }
-
-    // Update is called once per frame
+    public void flip()
+    {
+        //if (PlayerPosition.position.x > (transform.position.x + 0.5f))
+        //{
+        //    transform.Rotate(0f, 180f, 0f);
+        //}
+    }
     void Update()
     {
         if (!hasItGround)
@@ -52,62 +55,36 @@ public class Arrow : MonoBehaviour
                 float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
-        }
-        if (hasItGround)
-        {      
-                fire.SetActive(true);
-        }
-    }
-    void DestroyArrow()
-    {
-
-        Destroy(gameObject);
-    }
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            DestroyArrow();
-            collision.transform.SendMessage("DamagePlayer", ArrowDamage);
-        }
-        if (collision.CompareTag("Ground"))
-        {
-            //Fire scripti çalýþmalý 
-            Destroy(gameObject, 3f);
-        }
-    }
-    private void FixedUpdate()
-    {
-        if (!hasItGround)
-        {
-            Collider2D damageHit = Physics2D.OverlapCircle(damagePosition.position, damageRadius, whatIsPlayer);
-            Collider2D groundHit = Physics2D.OverlapCircle(damagePosition.position, damageRadius, whatIsGround);
-            if (damageHit)
-            {
-                damageHit.transform.SendMessage("DamagePlayer", ArrowDamage);
-                DestroyArrow();
-            }
-            if (groundHit)
-            {
-                Destroy(gameObject, 3f);
-                hasItGround = true;
-                rb.gravityScale = 0.0f;
-                rb.velocity = Vector2.zero;
-                
-            }
             if (Mathf.Abs(xStartPos - transform.position.x) >= travelDistance && !isGravityOn)
             {
                 isGravityOn = true;
                 rb.gravityScale = gravity;
             }
         }
+    }
 
-
-        
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+           Destroy(gameObject);
+           collision.transform.SendMessage("DamagePlayer", ArrowDamage);
+        }
+        if (collision.CompareTag("Ground"))
+        {            
+            fire_loc = new Vector3(transform.position.x, (transform.position.y  + 0.16f), 0);
+            Instantiate(fire, fire_loc, Quaternion.LookRotation(Vector3.forward, fire_loc));
+            hasItGround = true;
+            rb.gravityScale = 0.0f;
+            rb.simulated = false;
+            Destroy(gameObject, 3f);
+            rb.velocity = Vector2.zero;
+        }
     }
     public void Fire(float speed,float travelDistance,float damage)
     {
-        arrowSpeed = speed;
+        //arrowSpeed = speed;
+        legolas.GetComponent<Legolas>().LaunchForce = speed;
         this.travelDistance = travelDistance;
         ArrowDamage = damage;
     }
