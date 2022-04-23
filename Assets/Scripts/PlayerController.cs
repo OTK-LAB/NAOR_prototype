@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private bool isPraying;
     [HideInInspector] public bool canMove = true;
+    [HideInInspector] public bool canFlip = true;
 
     [Header("Roll")]
     public float rollSpeed;
@@ -46,6 +47,23 @@ public class PlayerController : MonoBehaviour
     private bool wallJumpPressed = false;
     private bool isWallJumping = false;
 
+    [Header("Ledge Climb")]
+    public Transform ledgeCheckUp;
+    public Transform ledgeCheckDown;
+    private bool isTouchingLedgeUp;
+    private bool isTouchingLedgeDown;
+    private bool canClimbLedge = false;
+    private bool ledgeDetected;
+    private Vector2 ledgePosBot;
+    private Vector2 ledgePos1;
+    private Vector2 ledgePos2;
+    [SerializeField]
+    private float ledgeDistance;
+    public float ledgeXOffset1 = 0.0f;
+    public float ledgeYOffset1 = 0.0f;
+    public float ledgeXOffset2 = 0.0f;
+    public float ledgeYOffset2 = 0.0f;
+
     //Animations
     private Animator animator;
     private string currentState;
@@ -56,6 +74,7 @@ public class PlayerController : MonoBehaviour
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
+    const string climb = "PlayerClimb";
 
     //Combat
     [Header("Combat")]
@@ -100,7 +119,7 @@ public class PlayerController : MonoBehaviour
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
-
+        CheckLedgeClimb();
         if (daggerCooldownController.GetQueue().Count > 0)
         {
             if (Time.time >= daggerCooldownController.GetDequeueTime())
@@ -123,6 +142,18 @@ public class PlayerController : MonoBehaviour
 
         grabFront = Physics2D.OverlapCircle(wallGrabPointFront.position, wallDistance, groundLayer);
         grabBack = Physics2D.OverlapCircle(wallGrabPointBack.position, wallDistance, groundLayer);
+        if(facingRight)
+        {
+            isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+        }
+        else
+        {
+            isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+
+        }
+        Debug.Log("isTouchingLedgeUp: " + isTouchingLedgeUp);
 
         if(grabFront || grabBack)
         {
@@ -155,6 +186,12 @@ public class PlayerController : MonoBehaviour
             {
                 wallDirection = 1;
             }
+        }
+
+        if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
+            ledgeDetected = true;
+            Debug.Log("ledgeDetected TRUE");
+            ledgePosBot = ledgeCheckDown.position;
         }
 
         if (isGrounded) // buraya tekrar tutunma durumunda false etme durumlarini ekle
@@ -196,28 +233,76 @@ public class PlayerController : MonoBehaviour
                 ThrowDagger();
     }
     
+    private void CheckLedgeClimb()
+    {
+        if(ledgeDetected && !canClimbLedge)
+        {
+            
+            canClimbLedge = true;
+            Debug.Log("canClimbLedge TRUE");
+
+            if(facingRight)
+            {
+                ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
+                ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) + ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
+            }
+            else
+            {
+                ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
+                ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
+            }
+
+            canMove = false;
+            canFlip = false;
+
+        }
+
+        if(canClimbLedge)
+        {
+            transform.position = ledgePos1;
+            FinishLedgeClimb();
+        }
+
+        
+    }
+
+    public void FinishLedgeClimb()
+    {
+        canClimbLedge = false;
+        Debug.Log("canClimbLedge FALSE");
+        transform.position = ledgePos2;
+        canMove = true;
+        canFlip = true;
+        ledgeDetected = false;
+        Debug.Log("LedgeDetected FALSE");
+    }
   
     void Move()
     {
-        if (!canMove)
-            return;
-        if (!isWallJumping)
+        if (canMove)
         {
-            if (!isRolling && !isAttacking && !isPraying)
+            if (!isWallJumping)
             {
-                if (!isGuarding)
+                if (!isRolling && !isAttacking && !isPraying)
                 {
-                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                    if (!isGuarding)
+                    {
+                        rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
+                    }
                 }
-                else
-                {
-                    rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
-                }
+            }
+            else
+            {
+                rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(xAxis * runSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
             }
         }
         else
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(xAxis * runSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
+            return;
         }
     }
     void Jump()
@@ -233,7 +318,6 @@ public class PlayerController : MonoBehaviour
             if((wallDirection == 1 && !facingRight) || (wallDirection == -1 && facingRight))
             {
                 Flip();
-                facingRight = !facingRight;
             }
 
             rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
@@ -252,7 +336,7 @@ public class PlayerController : MonoBehaviour
 
     void WallSlide()
     {
-        if (canGrab && !isGrounded && horizontalInput())
+        if (canGrab && !isGrounded && !canClimbLedge && horizontalInput())
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
@@ -299,18 +383,20 @@ public class PlayerController : MonoBehaviour
             if(xAxis < 0 && facingRight)
             {
                 Flip();
-                facingRight = !facingRight;
             }
             else if(xAxis > 0 && !facingRight)
             {
                 Flip();
-                facingRight = !facingRight;
             }
         }
     }
     
     void Flip(){
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        if(canFlip)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            facingRight = !facingRight;
+        }
     }
     void ChangeAnimations()
     {
