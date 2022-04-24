@@ -7,7 +7,8 @@ public class LevelSystem {
 
     public event EventHandler OnExperienceChanged;
     public event EventHandler OnLevelChanged;
-    public float skillpoint;
+    public PlayerSkills playerSkills;
+    
 
     private static readonly int[] experiencePerLevel = new[] { 100, 120, 140, 160, 180, 200, 220, 250, 300, 400 };
 
@@ -17,7 +18,7 @@ public class LevelSystem {
     public LevelSystem() {
         level = 0;
         experience = 0;
-        skillpoint = 0;
+        
     }
 
     public void AddExperience(int amount) {
@@ -27,7 +28,8 @@ public class LevelSystem {
                 // Enough experience to level up
                 experience -= GetExperienceToNextLevel(level);
                 level++;
-                skillpoint++;
+                playerSkills.AddSkillPoint();
+                
                 if (OnLevelChanged != null) OnLevelChanged(this, EventArgs.Empty);
             }
             if (OnExperienceChanged != null) OnExperienceChanged(this, EventArgs.Empty);

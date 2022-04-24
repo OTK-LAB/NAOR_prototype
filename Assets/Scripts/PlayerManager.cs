@@ -31,9 +31,10 @@ public class PlayerManager : MonoBehaviour
     const string counter = "PlayerCounter";
     [HideInInspector] public bool hitAnimRunning;
 
-    //levelSystem
+    //levelSystem & Skills
     public LevelSystem levelSystem;
-
+    public PlayerSkills playerSkills;
+    
 
 
 
@@ -42,7 +43,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         levelSystem = new LevelSystem();
-        
+        playerSkills = new PlayerSkills();
         
         CurrentHealth = MaxHealth;
         player = GetComponent<PlayerController>(); 
@@ -215,7 +216,7 @@ public class PlayerManager : MonoBehaviour
 
     void exp()
     {
-        Debug.Log("Current skillpoint: " + levelSystem.skillpoint);
+        
         Debug.Log("Current level: " + levelSystem.GetLevelNumber());
         Debug.Log("Current Exp: " + levelSystem.GetExperience());
     }

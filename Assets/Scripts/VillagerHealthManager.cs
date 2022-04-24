@@ -43,6 +43,7 @@ public class VillagerHealthManager : MonoBehaviour
     }
     void Die()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().levelSystem.AddExperience(250);
         Debug.Log("Enemy died!");
         GetComponent<Collider2D>().enabled = false;
         GetComponent<VillagerRunning>().enabled = false;
