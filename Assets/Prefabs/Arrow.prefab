@@ -146,17 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b36280bc4573da49ad30dd3338aa77a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowSpeed: 7
   ArrowDamage: 20
+  arrowSpeed: 4
   fire: {fileID: 9101809906066638894, guid: d119b0e92ca50dd45ad286ec23385d5c, type: 3}
-  gravity: 0.075
+  gravity: 0.2
   damageRadius: 0.06
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 256
   damagePosition: {fileID: 8306635169235917528}
 --- !u!1 &5809510003866815908
 GameObject:

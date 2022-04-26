@@ -35,7 +35,6 @@ public class Legolas : MonoBehaviour
     public float damage = 20;
     private GameObject player;
     bool playerAlive = true;
-    bool distance = false;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -87,18 +86,10 @@ public class Legolas : MonoBehaviour
         {
             flip();
             playerOnline = true;
-            if (!distance)
-            {
-                distance = true;
-                target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
-            }
             ArrowMechanism();
         }
         else
-        {
             playerOnline = false;
-            distance = false;
-        }
     }
     void ChangeAnimationState(string newState)
     {
@@ -110,9 +101,10 @@ public class Legolas : MonoBehaviour
     {   
         if (CalculatedTime <= 0)
         {
+            //target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
             ChangeAnimations();
             GameObject ArrowIns = Instantiate(Arrow, transform.position, transform.rotation);
-            ArrowIns.GetComponent<Rigidbody2D>().AddForce(target* LaunchForce);
+          //  ArrowIns.GetComponent<Rigidbody2D>().AddForce(target* LaunchForce);
             //Instantiate(Arrow, transform.position, Quaternion.LookRotation(Vector3.forward, transform.position - PlayerPosition.position));
             CalculatedTime = TimeBtwEachShot;
         }

@@ -826,7 +826,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 5
 --- !u!4 &789601827
 Transform:
   m_ObjectHideFlags: 0
@@ -856,7 +856,9 @@ MonoBehaviour:
   maxHealth: 60
   currentHealth: 0
   CalculatedTime: 0
+  LaunchForce: 40
   TimeBtwEachShot: 3
+  target: {x: 0, y: 0}
   Arrow: {fileID: 440562133715720225, guid: e4a85412014a09a45bb7238e92b23f6e, type: 3}
   minimumFiringDistance: 10
   damage: 20

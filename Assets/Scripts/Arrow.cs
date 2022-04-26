@@ -5,38 +5,40 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     private Vector3 fire_loc;
+    private Vector2 target;
+    Transform PlayerPosition;
     public float ArrowDamage = 20f;
     private Rigidbody2D rb;
     private float travelDistance;
     private float xStartPos;
-    private bool isGravityOn;
+    public float arrowSpeed;
+    private bool isGravityOn = false;
     private bool hasItGround=false;
     public GameObject fire;  
-    public GameObject legolas;  
+    private GameObject legolas;  
     public static bool disabled = false;
 
     [SerializeField]
     private float gravity;
     [SerializeField]
     private float damageRadius;
-    [SerializeField]
-    private LayerMask whatIsGround;
-    [SerializeField]
-    private LayerMask whatIsPlayer;
+ //  [SerializeField]
+  //  private LayerMask whatIsGround;
+  //  [SerializeField]
+   // private LayerMask whatIsPlayer;
     [SerializeField]
     private Transform damagePosition;
     void Start()
     {
-        //target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
-        rb = GetComponent<Rigidbody2D>();
+        PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         legolas = GameObject.FindGameObjectWithTag("Legolas");
-        Destroy(gameObject, 10f);
-        rb.velocity = Vector3.Normalize(legolas.GetComponent<Legolas>().target);
-        // rb.velocity = Vector3.Normalize(target) * arrowSpeed;
-        //flip();
+        target = new Vector2(PlayerPosition.position.x - transform.position.x, PlayerPosition.position.y - transform.position.y);
+        rb = GetComponent<Rigidbody2D>();  
+        rb.AddForce(target * legolas.GetComponent<Legolas>().LaunchForce);
+        rb.velocity = Vector3.Normalize(target) * arrowSpeed;
         rb.rotation = 0;
         xStartPos = transform.position.x;
-        isGravityOn = false;
+        Destroy(gameObject, 10f);
     }
     public void flip()
     {
@@ -83,8 +85,7 @@ public class Arrow : MonoBehaviour
     }
     public void Fire(float speed,float travelDistance,float damage)
     {
-        //arrowSpeed = speed;
-        legolas.GetComponent<Legolas>().LaunchForce = speed;
+        arrowSpeed = speed;
         this.travelDistance = travelDistance;
         ArrowDamage = damage;
     }
