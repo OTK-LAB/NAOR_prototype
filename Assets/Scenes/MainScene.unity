@@ -270,7 +270,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141498828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4495759, y: 0.5911522, z: -10}
+  m_LocalPosition: {x: 0.4499371, y: 0.5911522, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 42601531}
@@ -451,7 +451,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4495759, y: 0.5911522, z: -10}
+  m_LocalPosition: {x: 0.4499371, y: 0.5911522, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2666,7 +2666,7 @@ PrefabInstance:
       objectReference: {fileID: 1963275755}
     - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: xWallForce
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: ledgeCheckUp
@@ -2678,7 +2678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: wallJumpLerp
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: ledgeDistance

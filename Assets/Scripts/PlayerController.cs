@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     [Header("Wall Jump")]
     public float wallJumpTime = 0.1f;
     public float xWallForce = 5f;
-    public float wallJumpLerp = 10f;
+    public float wallJumpLerp = 1f;
     private float jumpTime;
     private int wallDirection;
     private bool wallJumpPressed = false;
@@ -78,9 +78,9 @@ public class PlayerController : MonoBehaviour
 
     //Combat
     [Header("Combat")]
+    public Transform attackPoint;
     private float attackTime = 0.0f;
     private int attackCount = 0;
-    public Transform attackPoint;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
@@ -101,7 +101,6 @@ public class PlayerController : MonoBehaviour
     {
         daggerStack = GetComponent<ItemStack>();
         daggerStack.SetItem(daggerobj, daggerAmount);
-
         daggerCooldownController = GetComponent<CooldownController>();
         daggerCooldownController.SetCooldown(cooldownTime);
     }
@@ -128,7 +127,6 @@ public class PlayerController : MonoBehaviour
                 daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
             }
         }
-        Debug.Log("WallDirection: " + wallDirection);
     }
     void FixedUpdate()
     {
@@ -153,12 +151,10 @@ public class PlayerController : MonoBehaviour
             isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
 
         }
-        Debug.Log("isTouchingLedgeUp: " + isTouchingLedgeUp);
 
         if(grabFront || grabBack)
         {
             canGrab = true;
-            Debug.Log("Can Grab!");
         }
         else
         {
@@ -190,12 +186,9 @@ public class PlayerController : MonoBehaviour
 
         if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
             ledgeDetected = true;
-            Debug.Log("ledgeDetected TRUE");
             ledgePosBot = ledgeCheckDown.position;
         }
 
-        if (isGrounded) // buraya tekrar tutunma durumunda false etme durumlarini ekle
-            isWallJumping = false;
     }
     void CheckInputs()
     {
@@ -237,10 +230,7 @@ public class PlayerController : MonoBehaviour
     {
         if(ledgeDetected && !canClimbLedge)
         {
-            
             canClimbLedge = true;
-            Debug.Log("canClimbLedge TRUE");
-
             if(facingRight)
             {
                 ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
@@ -251,10 +241,8 @@ public class PlayerController : MonoBehaviour
                 ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
                 ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
             }
-
             canMove = false;
             canFlip = false;
-
         }
 
         if(canClimbLedge)
@@ -262,19 +250,15 @@ public class PlayerController : MonoBehaviour
             transform.position = ledgePos1;
             FinishLedgeClimb();
         }
-
-        
     }
 
     public void FinishLedgeClimb()
     {
         canClimbLedge = false;
-        Debug.Log("canClimbLedge FALSE");
         transform.position = ledgePos2;
         canMove = true;
         canFlip = true;
         ledgeDetected = false;
-        Debug.Log("LedgeDetected FALSE");
     }
   
     void Move()
@@ -336,12 +320,12 @@ public class PlayerController : MonoBehaviour
 
     void WallSlide()
     {
-        if (canGrab && !isGrounded && !canClimbLedge && horizontalInput())
+        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0)
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
         }
-        else if (jumpTime < Time.time) //�nce ters y�n sonra space oldu�unda, s�z�lme ya�an�yor
+        else if (jumpTime < Time.time)
         {
             isWallSliding = false;
         }       
@@ -366,8 +350,6 @@ public class PlayerController : MonoBehaviour
         isRolling = false;
         rollColl.enabled = false;
         GetComponent<BoxCollider2D>().enabled = true;
-
-
     }
     void performGuard()
     {
@@ -536,17 +518,5 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }
-
-    private bool horizontalInput()
-    {
-        if(
-            Input.GetKey("a") || Input.GetKey("d")||
-            Input.GetKey("left") || Input.GetKey("right")
-            )
-        {
-            return true;
-        }
-        return false;
     }  
 }
