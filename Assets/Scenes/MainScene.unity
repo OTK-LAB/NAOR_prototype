@@ -980,6 +980,14 @@ PrefabInstance:
       propertyPath: rightLimit
       value: 
       objectReference: {fileID: 286235915}
+    - target: {fileID: 8109495552265371775, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.6875
+      objectReference: {fileID: 0}
+    - target: {fileID: 8109495552265371775, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.3125
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 381432ff29fbc9f4499508ee10512184, type: 3}
 --- !u!1001 &1003716741
