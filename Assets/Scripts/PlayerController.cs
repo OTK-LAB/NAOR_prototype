@@ -3,33 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PlayerController : MonoBehaviour
 {
     //Movement
     [Header("Movement")]
     public float runSpeed;
+    public float walkSpeed;
     private float xAxis;
+    private bool walkToggle;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
+    [HideInInspector] public bool canMove = true;
 
     [Header("Roll")]
-    public float dodgeSpeed;
-    public float CooldownDuration;
-    private float Cooldown;
-    private bool IsAvailable;
+    public float rollSpeed;
     private bool isRolling = false;
-    public BoxCollider2D regularColl;
     public CircleCollider2D rollColl;
     public float iFrame = 0.3f;
-
-    Collider2D enemyColliderName;
-
 
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
-    private bool jumpPressed = false;
+    private bool isJumping = false;
+    public float jumpTimer;
+    private float jumpTimeCounter;
     [HideInInspector] public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -55,22 +54,36 @@ public class PlayerController : MonoBehaviour
     public int attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
-    private bool attackPressed = false;
     private PlayerManager playerManager;
+    private float stamina;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
     [HideInInspector] public bool isGuarding = false;
+    private float guardTimer;
+    private bool parryStamina;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject daggerobj;
+    [SerializeField] private int daggerAmount;
+    [SerializeField] private float cooldownTime;
+    private CooldownController daggerCooldownController;
+    private ItemStack daggerStack;
 
+    private void Awake()
+    {
+        daggerStack = GetComponent<ItemStack>();
+        daggerStack.SetItem(daggerobj, daggerAmount);
+
+        daggerCooldownController = GetComponent<CooldownController>();
+        daggerCooldownController.SetCooldown(cooldownTime);
+    }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
-        dead = false;
     }
-
     void Update()
     {
         CheckState();
@@ -78,160 +91,162 @@ public class PlayerController : MonoBehaviour
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
-    }
-
-
-    void FixedUpdate() 
-    {
-        RollCooldown();
-        if(!isRolling && !isAttacking && !isPraying)
+        stamina = StaminaBar.instance.currentStamina;
+        if (daggerCooldownController.GetQueue().Count > 0)
         {
-            Move();
-            Jump();
+            if (Time.time >= daggerCooldownController.GetDequeueTime())
+            {
+                //DequeueLastItem() fonksiyonuyla Queue'dan ��kard���n dagger'� Stack'e koy
+                daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
+            }
         }
     }
-
+    void FixedUpdate()
+    {
+        Move();
+        //Jump();
+    }
     void CheckState()
     {
-        //Check if grounded
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
     void CheckInputs()
-    {
+    {     
         //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal"); 
-
-        //Check Jump, Attack, Roll, Pray Input  
-        if(isGrounded && !isPraying)
+        xAxis = Input.GetAxisRaw("Horizontal");
+        //Walk Toggle
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+            walkToggle = !walkToggle;
+        //Jump
+        if(Input.GetButtonDown("Jump"))
         {
-            if(!isGuarding)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !playerManager.isHealing)
             {
-                if(Input.GetButtonDown("Jump"))
-                    jumpPressed = true;
-                if (Input.GetMouseButtonDown(0))
-                    attackPressed = true;
-                if(Input.GetKeyDown(KeyCode.C) && inCheckpointRange)
-                    isPraying = true;
+                isJumping = true;
+                jumpTimeCounter = jumpTimer;
+                Jump();
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-                performRoll();
-            if (Input.GetMouseButton(1) && !playerManager.hitAnimRunning)
-                performGuard();
-            if (Input.GetMouseButtonUp(1))
-                isGuarding = false;
-            
-        }
-    }
-    private void CheckAttack()
-    {
-        attackTime += Time.deltaTime;
-        if (attackTime > 0.6f)
-            isCombo = false;
-        if (Input.GetMouseButtonDown(0))
+        } 
+        if (Input.GetButton("Jump") && isJumping)
+            if (jumpTimeCounter > 0)
+            {
+                jumpTimeCounter -= Time.deltaTime;
+                Jump();
+            }
+            else 
+                isJumping = false;
+                
+        if(Input.GetButtonUp("Jump"))
         {
-            if (isCombo == true && attackTime > 0.3f)
-                Attack();
-            else if (isCombo == false)
-                Attack();
+            isJumping = false;
+        }
+        //Pray
+        if (Input.GetKeyDown(KeyCode.C))
+            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
+                isPraying = true;
+        //Roll
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30)
+                StartCoroutine(Roll()); 
+        //Guard
+        if (Input.GetMouseButton(1))
+            if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
+                performGuard();
+        if (Input.GetMouseButtonUp(1))
+            if (isGuarding)
+            {
+                isGuarding = false;
+                parryStamina = false;
+                guardTimer = 0;
+            }
+        //Dagger
+        if (Input.GetMouseButtonDown(2))
+            if (!isBusy())
+                ThrowDagger();
+        //Potion
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+            {
+                if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
+                {
+                    PlayerManager.instance.HealthPotion(33);
+                    Potion.instance.UsePotions(1);
+                }
+            }
         }
     }
+    
+  
     void Move()
     {
-        if (!isGuarding)
+        if (!canMove)
         {
-            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
-        }
-        else
-        {
-            rb.velocity = new Vector2(xAxis * runSpeed/2, rb.velocity.y);
-        }
-
-
-    }
-    void Jump()
-    {
-        if (jumpPressed)
-        {
-            jumpPressed = false;
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
-    }
-
-    void performGuard()
-    {
-        if(!isRolling)
-            ChangeAnimationState(parry);
-        //guard collision
-        isGuarding = true;
-    }
-
-    private void performRoll()
-    {
-
-        // if not available to use (still cooling down) just exit    
-        if (!IsAvailable)     //ground check here tooo
-        {
+            rb.velocity = new Vector2 (0,0);
             return;
         }
 
-        if (!isRolling)
+        if (!isRolling && !isAttacking && !isPraying)
         {
-            // made it here then ability is available to use...
-            isRolling = true;
-            // start the cooldown timer
-            StartCooldown();
-
-
-
-            if (facingRight)
+            if (!isGuarding)
             {
-                rb.velocity = new Vector2(dodgeSpeed, rb.velocity.y);
+                if(!walkToggle)
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                else
+                    rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
             }
             else
-            {
-                rb.velocity = new Vector2(-dodgeSpeed, rb.velocity.y);
-            }
-
-            regularColl.enabled = false;
-
-            StartCoroutine(RollFrameTimer());     //iframe
-            StartCoroutine(stopDodge());
+                rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
         }
     }
-    public void StartCooldown()        //roll cooldown
+    void Jump()
     {
-        Cooldown += CooldownDuration / 2;
-    }
-    void RollCooldown()
-    {
-        if (Cooldown <= CooldownDuration / 2)
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        isGuarding = false;
+        /*if (isJumping && jumpTimer < 1) //isGuarding eklenebilir
         {
-            IsAvailable = true;
-        }
-        else if (Cooldown > CooldownDuration / 2)
-        {
-            IsAvailable = false;
-        }
-
-
-        if (Cooldown > 0)
-        {
-            Cooldown -= 1 * Time.deltaTime;
-        }
+            jumpTimer += Time.fixedDeltaTime;
+            jumpForce = Math.Round(jumpTimer,2);
+        }*/
     }
-    IEnumerator RollFrameTimer()        //iframe cooldown
+    IEnumerator Roll()
     {
-        yield return new WaitForSeconds(iFrame);
+        isRolling = true;
+        playerManager.damageable = false;
+        rollColl.enabled = true;
+        GetComponent<BoxCollider2D>().enabled = false;
+        StaminaBar.instance.useStamina(30);
+        if (facingRight)
+            rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
+        else
+            rb.velocity = new Vector2(-rollSpeed, rb.velocity.y);
 
-        regularColl.enabled = true;                //after I frame 
-    }
-    IEnumerator stopDodge()
-    {
-        yield return new WaitForSeconds(0.4f);            //dodge duration                               
-        regularColl.enabled = true;
-
+        yield return new WaitForSeconds(.5f);
         isRolling = false;
+        playerManager.damageable = true;
+        rollColl.enabled = false;
+        GetComponent<BoxCollider2D>().enabled = true;
     }
+    void performGuard()
+    {
+        if(!parryStamina)
+        {
+            StaminaBar.instance.useStamina(10);
+            parryStamina = true;
+        }
+        guardTimer += Time.deltaTime;
+        if(guardTimer > 1)
+        {
+            guardTimer = 0;
+            StaminaBar.instance.useStamina(12.5f);
+        }
+        if(!isRolling && isGrounded && !isPraying && !isAttacking)
+        {
+            ChangeAnimationState(parry);
+            isGuarding = true;
+        }
+    }
+    
     void FlipPlayer()
     {
         if(!isRolling && !isPraying)
@@ -251,12 +266,11 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
+        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
         {
-            if(!isRolling)
+            if(!isRolling && !isGuarding)
             {
-                if(!isGuarding)
-                {
+                
                     if(!isAttacking && !isPraying)
                     { 
                         if(xAxis == 0)
@@ -275,9 +289,9 @@ public class PlayerController : MonoBehaviour
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
                     }
-                }
+                
             }
-            else
+            else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
         }
 
@@ -302,45 +316,78 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1.7f);
         isPraying = false;
     }
+    private void CheckAttack()
+    {
+        attackTime += Time.deltaTime;
+        if (attackTime > 0.6f)
+            isCombo = false;
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
+                if (isCombo && attackTime > 0.3f)
+                    Attack();
+                else if (!isCombo)
+                    Attack();
+        }
+    }
     void Attack()
     {
-        if (attackPressed && !isPraying)
+        StaminaBar.instance.useStamina(15);
+        isAttacking = true;
+        rb.velocity = new Vector2(0,0);
+        attackDamage += 2;
+        attackCount++;
+        isCombo = true;
+
+        if (attackCount > 3 || attackTime > 0.6f)
         {
-            isAttacking = true;
-            attackDamage += 2;
-            attackCount++;
-            isCombo = true;
-
-            if (attackCount > 3 || attackTime > 0.6f)
-            {
-                attackCount = 1;
-                attackDamage = 10;
-            }
-
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);           
-            for (int i = 0; i < hitEnemies.Length; i++)
-            {
-                enemyColliderName = hitEnemies[i];              
-                if (enemyColliderName.ToString() == "Minion_fb (UnityEngine.BoxCollider2D)")
-                {
-                    foreach (Collider2D enemy in hitEnemies)
-                    {
-                        enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
-                    }                   
-                }
-                else if(enemyColliderName.ToString()== "Enemy (UnityEngine.BoxCollider2D)")
-                {                   
-                    foreach (Collider2D enemy in hitEnemies)
-                    {
-                        
-                        enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
-                    }
-                }
-            }
-            attackPressed = false;
-            attackTime = 0f;
+            attackCount = 1;
+            attackDamage = 20;
         }
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if(enemy.CompareTag("Enemy"))
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Villager"))
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
+        }
+        attackTime = 0f;
+    }
+    public void ThrowDagger()
+    {
+        //Stack'ten gir dagger ��kar ve dagger objesine ata
+        GameObject dagger = daggerStack.PopFromStack();
 
+        if (dagger != null)
+        {
+            if (GetComponent<PlayerController>().facingRight)
+            {
+                dagger.transform.position = firePoint.position;
+                dagger.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                dagger.GetComponent<Dagger>().Initialize(Vector2.right);
+                dagger.SetActive(true);
+                StartCoroutine(startDaggerLifeTime());
+                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                daggerCooldownController.EnqueueItem(dagger);
+            }
+            else
+            {
+                dagger.transform.position = firePoint.position;
+                dagger.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                dagger.GetComponent<Dagger>().Initialize(Vector2.left);
+                dagger.SetActive(true);
+                StartCoroutine(startDaggerLifeTime());
+                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                daggerCooldownController.EnqueueItem(dagger);
+            }
+            //Daggerlar�n 3 saniye sonra sahneden ��kmas�na yarayan coroutine
+            IEnumerator startDaggerLifeTime()
+            {
+                yield return new WaitForSeconds(10f);
+                dagger.SetActive(false);
+            }
+        }
     }
     private void OnDrawGizmosSelected() 
     {
@@ -348,5 +395,11 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 
-
+    public bool isBusy()
+    {
+        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
+            return true;
+        else
+            return false;
+    }    
 }
