@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [Header("Roll")]
     public float rollSpeed;
     private bool isRolling = false;
-    public CircleCollider2D rollColl;
+    public GameObject rollColl;
     public float iFrame = 0.3f;
 
     //Jumping
@@ -47,9 +47,9 @@ public class PlayerController : MonoBehaviour
 
     //Combat
     [Header("Combat")]
+    public Transform attackPoint;
     private float attackTime = 0.0f;
     private int attackCount = 0;
-    public Transform attackPoint;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour
     {
         isRolling = true;
         playerManager.damageable = false;
-        rollColl.enabled = true;
+        rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
         StaminaBar.instance.useStamina(30);
         if (facingRight)
@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isRolling = false;
         playerManager.damageable = true;
-        rollColl.enabled = false;
+        rollColl.SetActive(false);
         GetComponent<BoxCollider2D>().enabled = true;
     }
     void performGuard()
@@ -350,7 +350,9 @@ public class PlayerController : MonoBehaviour
             if(enemy.CompareTag("Enemy"))
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Villager"))
-                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Sword"))
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);    
         }
         attackTime = 0f;
     }
