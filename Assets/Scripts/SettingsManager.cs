@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 public class SettingsManager : MonoBehaviour
 {
     Resolution[] resolutions;
     public TMPro.TMP_Dropdown resolutionDropdown;
+    public AudioMixer audiomixer;
+    private bool fullscreenOnOff;
 
     private void Start()
     {
@@ -42,6 +45,15 @@ public class SettingsManager : MonoBehaviour
         QualitySettings.SetQualityLevel(qualityIndex);
     }
     
+    public void SetVolume(float value)
+    {
+        audiomixer.SetFloat("Volume", value);
+    }
 
-    
+    public void SetFullscreen(bool fullscreenEnabled)
+    {
+        Screen.fullScreen = fullscreenEnabled;
+        fullscreenOnOff = fullscreenEnabled;
+    }
+
 }
