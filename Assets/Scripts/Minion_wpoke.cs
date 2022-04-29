@@ -63,7 +63,8 @@ public class Minion_wpoke : MonoBehaviour
         {
             if (!ifAttack)
             {
-                speed = 7.5f;
+                speed=2.5f;
+                step = 2f;
                 AutoMove();
                 CheckAttack();
             }
@@ -131,7 +132,7 @@ public class Minion_wpoke : MonoBehaviour
     IEnumerator waitdarling()
     {
         yield return new WaitForSeconds(TimeBtwEachShot);
-        speed = 7.5f;
+        step = 2f;
         ifAttack = false;
         CheckAttack();
     }
@@ -160,9 +161,10 @@ public class Minion_wpoke : MonoBehaviour
         movement = direction;
         moveCharacter(movement);
     }
-    void moveCharacter(Vector2 direction)
+    void moveCharacter(Vector3 direction)
     {
-        rb.MovePosition((Vector2)transform.position + (direction * speed * Time.deltaTime));
+        transform.position=transform.position + direction* speed * Time.deltaTime;
+      //  rb.MovePosition((Vector2)transform.position + (direction * speed * Time.deltaTime));
     }
     void flip()
     {
@@ -203,7 +205,7 @@ public class Minion_wpoke : MonoBehaviour
     }
     void AutoMove()
     {
-        speed = 7.5f;
+        step = 6f;
         if (Moveright)
             Enemy_Move(step);
         else
@@ -233,7 +235,7 @@ public class Minion_wpoke : MonoBehaviour
         {
             if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
             {
-                speed *= 1.5f;
+                speed = 5f;
                 crx = transform.position.x;
 
                 playerOnline = true;
