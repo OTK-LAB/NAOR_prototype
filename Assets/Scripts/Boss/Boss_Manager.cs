@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Boss_Manager : MonoBehaviour
 {
-
+	                                                                    //small note for miniboss: the animations must be long in order to damage the miniboss
+															         	//if the animation is done it will revert to idle (if nearby) and change direction towards us.
     public PlayerManager player;  //do not try this at home
     public int health = 500;
 
@@ -27,16 +28,22 @@ public class Boss_Manager : MonoBehaviour
 	public GameObject shieldcoll;
 	Animator anim;
 
+	[HideInInspector] public float trainAttack;
+	public float trainAttackTimer = 1f;
+
 
 	private void Awake()
 	{
 		anim = GetComponent<Animator>();
+		trainAttack = trainAttackTimer;
 	}
 
 	void Update()
     {
 		if (attackTimer > 0)
 			attackTimer -= Time.deltaTime;
+		if (trainAttack > 0 && attackTimer <= 0)
+			trainAttack -= Time.deltaTime;
     }
 
 
@@ -117,4 +124,10 @@ public class Boss_Manager : MonoBehaviour
     {
          Destroy(gameObject);
     }
+
+	/*public void Timer(float decrease)
+	{
+		if (decrease > 0)                                                   does not work for some reason?
+			decrease -= Time.deltaTime;
+	}*/
 }

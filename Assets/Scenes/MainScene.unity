@@ -168,7 +168,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.31229374, y: 0.84728765}
+  m_Offset: {x: 0.2512107, y: 0.84728765}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -179,7 +179,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.37541252, y: 0.5358441}
+  m_Size: {x: 0.4975786, y: 0.5358441}
   m_EdgeRadius: 0
 --- !u!1 &258730195
 GameObject:
@@ -1451,7 +1451,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.31229374, y: 0.84728765}
+  m_Offset: {x: 0.24509561, y: 0.84728765}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1462,7 +1462,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.37541252, y: 0.5358441}
+  m_Size: {x: 0.5098088, y: 0.5358441}
   m_EdgeRadius: 0
 --- !u!4 &1303983202 stripped
 Transform:
@@ -2361,7 +2361,7 @@ PrefabInstance:
       objectReference: {fileID: 27054696}
     - target: {fileID: 686452850296347665, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: attackRange
-      value: 1.5
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347665, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: attackDamage
@@ -2381,7 +2381,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347665, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: autoAttackTimer
-      value: 4
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 686452850296347665, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
+      propertyPath: trainAttackTimer
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347665, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: attackMask.m_Bits
@@ -2401,7 +2405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347666, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: m_Size.x
-      value: 0.60968
+      value: 0.64807886
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347666, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: m_Size.y
@@ -2409,7 +2413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347666, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: m_Offset.x
-      value: -0.3658751
+      value: -0.34667566
       objectReference: {fileID: 0}
     - target: {fileID: 686452850296347666, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
       propertyPath: m_Offset.y

@@ -128,7 +128,8 @@ public class PlayerManager : MonoBehaviour
 
     public void StunPlayer(float stuntime)
     {
-        if(player.facingRight)
+        player.ChangeAnimationState(hit);
+        if (player.facingRight)
               rb.AddForce(new Vector2(-100,0));
         else
               rb.AddForce(new Vector2(100,0));
@@ -138,7 +139,8 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator Stunned(float stuntime)
     {
-         yield return new WaitForSeconds(0.3f);
+        player.ChangeAnimationState(hit);
+        yield return new WaitForSeconds(0.3f);
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(stuntime);
         rb.constraints = ~RigidbodyConstraints2D.FreezeAll;
