@@ -11,7 +11,8 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
-  - MinionwPoke
+  - Limit
+  - Sword
   layers:
   - Default
   - TransparentFX
