@@ -117,7 +117,9 @@ public class PlayerManager : MonoBehaviour
                             if(enemy.CompareTag("Villager"))
                                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(player.attackDamage * 1.25f);
                             if(enemy.CompareTag("Sword"))
-                                enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f); 
+                                enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("MinionwPoke"))
+                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f); 
                         }
                         break;
                 }
