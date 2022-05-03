@@ -352,7 +352,9 @@ public class PlayerController : MonoBehaviour
             if(enemy.CompareTag("Villager"))
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Sword"))
-                enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);    
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("MinionwPoke"))
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage * 1.25f);
         }
         attackTime = 0f;
     }
