@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isRolling && !isAttacking && !isPraying)
+        if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
         {
             if (!isGuarding)
             {
@@ -354,7 +354,9 @@ public class PlayerController : MonoBehaviour
             if(enemy.CompareTag("Sword"))
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
             if(enemy.CompareTag("MinionwPoke"))
-                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage * 1.25f);
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Legolas"))
+                enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
         }
         attackTime = 0f;
     }

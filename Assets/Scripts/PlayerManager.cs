@@ -71,6 +71,7 @@ public class PlayerManager : MonoBehaviour
             CurrentHealth += health;
         player.ChangeAnimationState(heal);
         isHealing = true;
+        rb.velocity = new Vector2(0,0);
         Invoke("CancelHealState", 0.8f);
         if (CurrentHealth > 100)
         {
@@ -119,7 +120,9 @@ public class PlayerManager : MonoBehaviour
                             if(enemy.CompareTag("Sword"))
                                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
                             if(enemy.CompareTag("MinionwPoke"))
-                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f); 
+                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Legolas"))
+                                enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }
