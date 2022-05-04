@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5231379576554963554
 Transform:
   m_ObjectHideFlags: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
   facingRight: 1
   canMove: 1
   rollSpeed: 10
-  rollColl: {fileID: 5231379576554963555}
+  rollColl: {fileID: 5231379576554963553}
   iFrame: 0.3
   jumpForce: 7
   jumpTimer: 0.25

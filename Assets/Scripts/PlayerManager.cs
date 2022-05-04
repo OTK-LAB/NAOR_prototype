@@ -112,7 +112,14 @@ public class PlayerManager : MonoBehaviour
                         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
                         foreach (Collider2D enemy in hitEnemies)
                         {
-                            enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);    //parry dealt damage
+                            if(enemy.CompareTag("Enemy"))
+                                enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Villager"))
+                                enemy.GetComponent<VillagerHealthManager>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Sword"))
+                                enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("MinionwPoke"))
+                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f); 
                         }
                         break;
                 }

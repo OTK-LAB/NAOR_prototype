@@ -11,7 +11,8 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
-  - Legolas
+  - Limit
+  - Sword
   layers:
   - Default
   - TransparentFX
