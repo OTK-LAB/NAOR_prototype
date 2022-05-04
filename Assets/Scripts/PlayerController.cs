@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isRolling && !isAttacking && !isPraying)
+        if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
         {
             if (!isGuarding)
             {

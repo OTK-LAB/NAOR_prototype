@@ -71,6 +71,7 @@ public class PlayerManager : MonoBehaviour
             CurrentHealth += health;
         player.ChangeAnimationState(heal);
         isHealing = true;
+        rb.velocity = new Vector2(0,0);
         Invoke("CancelHealState", 0.8f);
         if (CurrentHealth > 100)
         {
