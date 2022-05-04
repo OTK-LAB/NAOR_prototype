@@ -52,8 +52,10 @@ public class PlayerController : MonoBehaviour
     private int attackCount = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
+    public int heavyattackDamage = 60;
     public LayerMask enemyLayers;
     private bool isAttacking;
+    private bool isHeavyAttacking;
     private PlayerManager playerManager;
     private float stamina;
     [HideInInspector] public bool inCheckpointRange;
@@ -329,6 +331,13 @@ public class PlayerController : MonoBehaviour
                 else if (!isCombo)
                     Attack();
         }
+        if (Input.GetButton("Fire1") && /* 2 sn beklet */)
+        {
+            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 35)
+            {
+                HeavyAttack();
+            }
+        }
     }
     void Attack()
     {
@@ -356,6 +365,26 @@ public class PlayerController : MonoBehaviour
         }
         attackTime = 0f;
     }
+
+    void HeavyAttack()
+    {
+        StaminaBar.instance.useStamina(35);
+        isHeavyAttacking = true;
+        rb.velocity = new Vector2(0, 0);
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy.CompareTag("Enemy"))
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(heavyattackDamage);
+            if (enemy.CompareTag("Villager"))
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(heavyattackDamage);
+            if (enemy.CompareTag("Sword"))
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(heavyattackDamage);
+        }
+    }
+
+
     public void ThrowDagger()
     {
         //Stack'ten gir dagger ��kar ve dagger objesine ata
@@ -399,7 +428,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isBusy()
     {
-        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
+        if (isAttacking || isHeavyAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
             return true;
         else
             return false;
