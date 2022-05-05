@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     public Transform attackPoint;
     private float attackTime = 0.0f;
+    private float chargeCounter = 0.0f;
+    private float ChargeTime = 2.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
@@ -323,22 +325,31 @@ public class PlayerController : MonoBehaviour
         attackTime += Time.deltaTime;
         if (attackTime > 0.6f)
             isCombo = false;
-        if (Input.GetButtonDown("Fire1"))
+
+        if (Input.GetButton("Fire1"))
         {
+
+            chargeCounter += Time.deltaTime;
+            if (chargeCounter >= ChargeTime)
+            {
+                if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 35)
+                {
+                    HeavyAttack();
+                    Debug.Log("heavy");
+                }
+            }
+        }
+        if (Input.GetButtonUp("Fire1") && chargeCounter < ChargeTime)
+        {
+            Debug.Log("normal");
             if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
                 if (isCombo && attackTime > 0.3f)
                     Attack();
                 else if (!isCombo)
                     Attack();
         }
-        if (Input.GetButton("Fire1") && /* 2 sn beklet */)
-        {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 35)
-            {
-                HeavyAttack();
-            }
-        }
     }
+    
     void Attack()
     {
         StaminaBar.instance.useStamina(15);
@@ -382,6 +393,7 @@ public class PlayerController : MonoBehaviour
             if (enemy.CompareTag("Sword"))
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(heavyattackDamage);
         }
+        chargeCounter = 0;
     }
 
 
