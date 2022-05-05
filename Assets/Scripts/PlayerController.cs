@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     public Transform attackPoint;
     private float attackTime = 0.0f;
-    private float chargeCounter = 0.0f;
+    [HideInInspector] public float chargeCounter = 0.0f;
     private float ChargeTime = 2.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayers;
     private bool isAttacking;
     private bool isHeavyAttacking;
+    private bool isCharging;
     private PlayerManager playerManager;
     private float stamina;
     [HideInInspector] public bool inCheckpointRange;
@@ -190,7 +191,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isRolling && !isAttacking && !isPraying)
+        if (!isRolling && !isAttacking && !isPraying && !isHeavyAttacking && !isCharging)
         {
             if (!isGuarding)
             {
@@ -275,7 +276,7 @@ public class PlayerController : MonoBehaviour
             if(!isRolling && !isGuarding)
             {
                 
-                    if(!isAttacking && !isPraying)
+                    if(!isAttacking && !isPraying && !isHeavyAttacking && !isCharging)
                     { 
                         if(xAxis == 0)
                             ChangeAnimationState(idle);
@@ -292,6 +293,15 @@ public class PlayerController : MonoBehaviour
                     {
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
+                    }                        
+                    if (isHeavyAttacking)
+                    {
+                        ChangeAnimationState("PlayerHeavyAttack");
+                        Debug.Log("anim oynadı");
+                    }
+                    if (isCharging)
+                    {
+                        ChangeAnimationState(idle);
                     }
                 
             }
@@ -326,10 +336,16 @@ public class PlayerController : MonoBehaviour
         if (attackTime > 0.6f)
             isCombo = false;
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && isGrounded)
         {
-
+            isCharging = true;
+            rb.velocity = new Vector2(0,0);
             chargeCounter += Time.deltaTime;
+            Debug.Log(chargeCounter);
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            isCharging = false;
             if (chargeCounter >= ChargeTime)
             {
                 if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 35)
@@ -338,22 +354,23 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("heavy");
                 }
             }
-        }
-        if (Input.GetButtonUp("Fire1") && chargeCounter < ChargeTime)
-        {
-            Debug.Log("normal");
-            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
-                if (isCombo && attackTime > 0.3f)
-                    Attack();
-                else if (!isCombo)
-                    Attack();
+            else if(chargeCounter < ChargeTime)
+            {
+                Debug.Log("normal");
+                if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
+                    if (isCombo && attackTime > 0.3f)
+                        Attack();
+                    else if (!isCombo)
+                        Attack();
+            }
+            
         }
     }
     
     void Attack()
     {
         StaminaBar.instance.useStamina(15);
-        isAttacking = true;
+        isAttacking = true;        
         rb.velocity = new Vector2(0,0);
         attackDamage += 2;
         attackCount++;
@@ -375,12 +392,13 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);    
         }
         attackTime = 0f;
+        chargeCounter = 0f;
     }
 
     void HeavyAttack()
     {
         StaminaBar.instance.useStamina(35);
-        isHeavyAttacking = true;
+        isHeavyAttacking = true;        
         rb.velocity = new Vector2(0, 0);
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
@@ -393,7 +411,12 @@ public class PlayerController : MonoBehaviour
             if (enemy.CompareTag("Sword"))
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(heavyattackDamage);
         }
-        chargeCounter = 0;
+        chargeCounter = 0f;
+    }
+    
+    void HeavyAttackDone()
+    {
+        isHeavyAttacking = false;
     }
 
 

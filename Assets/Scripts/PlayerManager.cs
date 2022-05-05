@@ -138,6 +138,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (CurrentHealth <= 0)
         {
+            player.GetComponent<PlayerController>().chargeCounter = 0f;
             lives--;
             if (lives == 1)
             {
