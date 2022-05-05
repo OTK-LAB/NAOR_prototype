@@ -1,5 +1,120 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &27054696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 27054697}
+  - component: {fileID: 27054698}
+  m_Layer: 7
+  m_Name: ShieldCollider
+  m_TagString: MinibossShield
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &27054697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27054696}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1260147988}
+  m_Father: {fileID: 686452850296348654}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &27054698
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27054696}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.2512107, y: 0.84728765}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.4975786, y: 0.5358441}
+  m_EdgeRadius: 0
+--- !u!1 &1260147987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1260147988}
+  - component: {fileID: 1260147989}
+  m_Layer: 9
+  m_Name: ShieldCollider (1)
+  m_TagString: MinibossShield
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1260147988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260147987}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 27054697}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1260147989
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260147987}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.24509561, y: 0.84728765}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5098088, y: 0.5358441}
+  m_EdgeRadius: 0
 --- !u!1 &686452848842003971
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +126,7 @@ GameObject:
   - component: {fileID: 686452848842003996}
   - component: {fileID: 686452848842003998}
   - component: {fileID: 686452848842003997}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GroundSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +141,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686452848842003971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0.526, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 686452850296348654}
@@ -69,13 +184,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 686452849255546492}
-  m_Layer: 0
+  - component: {fileID: 1688863633}
+  m_Layer: 10
   m_Name: AttackBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &686452849255546492
 Transform:
   m_ObjectHideFlags: 0
@@ -84,12 +200,38 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686452849255546467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.634, y: 0.658, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 686452850296348654}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1688863633
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686452849255546467}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.1343708, y: 0.28466725}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.7312584, y: 0.700997}
+  m_EdgeRadius: 0
 --- !u!1 &686452850296347664
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,9 +246,9 @@ GameObject:
   - component: {fileID: 686452850296347667}
   - component: {fileID: 686452850296347666}
   - component: {fileID: 686452850296347665}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HeroKnight
-  m_TagString: Player
+  m_TagString: Miniboss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,10 +262,11 @@ Transform:
   m_GameObject: {fileID: 686452850296347664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.83, y: -4.1, z: 0}
-  m_LocalScale: {x: 1.45, y: 2.8134, z: 1}
+  m_LocalScale: {x: 2.446875, y: 5.7337093, z: 1}
   m_Children:
   - {fileID: 686452848842003996}
   - {fileID: 686452849255546492}
+  - {fileID: 27054697}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -185,7 +328,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -231,7 +374,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.12228602, y: 0.6882605}
+  m_Offset: {x: -0.34667566, y: 0.95284003}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -242,7 +385,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.096858, y: 1.2525209}
+  m_Size: {x: 0.64807886, y: 0.72336185}
   m_EdgeRadius: 0
 --- !u!114 &686452850296347665
 MonoBehaviour:
@@ -256,14 +399,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6067cf1b9a8b0d46ad9f7ec8c6bf167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   health: 500
   deathEffect: {fileID: 0}
   attackTimer: 0
-  autoAttackTimer: 0
-  attackDamage: 20
-  enragedAttackDamage: 40
-  attackOffset: {x: 0, y: 0, z: 0}
-  attackRange: 1
+  autoAttackTimer: 3
+  attackDamage: 35
+  shieldDamage: 5
+  enragedAttackDamage: 45
+  attackOffset: {x: 2, y: 4.3, z: 0}
+  attackRange: 1.7
   attackMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
+  inRange: 0
+  shieldcoll: {fileID: 27054696}
+  trainAttack: 0
+  trainAttackTimer: 2.2
