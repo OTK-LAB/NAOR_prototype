@@ -11,8 +11,8 @@ public class Minion_wfireball : MonoBehaviour
     const string hit = "EnemyHit";
     const string attack = "EnemyAttack";
     const string death = "EnemyDeath";
-    
-    
+
+
     //Move
     Vector3 movement;
     bool Moveright = true;
@@ -37,9 +37,9 @@ public class Minion_wfireball : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();   
+        animator = GetComponent<Animator>();
         currentHealth = maxHealth;
-        CalculatedTime = TimeBtwEachShot; 
+        CalculatedTime = TimeBtwEachShot;
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -85,7 +85,7 @@ public class Minion_wfireball : MonoBehaviour
         if (Vector2.Distance(transform.position, PlayerPosition.position) <= minimumFiringDistance)
         {
             flip();
-            playerOnline = true;          
+            playerOnline = true;
             FireballMechanism();
         }
         else
@@ -107,17 +107,17 @@ public class Minion_wfireball : MonoBehaviour
             }
         }
     }
-   
+
     private void OnTriggerEnter2D(Collider2D trig)
     {
-        if (trig.CompareTag("turn")&& !playerOnline)
+        if (trig.CompareTag("turn") && !playerOnline)
         {
             if (Moveright) Moveright = false;
             else Moveright = true;
             transform.Rotate(0f, 180f, 0f);
         }
         if (trig.CompareTag("Player"))
-        {       
+        {
             trig.transform.SendMessage("DamagePlayer", damage);
         }
 
@@ -147,11 +147,11 @@ public class Minion_wfireball : MonoBehaviour
     {
         //attack
         if (playerOnline && CalculatedTime <= 0)
-        { 
+        {
             ChangeAnimationState(attack);
             StartCoroutine(backtoIdle());
         }
-      
+
         //hit
         if (hurt && alive)
         {
@@ -162,9 +162,9 @@ public class Minion_wfireball : MonoBehaviour
     }
     IEnumerator backtoIdle()
     {
-       
+
         yield return new WaitForSeconds(0.5f);
-        if(alive)
+        if (alive)
             ChangeAnimationState(idle);
         hurt = false;
     }
@@ -175,9 +175,10 @@ public class Minion_wfireball : MonoBehaviour
         {
             alive = false;
             hurt = false;
-            Die();           
+            Die();
         }
-        else {
+        else
+        {
             hurt = true;
             ChangeAnimations();
         }
@@ -191,4 +192,7 @@ public class Minion_wfireball : MonoBehaviour
         this.enabled = false;
 
     }
+
+
 }
+
