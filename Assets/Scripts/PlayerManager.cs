@@ -31,9 +31,9 @@ public class PlayerManager : MonoBehaviour
     const string counter = "PlayerCounter";
     [HideInInspector] public bool hitAnimRunning;
 
-    //levelSystem & Skills
-    public LevelSystem levelSystem;
-    public PlayerSkills playerSkills;
+    //Level and Skill System
+    public LevelAndSkillManager levelSystem;
+    public Skills skills;
     
 
 
@@ -42,9 +42,12 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        levelSystem = new LevelSystem();
-        playerSkills = new PlayerSkills();
-        
+        //Level and Skill System
+        levelSystem = new LevelAndSkillManager();
+        levelSystem.OnSkillUnlocked += PlayerSkills_OnSkillUnlocked;
+        skills = GetComponent<Skills>();
+
+
         CurrentHealth = MaxHealth;
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
@@ -77,9 +80,29 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        exp();
+        
 
     }
+    //Level And Skill System Start
+    public LevelAndSkillManager GetLevelSystem()
+    {
+        return levelSystem;
+    }
+
+    private void PlayerSkills_OnSkillUnlocked(object sender, LevelAndSkillManager.OnSkillUnlockedEventArgs e)
+    {
+        switch (e.skillType)
+        {
+            case LevelAndSkillManager.SkillType.skillB:
+                skills.SetMovementSpeed(10f);
+                break;
+            case LevelAndSkillManager.SkillType.skillC:
+                skills.SetMovementSpeed(20f);
+                break;
+        }
+    }
+    //Level And Skill System End
+
 
     public virtual void DamagePlayer(float damage)
     {
@@ -187,7 +210,7 @@ public class PlayerManager : MonoBehaviour
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
     }
-
+    
     //deneme
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -213,12 +236,5 @@ public class PlayerManager : MonoBehaviour
     }
 
    
-
-    void exp()
-    {
-        
-        Debug.Log("Current level: " + levelSystem.GetLevelNumber());
-        Debug.Log("Current Exp: " + levelSystem.GetExperience());
-    }
 
 }
