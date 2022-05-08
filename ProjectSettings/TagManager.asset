@@ -13,6 +13,8 @@ TagManager:
   - Villager
   - Limit
   - Sword
+  - MinionwPoke
+  - CheckPointMenuManager
   layers:
   - Default
   - TransparentFX
