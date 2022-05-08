@@ -566,45 +566,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0e2ec063a9039141be1fb2c891d6acb, type: 3}
---- !u!1 &792120399
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 792120400}
-  m_Layer: 0
-  m_Name: WallCheckBack
-  m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &792120400
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 792120399}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.28, y: 0.08699983, z: -0.19718692}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1673909636}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &831287753 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4812996013848051062, guid: 131ee2c6090411a44a01309c515eb5a4, type: 3}
   m_PrefabInstance: {fileID: 1003716741}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &992778237 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8021724700209421849, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-  m_PrefabInstance: {fileID: 2303616366500571380}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1003716741
 PrefabInstance:
@@ -2423,36 +2388,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131ee2c6090411a44a01309c515eb5a4, type: 3}
---- !u!1 &1514436765
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1514436766}
-  m_Layer: 8
-  m_Name: LedgeCheckDown
-  m_TagString: Untagged
-  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1514436766
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1514436765}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.05, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1673909636}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1668805028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2515,36 +2450,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2303616365481814401, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
   m_PrefabInstance: {fileID: 2303616366500571380}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1963275754
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1963275755}
-  m_Layer: 8
-  m_Name: LedgeCheckUp
-  m_TagString: Untagged
-  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1963275755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1963275754}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.45, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1673909636}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2084008866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,24 +2501,8 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2303616365481814400, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_Size.x
-      value: 0.46875
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814400, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_Size.y
-      value: 1.78125
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814400, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814401, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814401, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814401, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
@@ -2656,93 +2545,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: coyoteTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeCheck
-      value: 
-      objectReference: {fileID: 1963275755}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: xWallForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeCheckUp
-      value: 
-      objectReference: {fileID: 1963275755}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: wallDistance
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: wallJumpLerp
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeXOffset1
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeXOffset2
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeYOffset2
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeCheckDown
-      value: 
-      objectReference: {fileID: 1514436766}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: wallSlideSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: wallGrabPointBack
-      value: 
-      objectReference: {fileID: 792120400}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: ledgeClimbXOffset1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814402, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: wallGrabPointFront
-      value: 
-      objectReference: {fileID: 992778237}
-    - target: {fileID: 2303616365481814403, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 0.46875
-      objectReference: {fileID: 0}
-    - target: {fileID: 2303616365481814403, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 1.78125
-      objectReference: {fileID: 0}
     - target: {fileID: 2303616365481814406, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8021724700209421848, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
-    - target: {fileID: 8021724700209421848, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_Name
-      value: WallCheckFront
-      objectReference: {fileID: 0}
-    - target: {fileID: 8021724700209421849, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.365
-      objectReference: {fileID: 0}
-    - target: {fileID: 8021724700209421849, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.087
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
