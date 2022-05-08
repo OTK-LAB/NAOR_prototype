@@ -370,13 +370,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  health: 500
+  health: 110
   deathEffect: {fileID: 0}
   attackTimer: 0
   autoAttackTimer: 3
-  attackDamage: 35
-  shieldDamage: 5
-  enragedAttackDamage: 45
+  attackDamage: 25
+  shieldDamage: 0
+  enragedAttackDamage: 0
   attackOffset: {x: 2, y: 4.3, z: 0}
   attackRange: 1.7
   attackMask:
@@ -385,7 +385,7 @@ MonoBehaviour:
   inRange: 0
   shieldcoll: {fileID: 3908183987978470361}
   trainAttack: 0
-  trainAttackTimer: 2.2
+  trainAttackTimer: 2.5
 --- !u!1 &3908183987978470361
 GameObject:
   m_ObjectHideFlags: 0

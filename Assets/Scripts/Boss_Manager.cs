@@ -58,11 +58,10 @@ public class Boss_Manager : MonoBehaviour
 		if (colInfo != null)
 		{
 			player.DamagePlayer(attackDamage);
-			//colInfo.GetComponent<PlayerManager>().DamagePlayer(attackDamage);
 		}
 	}
 
-    	void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
 	{
 		Vector3 pos = transform.position;
 		pos += transform.right * attackOffset.x;
@@ -106,10 +105,7 @@ public class Boss_Manager : MonoBehaviour
 		if (colInfo2 != null)
 		{
 			anim.Play("Miniboss_shield");
-            player.DamagePlayer(shieldDamage);
-			player.StunPlayer(2f);
-			//colInfo2.GetComponent<PlayerManager>().DamagePlayer(shieldDamage);
-			//colInfo2.GetComponent<PlayerManager>().StunPlayer(2f);
+            player.DamagePlayer(shieldDamage); //kalkan kýrma
 		}
 	}
 
