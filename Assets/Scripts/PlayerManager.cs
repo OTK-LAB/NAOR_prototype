@@ -15,8 +15,8 @@ public class PlayerManager : MonoBehaviour
 
     public static PlayerManager instance;
 
-    private int lives = 4;
-    public float MaxHealth = 100;
+    public int lives = 4;
+    public float MaxHealth = 100f;
     public float CurrentHealth = 100f;
     public bool isHealing;
     //[HideInInspector] 
@@ -62,6 +62,36 @@ public class PlayerManager : MonoBehaviour
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);
         if (status == 1 || status == 2) // continue moving after a parry
             player.canMove = true;
+
+        if (lives == 4)
+        {
+            if (CurrentHealth >= 100)
+            {
+                CurrentHealth = 100;
+            }
+
+        }
+        if (lives == 3)
+        {
+            if (CurrentHealth >= 1)
+            {
+                CurrentHealth = 1;
+            }
+        } 
+        if (lives == 2)
+        {
+            if (CurrentHealth >= 1)
+            {
+                CurrentHealth = 1;
+            }
+        }
+        if (lives == 1)
+        {
+            if (CurrentHealth >= 1)
+            {
+                CurrentHealth = 1;
+            }
+        }
     }
 
     private void Awake()
@@ -147,18 +177,18 @@ public class PlayerManager : MonoBehaviour
                 player.enabled = false;
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
-                CurrentHealth = 5;
+                CurrentHealth = 1;
                 healthBar.SetHealth(CurrentHealth);
                 healthBar.DeathDefienceGem(lives);
             }
             if (lives == 2)
             {
-                CurrentHealth = 5;
+                CurrentHealth = 1;
                 healthBar.DeathDefienceGem(lives);
             }
             if (lives == 1)
             {
-                CurrentHealth = 5;
+                CurrentHealth = 1;
                 healthBar.DeathDefienceGem(lives);
             }
             if (lives == 0)

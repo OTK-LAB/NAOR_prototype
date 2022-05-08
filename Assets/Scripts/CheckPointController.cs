@@ -7,6 +7,7 @@ public class CheckPointController : MonoBehaviour
     public bool checkpointReached;
     private PlayerManager playerManager;
     private PlayerController playerController;
+    private HealthBar healthBar;
 
     //Animations
     private Animator animator;
@@ -17,6 +18,7 @@ public class CheckPointController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        healthBar = GameObject.FindGameObjectWithTag("Bar").GetComponent<HealthBar>();
         animator = GetComponent<Animator>();
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -58,6 +60,9 @@ public class CheckPointController : MonoBehaviour
             {
                 playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
+                playerManager.lives = 4;
+                playerManager.CurrentHealth = 100;
+                healthBar.SetHealth(playerManager.CurrentHealth);
             }
         }
         if(!checkpointReached)
