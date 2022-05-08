@@ -27,12 +27,12 @@ public class Dagger : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             //Destroy dagger after hitting an enemy
-            collision.GetComponent<Minion_wfireball>().TakeDamage(50);
+            collision.GetComponent<Minion_wfireball>().TakeDamage(5);
         }
         if(collision.gameObject.CompareTag("Villager"))
         {
             //Destroy dagger after hitting an enemy
-            collision.GetComponent<VillagerHealthManager>().TakeDamage(50);
+            collision.GetComponent<VillagerHealthManager>().TakeDamage(5);
         }
     }
 }

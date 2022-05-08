@@ -11,6 +11,8 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - Limit
+  - Sword
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - Ground
   - Enemy
   - Player
-  - 
+  - RollCollider
   - 
   - 
   - 

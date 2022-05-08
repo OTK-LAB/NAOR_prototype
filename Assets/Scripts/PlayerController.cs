@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
     //Movement
     [Header("Movement")]
     public float runSpeed;
+    public float walkSpeed;
     private float xAxis;
+    private bool walkToggle;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
@@ -18,13 +20,15 @@ public class PlayerController : MonoBehaviour
     [Header("Roll")]
     public float rollSpeed;
     private bool isRolling = false;
-    public CircleCollider2D rollColl;
+    public GameObject rollColl;
     public float iFrame = 0.3f;
 
     //Jumping
     [Header("Jumping")]
     public float jumpForce;
-    private bool jumpPressed = false;
+    private bool isJumping = false;
+    public float jumpTimer;
+    private float jumpTimeCounter;
     [HideInInspector] public bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -86,10 +90,13 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayers;
     private bool isAttacking;
     private PlayerManager playerManager;
+    private float stamina;
     [HideInInspector] public bool inCheckpointRange;
     [HideInInspector] public bool dead = false;
     [HideInInspector] public bool isCombo = false;
     [HideInInspector] public bool isGuarding = false;
+    private float guardTimer;
+    private bool parryStamina;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject daggerobj;
     [SerializeField] private int daggerAmount;
@@ -119,6 +126,7 @@ public class PlayerController : MonoBehaviour
         ChangeAnimations();
         FlipPlayer();
         CheckLedgeClimb();
+        stamina = StaminaBar.instance.currentStamina;
         if (daggerCooldownController.GetQueue().Count > 0)
         {
             if (Time.time >= daggerCooldownController.GetDequeueTime())
@@ -131,7 +139,8 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        Jump();
+        //Jump();
+        WallJump();
         WallSlide();
     }
     void CheckState()
@@ -201,29 +210,69 @@ public class PlayerController : MonoBehaviour
         {
             xAxis = 0;
         }
-        //Check Jump, Attack, Roll, Pray, Parry Input 
+        //Walk Toggle
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+            walkToggle = !walkToggle;
+        //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isWallSliding)
-                jumpPressed = true;
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isWallSliding && !playerManager.isHealing)
+            {
+                isJumping = true;
+                jumpTimeCounter = jumpTimer;
+                Jump();
+            }
             if (isWallSliding)
                 wallJumpPressed = true;
         }
-        if (Input.GetKeyDown(KeyCode.C)) // Pray
-            if (inCheckpointRange && isGrounded && !isPraying && !isGuarding)
+        if (Input.GetButton("Jump") && isJumping)
+            if (jumpTimeCounter > 0)
+            {
+                jumpTimeCounter -= Time.deltaTime;
+                Jump();
+            }
+            else 
+                isJumping = false;
+                
+        if(Input.GetButtonUp("Jump"))
+        {
+            isJumping = false;
+        }
+        //Pray
+        if (Input.GetKeyDown(KeyCode.C))
+            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
                 isPraying = true;
-        if (Input.GetKeyDown(KeyCode.LeftShift)) // Roll
-            if (!isRolling && isGrounded && !isPraying)
-                StartCoroutine(Roll());            
-        if (Input.GetMouseButton(1)) //Guard
-            if (isGrounded && !playerManager.hitAnimRunning)
+        //Roll
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30)
+                StartCoroutine(Roll()); 
+        //Guard
+        if (Input.GetMouseButton(1))
+            if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
                 performGuard();
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
+            {
                 isGuarding = false;
+                parryStamina = false;
+                guardTimer = 0;
+            }
+        //Dagger
         if (Input.GetMouseButtonDown(2))
             if (!isBusy())
                 ThrowDagger();
+        //Potion
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+            {
+                if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
+                {
+                    PlayerManager.instance.HealthPotion(33);
+                    Potion.instance.UsePotions(1);
+                }
+            }
+        }
     }
     
     private void CheckLedgeClimb()
@@ -267,11 +316,14 @@ public class PlayerController : MonoBehaviour
         {
             if (!isWallJumping)
             {
-                if (!isRolling && !isAttacking && !isPraying)
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
                 {
                     if (!isGuarding)
                     {
-                        rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                        if(!walkToggle)
+                            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                        else
+                            rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
                     }
                     else
                     {
@@ -286,17 +338,23 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            rb.velocity = new Vector2(0,0);
             return;
         }
     }
     void Jump()
     {
-        if (jumpPressed)
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        isGuarding = false;
+        /*if (isJumping && jumpTimer < 1) //isGuarding eklenebilir
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            jumpPressed = false;
-            isGuarding = false;
-        }
+            jumpTimer += Time.fixedDeltaTime;
+            jumpForce = Math.Round(jumpTimer,2);
+        }*/
+        
+    }
+    void WallJump()
+    {
         if (wallJumpPressed)
         {
             if((wallDirection == 1 && !facingRight) || (wallDirection == -1 && facingRight))
@@ -338,9 +396,10 @@ public class PlayerController : MonoBehaviour
     IEnumerator Roll()
     {
         isRolling = true;
-        rollColl.enabled = true;
+        playerManager.damageable = false;
+        rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        
+        StaminaBar.instance.useStamina(30);
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
@@ -348,14 +407,28 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
         isRolling = false;
-        rollColl.enabled = false;
+        playerManager.damageable = true;
+        rollColl.SetActive(false);
         GetComponent<BoxCollider2D>().enabled = true;
     }
     void performGuard()
     {
+        if(!parryStamina)
+        {
+            StaminaBar.instance.useStamina(10);
+            parryStamina = true;
+        }
+        guardTimer += Time.deltaTime;
+        if(guardTimer > 1)
+        {
+            guardTimer = 0;
+            StaminaBar.instance.useStamina(12.5f);
+        }
         if(!isRolling && isGrounded && !isPraying && !isAttacking)
+        {
             ChangeAnimationState(parry);
             isGuarding = true;
+        }
     }
     
     void FlipPlayer()
@@ -383,12 +456,10 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving)
+        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
         {
-            if(!isRolling)
+            if(!isRolling && !isGuarding)
             {
-                if(!isGuarding)
-                {
                     if(!isAttacking && !isPraying)
                     { 
                         if(xAxis == 0)
@@ -407,9 +478,8 @@ public class PlayerController : MonoBehaviour
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
                     }
-                }
             }
-            else
+            else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
         }
 
@@ -441,7 +511,7 @@ public class PlayerController : MonoBehaviour
             isCombo = false;
         if (Input.GetButtonDown("Fire1"))
         {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling)
+            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
                 if (isCombo && attackTime > 0.3f)
                     Attack();
                 else if (!isCombo)
@@ -450,7 +520,9 @@ public class PlayerController : MonoBehaviour
     }
     void Attack()
     {
+        StaminaBar.instance.useStamina(15);
         isAttacking = true;
+        rb.velocity = new Vector2(0,0);
         attackDamage += 2;
         attackCount++;
         isCombo = true;
@@ -458,22 +530,27 @@ public class PlayerController : MonoBehaviour
         if (attackCount > 3 || attackTime > 0.6f)
         {
             attackCount = 1;
-            attackDamage = 10;
+            attackDamage = 20;
         }
-
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
             if(enemy.CompareTag("Enemy"))
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Villager"))
-                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Sword"))
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("MinionwPoke"))
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Legolas"))
+                enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
         }
         attackTime = 0f;
     }
     public void ThrowDagger()
     {
-        //Stack'ten gir dagger ��kar ve dagger objesine ata
+        //Stack'ten gir dagger çıkar ve dagger objesine ata
         GameObject dagger = daggerStack.PopFromStack();
 
         if (dagger != null)
@@ -485,7 +562,7 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.right);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                //Stack'ten çıkarmış dagger objesini Queue'ya yerleştir
                 daggerCooldownController.EnqueueItem(dagger);
             }
             else
@@ -495,10 +572,10 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.left);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                //Stack'ten çıkarmış dagger objesini Queue'ya yerleştir
                 daggerCooldownController.EnqueueItem(dagger);
             }
-            //Daggerlar�n 3 saniye sonra sahneden ��kmas�na yarayan coroutine
+            //Daggerların 3 saniye sonra sahneden çıkmasına yarayan coroutine
             IEnumerator startDaggerLifeTime()
             {
                 yield return new WaitForSeconds(10f);
@@ -514,7 +591,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isBusy()
     {
-        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning)
+        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
             return true;
         else
             return false;
