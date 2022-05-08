@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
 
     public static PlayerManager instance;
 
-    private int lives = 2;
+    private int lives = 4;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
     public bool isHealing;
@@ -36,8 +36,8 @@ public class PlayerManager : MonoBehaviour
     const string heal = "PlayerHeal";
     [HideInInspector] public bool hitAnimRunning;
 
-
-
+    //HealthGate
+    public HealthBar healthBar;
 
 
     // Start is called before the first frame update
@@ -48,6 +48,9 @@ public class PlayerManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentCheckPoint = gameObject;
+
+        //HealthGate
+        healthBar.SetMaxHealth(MaxHealth);
     }
 
     // Update is called once per frame
@@ -93,6 +96,7 @@ public class PlayerManager : MonoBehaviour
                     //normal damage status
                     case 1:
                         CurrentHealth -= damage;
+                        healthBar.SetHealth(CurrentHealth);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -100,6 +104,7 @@ public class PlayerManager : MonoBehaviour
                     //blocking damage status
                     case 2:
                         CurrentHealth -= damage * 0.6f;
+                        healthBar.SetHealth(CurrentHealth);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -120,6 +125,7 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 CurrentHealth = 0;
+                healthBar.SetHealth(CurrentHealth);
 
             }
             Die();
@@ -134,25 +140,39 @@ public class PlayerManager : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             lives--;
-            if (lives == 1)
+            if (lives == 3)
             {
                 dead = true;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
-                CurrentHealth = (MaxHealth * 40) / 100;
-
+                CurrentHealth = 5;
+                healthBar.SetHealth(CurrentHealth);
+                healthBar.DeathDefienceGem(lives);
+            }
+            if (lives == 2)
+            {
+                CurrentHealth = 5;
+                healthBar.DeathDefienceGem(lives);
+            }
+            if (lives == 1)
+            {
+                CurrentHealth = 5;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 0)
             {
                 dead = true;
                 player.ChangeAnimationState(death);
                 CurrentHealth = MaxHealth;
-                lives = 2;
+                healthBar.DeathDefienceGem(lives);
+                lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
                 StartCoroutine(RespawnPlayer());
+                healthBar.RevertHealthBar();
+                healthBar.SetHealth(CurrentHealth);
             }
         }
     }
