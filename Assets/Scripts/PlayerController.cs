@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class PlayerController : MonoBehaviour
 {
     //Movement
@@ -16,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private bool isPraying;
     [HideInInspector] public bool canMove = true;
+    [HideInInspector] public bool canFlip = true;
 
     [Header("Roll")]
     public float rollSpeed;
@@ -34,6 +34,40 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundLayer;
 
+    [Header("Wall Slide")]
+    public Transform wallGrabPointFront;
+    public Transform wallGrabPointBack;
+    public float wallSlideSpeed = 0.2f;
+    private bool isWallSliding = false;
+    private bool grabFront, grabBack, canGrab;
+    public float wallDistance = 0.05f;
+
+    [Header("Wall Jump")]
+    public float wallJumpTime = 0.1f;
+    public float xWallForce = 5f;
+    public float wallJumpLerp = 1f;
+    private float jumpTime;
+    private int wallDirection;
+    private bool wallJumpPressed = false;
+    private bool isWallJumping = false;
+
+    [Header("Ledge Climb")]
+    public Transform ledgeCheckUp;
+    public Transform ledgeCheckDown;
+    private bool isTouchingLedgeUp;
+    private bool isTouchingLedgeDown;
+    private bool canClimbLedge = false;
+    private bool ledgeDetected;
+    private Vector2 ledgePosBot;
+    private Vector2 ledgePos1;
+    private Vector2 ledgePos2;
+    [SerializeField]
+    private float ledgeDistance;
+    public float ledgeXOffset1 = 0.0f;
+    public float ledgeYOffset1 = 0.0f;
+    public float ledgeXOffset2 = 0.0f;
+    public float ledgeYOffset2 = 0.0f;
+
     //Animations
     private Animator animator;
     private string currentState;
@@ -44,6 +78,7 @@ public class PlayerController : MonoBehaviour
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
+    const string climb = "PlayerClimb";
 
     //Combat
     [Header("Combat")]
@@ -73,7 +108,6 @@ public class PlayerController : MonoBehaviour
     {
         daggerStack = GetComponent<ItemStack>();
         daggerStack.SetItem(daggerobj, daggerAmount);
-
         daggerCooldownController = GetComponent<CooldownController>();
         daggerCooldownController.SetCooldown(cooldownTime);
     }
@@ -91,12 +125,13 @@ public class PlayerController : MonoBehaviour
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
+        CheckLedgeClimb();
         stamina = StaminaBar.instance.currentStamina;
         if (daggerCooldownController.GetQueue().Count > 0)
         {
             if (Time.time >= daggerCooldownController.GetDequeueTime())
             {
-                //DequeueLastItem() fonksiyonuyla Queue'dan ��kard���n dagger'� Stack'e koy
+                //DequeueLastItem() fonksiyonuyla Queue'dan cikardigin dagger'i Stack'e koy
                 daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
             }
         }
@@ -105,28 +140,91 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         //Jump();
+        WallJump();
+        WallSlide();
     }
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        grabFront = Physics2D.OverlapCircle(wallGrabPointFront.position, wallDistance, groundLayer);
+        grabBack = Physics2D.OverlapCircle(wallGrabPointBack.position, wallDistance, groundLayer);
+        if(facingRight)
+        {
+            isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+        }
+        else
+        {
+            isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+
+        }
+
+        if(grabFront || grabBack)
+        {
+            canGrab = true;
+        }
+        else
+        {
+            canGrab = false;
+        }
+
+        if(grabFront && !grabBack)
+        {
+            if(wallGrabPointFront.transform.position.x > wallGrabPointBack.transform.position.x)
+            {
+                wallDirection = -1;
+            }
+            else
+            {
+                wallDirection = 1;
+            }
+        }
+        else if(!grabFront && grabBack)
+        {
+            if(wallGrabPointBack.transform.position.x > wallGrabPointFront.transform.position.x)
+            {
+                wallDirection = -1;
+            }
+            else
+            {
+                wallDirection = 1;
+            }
+        }
+
+        if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
+            ledgeDetected = true;
+            ledgePosBot = ledgeCheckDown.position;
+        }
+
     }
     void CheckInputs()
-    {     
+    {
         //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal");
+        if(!isWallJumping)
+        {
+            xAxis = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            xAxis = 0;
+        }
         //Walk Toggle
         if (Input.GetKeyDown(KeyCode.LeftAlt))
             walkToggle = !walkToggle;
         //Jump
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !playerManager.isHealing)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isWallSliding && !playerManager.isHealing)
             {
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
             }
-        } 
+            if (isWallSliding)
+                wallJumpPressed = true;
+        }
         if (Input.GetButton("Jump") && isJumping)
             if (jumpTimeCounter > 0)
             {
@@ -177,26 +275,71 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    private void CheckLedgeClimb()
+    {
+        if(ledgeDetected && !canClimbLedge)
+        {
+            canClimbLedge = true;
+            if(facingRight)
+            {
+                ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
+                ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) + ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
+            }
+            else
+            {
+                ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
+                ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
+            }
+            canMove = false;
+            canFlip = false;
+        }
+
+        if(canClimbLedge)
+        {
+            transform.position = ledgePos1;
+            FinishLedgeClimb();
+        }
+    }
+
+    public void FinishLedgeClimb()
+    {
+        canClimbLedge = false;
+        transform.position = ledgePos2;
+        canMove = true;
+        canFlip = true;
+        ledgeDetected = false;
+    }
   
     void Move()
     {
-        if (!canMove)
+        if (canMove)
         {
-            rb.velocity = new Vector2 (0,0);
-            return;
-        }
-
-        if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
-        {
-            if (!isGuarding)
+            if (!isWallJumping)
             {
-                if(!walkToggle)
-                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
-                else
-                    rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
+                {
+                    if (!isGuarding)
+                    {
+                        if(!walkToggle)
+                            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                        else
+                            rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
+                    }
+                }
             }
             else
-                rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
+            {
+                rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(xAxis * runSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
+            }
+        }
+        else
+        {
+            rb.velocity = new Vector2(0,0);
+            return;
         }
     }
     void Jump()
@@ -208,7 +351,48 @@ public class PlayerController : MonoBehaviour
             jumpTimer += Time.fixedDeltaTime;
             jumpForce = Math.Round(jumpTimer,2);
         }*/
+        
     }
+    void WallJump()
+    {
+        if (wallJumpPressed)
+        {
+            if((wallDirection == 1 && !facingRight) || (wallDirection == -1 && facingRight))
+            {
+                Flip();
+            }
+
+            rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
+            wallJumpPressed = false;
+
+            StartCoroutine(WallJumpWaiter());
+        }
+    }
+
+    IEnumerator WallJumpWaiter()
+    {
+        isWallJumping = true;
+        yield return new WaitForSeconds(0.4f);
+        isWallJumping = false;
+    }
+
+    void WallSlide()
+    {
+        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0)
+        {
+            isWallSliding = true;
+            jumpTime = Time.time + wallJumpTime;
+        }
+        else if (jumpTime < Time.time)
+        {
+            isWallSliding = false;
+        }       
+        if (isWallSliding)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
+        }
+    }
+    
     IEnumerator Roll()
     {
         isRolling = true;
@@ -253,14 +437,20 @@ public class PlayerController : MonoBehaviour
         {
             if(xAxis < 0 && facingRight)
             {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                facingRight = !facingRight;
+                Flip();
             }
             else if(xAxis > 0 && !facingRight)
             {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                facingRight = !facingRight;
+                Flip();
             }
+        }
+    }
+    
+    void Flip(){
+        if(canFlip)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            facingRight = !facingRight;
         }
     }
     void ChangeAnimations()
@@ -270,7 +460,6 @@ public class PlayerController : MonoBehaviour
         {
             if(!isRolling && !isGuarding)
             {
-                
                     if(!isAttacking && !isPraying)
                     { 
                         if(xAxis == 0)
@@ -289,7 +478,6 @@ public class PlayerController : MonoBehaviour
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
                     }
-                
             }
             else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
@@ -362,7 +550,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ThrowDagger()
     {
-        //Stack'ten gir dagger ��kar ve dagger objesine ata
+        //Stack'ten gir dagger çıkar ve dagger objesine ata
         GameObject dagger = daggerStack.PopFromStack();
 
         if (dagger != null)
@@ -374,7 +562,7 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.right);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                //Stack'ten çıkarmış dagger objesini Queue'ya yerleştir
                 daggerCooldownController.EnqueueItem(dagger);
             }
             else
@@ -384,10 +572,10 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.left);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                //Stack'ten çıkarmış dagger objesini Queue'ya yerleştir
                 daggerCooldownController.EnqueueItem(dagger);
             }
-            //Daggerlar�n 3 saniye sonra sahneden ��kmas�na yarayan coroutine
+            //Daggerların 3 saniye sonra sahneden çıkmasına yarayan coroutine
             IEnumerator startDaggerLifeTime()
             {
                 yield return new WaitForSeconds(10f);
@@ -407,5 +595,5 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }    
+    }  
 }
