@@ -410,19 +410,31 @@ public class PlayerController : MonoBehaviour
             {
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(heavyattackDamage);
                 enemy.GetComponent<Minion_wfireball>().enabled = false;
+                if(enemy.GetComponent<Minion_wfireball>().currentHealth >= 0)
+                {
+                    StartCoroutine(Stun());
+                }
             }
             if (enemy.CompareTag("Villager"))
             {
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(heavyattackDamage);
                 enemy.GetComponent<VillagerRunning>().enabled = false;
+                if(enemy.GetComponent<VillagerHealthManager>().currentHealth >= 0)
+                {
+                    StartCoroutine(Stun());
+                }
             }            
             if (enemy.CompareTag("Sword"))
             {
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(heavyattackDamage);
                 enemy.GetComponent<Sword_Behaviour>().enabled = false;
+                if(enemy.GetComponent<Sword_Behaviour>().currentHealth >= 0)
+                {
+                    StartCoroutine(Stun());
+                }
             }
         }
-        StartCoroutine(Stun());
+        
         chargeCounter = 0f;
 
         IEnumerator Stun()

@@ -10,7 +10,7 @@ public class VillagerHealthManager : MonoBehaviour
     const string death = "VillagerDeath";
     public float maxHealth = 100;
     [SerializeField]
-    float currentHealth;
+    public float currentHealth;
     [HideInInspector] public bool isHurting;
 
 
