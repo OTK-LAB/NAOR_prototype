@@ -45,7 +45,7 @@ public class CheckPointController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.C) && !playerController.isGuarding)
             {
                 ChangeAnimationState(activated);
-
+                healthBar.RevertHealthBar();
             }
 
         }
