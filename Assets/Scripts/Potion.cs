@@ -7,7 +7,7 @@ public class Potion : MonoBehaviour
     public GameObject[] potions;
     public int potionCount;
     public int maxpotionCount = 3;
-    
+    public bool control;
     private PlayerManager playerManager;
     public static Potion instance;
 
@@ -26,19 +26,24 @@ public class Potion : MonoBehaviour
 
     void Update()
     {
+        control = GameObject.FindGameObjectWithTag("CheckPoint").GetComponent<CheckPointController>().checkpointReached;
         //checkpoint fonksiyonu
         //farklı scriptte çağırmak için
         //Potion.instance.CheckPoint();
-        if (Input.GetKeyDown(KeyCode.C))
+        
+        /*if (Input.GetKeyDown(KeyCode.C))
         {
             CheckPoint();            
-        }
+        }*/
+       
         //iksir ekleme fonksiyonu
         //farklı scriptte çağırmak için
         //Potion.instance.AddPotion();
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            AddPotion();
+        if(control){
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                AddPotion();
+            }
         }
     }
 
@@ -66,8 +71,9 @@ public class Potion : MonoBehaviour
         {
             potions[3].gameObject.SetActive(true);
         }
-
     }
+
+    
     public void AddPotion()
     {
         maxpotionCount = 4;

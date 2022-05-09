@@ -8,12 +8,18 @@ public class CheckPointController : MonoBehaviour
     private PlayerManager playerManager;
     private PlayerController playerController;
     private HealthBar healthBar;
+    public static CheckPointController instance;
 
     //Animations
     private Animator animator;
     private string currentState;
     const string idle = "CheckPoint";
     const string activated = "CheckPointActivated";
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +45,7 @@ public class CheckPointController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.C) && !playerController.isGuarding)
             {
                 ChangeAnimationState(activated);
+
             }
 
         }
@@ -63,6 +70,7 @@ public class CheckPointController : MonoBehaviour
                 playerManager.lives = 4;
                 playerManager.CurrentHealth = 100;
                 healthBar.SetHealth(playerManager.CurrentHealth);
+                Potion.instance.CheckPoint(); 
             }
         }
         if(!checkpointReached)
