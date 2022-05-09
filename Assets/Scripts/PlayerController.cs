@@ -171,11 +171,13 @@ public class PlayerController : MonoBehaviour
         {
             if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
             {
-                if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
-                {
-                    PlayerManager.instance.HealthPotion(33);
-                    Potion.instance.UsePotions(1);
-                    healthBar.SetHealth(playerManager.CurrentHealth);
+                if(PlayerManager.instance.lives==4){
+                    if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
+                    {
+                        PlayerManager.instance.HealthPotion(33);
+                        Potion.instance.UsePotions(1);
+                        healthBar.SetHealth(playerManager.CurrentHealth);
+                    }
                 }
             }
         }
