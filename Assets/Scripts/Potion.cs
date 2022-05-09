@@ -7,7 +7,8 @@ public class Potion : MonoBehaviour
     public GameObject[] potions;
     public int potionCount;
     public int maxpotionCount = 3;
-
+    
+    private PlayerManager playerManager;
     public static Potion instance;
 
     private void Awake()
@@ -18,6 +19,7 @@ public class Potion : MonoBehaviour
 
     void Start()
     {
+        
         potionCount = maxpotionCount;
         potions[3].gameObject.SetActive(false);
     }
@@ -27,7 +29,7 @@ public class Potion : MonoBehaviour
         //checkpoint fonksiyonu
         //farklı scriptte çağırmak için
         //Potion.instance.CheckPoint();
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             CheckPoint();            
         }
@@ -43,7 +45,7 @@ public class Potion : MonoBehaviour
     public void UsePotions(int p)
     {
         if (potionCount >= 1)
-        {
+        {   
             potionCount -= p;
             potions[potionCount].gameObject.SetActive(false);
             if (potionCount < 1)

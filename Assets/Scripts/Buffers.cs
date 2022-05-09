@@ -30,15 +30,19 @@ public class Buffers : MonoBehaviour
     /*if(lives==4){
         switch(rakam){
             case 0:
-            
+                Debug.Log("0-33 ARASINDASIN");
+                break;
             case 1:
-
+                Debug.Log("66-33 ARASINDASIN");
+                break;
             case 2:
-
+                Debug.Log("99-66 ARASINDASIN");
+                break;
             case 3:
-
+                Debug.Log("100HP ALANI");
+                break;
         }
-    }*/
+    }   */
 
 
 }

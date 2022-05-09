@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownTime;
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
+    private HealthBar healthBar;
+    
 
     private void Awake()
     {
@@ -80,6 +82,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        healthBar = GameObject.FindGameObjectWithTag("Bar").GetComponent<HealthBar>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
@@ -172,6 +175,7 @@ public class PlayerController : MonoBehaviour
                 {
                     PlayerManager.instance.HealthPotion(33);
                     Potion.instance.UsePotions(1);
+                    healthBar.SetHealth(playerManager.CurrentHealth);
                 }
             }
         }
