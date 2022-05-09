@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     public Transform attackPoint;
     private float attackTime = 0.0f;
     [HideInInspector] public float chargeCounter = 0.0f;
-    private float ChargeTime = 2.0f;
+    private float ChargeTime = 1.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
@@ -395,25 +395,52 @@ public class PlayerController : MonoBehaviour
         chargeCounter = 0f;
     }
 
+
     void HeavyAttack()
     {
         StaminaBar.instance.useStamina(35);
         isHeavyAttacking = true;        
         rb.velocity = new Vector2(0, 0);
+        chargeCounter = 0f;
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
             if (enemy.CompareTag("Enemy"))
+            {
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(heavyattackDamage);
+                enemy.GetComponent<Minion_wfireball>().enabled = false;
+            }
             if (enemy.CompareTag("Villager"))
+            {
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(heavyattackDamage);
+                enemy.GetComponent<VillagerRunning>().enabled = false;
+            }            
             if (enemy.CompareTag("Sword"))
+            {
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(heavyattackDamage);
+                enemy.GetComponent<Sword_Behaviour>().enabled = false;
+            }
         }
+        StartCoroutine(Stun());
         chargeCounter = 0f;
-    }
-    
+
+        IEnumerator Stun()
+        {
+            yield return new WaitForSeconds(1f);
+
+            foreach (Collider2D enemystun in hitEnemies)
+            {
+                if (enemystun.CompareTag("Enemy"))
+                    enemystun.GetComponent<Minion_wfireball>().enabled = true;
+                if (enemystun.CompareTag("Villager"))
+                    enemystun.GetComponent<VillagerRunning>().enabled = true;
+                if (enemystun.CompareTag("Sword"))
+                    enemystun.GetComponent<Sword_Behaviour>().enabled = true;
+            }
+        }
+    }    
+
     void HeavyAttackDone()
     {
         isHeavyAttacking = false;
