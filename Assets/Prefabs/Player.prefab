@@ -266,13 +266,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 4
+  walkSpeed: 1.8
   facingRight: 1
   canMove: 1
   canFlip: 1
   rollSpeed: 10
-  rollColl: {fileID: 2303616366377848007}
+  rollColl: {fileID: 2303616366377848005}
   iFrame: 0.3
-  jumpForce: 10
+  jumpForce: 7
+  jumpTimer: 0.25
   isGrounded: 0
   groundCheck: {fileID: 2303616366928244962}
   groundCheckRadius: 0.08
@@ -324,6 +326,7 @@ MonoBehaviour:
   flickerSpeed: 5
   MaxHealth: 100
   CurrentHealth: 100
+  isHealing: 0
   damageable: 1
   dead: 0
   isReviving: 0
