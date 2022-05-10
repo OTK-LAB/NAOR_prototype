@@ -362,7 +362,7 @@ public class PlayerController : MonoBehaviour
                 Flip();
             }
 
-            rb.velocity = new Vector2(xWallForce * wallDirection, jumpForce);
+            rb.velocity = new Vector2(xWallForce * wallDirection, 10);
             wallJumpPressed = false;
 
             StartCoroutine(WallJumpWaiter());
@@ -433,7 +433,7 @@ public class PlayerController : MonoBehaviour
     
     void FlipPlayer()
     {
-        if(!isRolling && !isPraying)
+        if(!isRolling && !isPraying && !isAttacking)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -486,10 +486,19 @@ public class PlayerController : MonoBehaviour
         //Air Animations --> Jump and Fall
         if(!isGrounded)
         {
-            if(rb.velocity.y > 0)
-                ChangeAnimationState(jump);
-            if(rb.velocity.y < 0)
-                ChangeAnimationState(fall);    
+            if(!isAttacking)
+            {
+                if(rb.velocity.y > 0)
+                    ChangeAnimationState(jump);
+                if(rb.velocity.y < 0)
+                    ChangeAnimationState(fall);    
+            }
+            else
+            {               
+                ChangeAnimationState("PlayerAttack" + attackCount);
+                if(attackTime > 0.6f)    
+                    isAttacking = false;
+            }
         }
    
      }
@@ -511,26 +520,41 @@ public class PlayerController : MonoBehaviour
             isCombo = false;
         if (Input.GetButtonDown("Fire1"))
         {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15)
-                if (isCombo && attackTime > 0.3f)
-                    Attack();
-                else if (!isCombo)
-                    Attack();
+            if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
+            {
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing)
+                    if (isCombo && attackTime > 0.3f)
+                        Attack();
+                    else if (!isCombo)
+                        Attack();
+            }
         }
     }
     void Attack()
     {
-        StaminaBar.instance.useStamina(15);
+
         isAttacking = true;
-        rb.velocity = new Vector2(0,0);
-        attackDamage += 2;
+        if(isGrounded)
+        {
+            StaminaBar.instance.useStamina(15);
+            rb.velocity = new Vector2(0,0);
+            attackDamage += 2;
+        }
+        else
+        {
+            StaminaBar.instance.useStamina(25);
+            attackDamage += 1;
+        }
         attackCount++;
         isCombo = true;
 
-        if (attackCount > 3 || attackTime > 0.6f)
+        if ((attackCount > 3 || attackTime > 0.6f))
         {
             attackCount = 1;
-            attackDamage = 20;
+            if(isGrounded)
+                attackDamage = 20;
+            else
+                attackDamage = 10;
         }
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
