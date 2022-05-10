@@ -145,3 +145,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   daggerSpeed: 10
+  daggerDamage: 5

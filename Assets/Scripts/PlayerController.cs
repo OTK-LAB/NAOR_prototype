@@ -79,12 +79,15 @@ public class PlayerController : MonoBehaviour
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
     const string climb = "PlayerClimb";
-
+    //skill
+    public Collider2D daggerhit;
+    public bool daggerCollision=false;
     //Combat
     [Header("Combat")]
     public Transform attackPoint;
     private float attackTime = 0.0f;
     private int attackCount = 0;
+    [HideInInspector] public int hitCount = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
@@ -557,26 +560,62 @@ public class PlayerController : MonoBehaviour
                 attackDamage = 10;
         }
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        speedSkill(hitEnemies.Length);
         foreach (Collider2D enemy in hitEnemies)
         {
-            if(enemy.CompareTag("Enemy"))
+            if (enemy.CompareTag("Enemy"))
+            {
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
-            if(enemy.CompareTag("Villager"))
+            }
+            if (enemy.CompareTag("Villager"))
+            {
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
-            if(enemy.CompareTag("Sword"))
+            }
+            if (enemy.CompareTag("Sword"))
+            {
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
-            if(enemy.CompareTag("MinionwPoke"))
+            }
+            if (enemy.CompareTag("MinionwPoke"))
+            {
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
-            if(enemy.CompareTag("Legolas"))
+            }
+            if (enemy.CompareTag("Legolas"))
+            {
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
+            }
         }
+
         attackTime = 0f;
+    }
+    public void speedSkill(int hitEnemies)
+    {
+        float speedQuantity = runSpeed * 0.2f;
+     
+        if (hitEnemies == 0 ) //Hiçbir düşmana vuramamış demektir.
+            hitCount = 0;    
+        else if (hitCount == 3) //Ard arda 3 düşmana vurmuş demektir.
+        {
+            runSpeed += runSpeed * 0.2f;
+            hitCount = 0;
+            StartCoroutine(startSpeedTime());
+        }
+        else
+        {
+            hitCount++;
+            if (hitCount == 3)
+                speedSkill(3);
+        }
+        IEnumerator startSpeedTime()
+        {
+            yield return new WaitForSeconds(2f);
+            runSpeed -= speedQuantity;
+        }
     }
     public void ThrowDagger()
     {
         //Stack'ten gir dagger çıkar ve dagger objesine ata
         GameObject dagger = daggerStack.PopFromStack();
-
+        //Collider2D[] hitDaggers=null;
         if (dagger != null)
         {
             if (GetComponent<PlayerController>().facingRight)
@@ -602,8 +641,13 @@ public class PlayerController : MonoBehaviour
             //Daggerların 3 saniye sonra sahneden çıkmasına yarayan coroutine
             IEnumerator startDaggerLifeTime()
             {
-                yield return new WaitForSeconds(10f);
+                yield return new WaitForSeconds(3f);
                 dagger.SetActive(false);
+                Debug.Log(dagger.GetComponent<Dagger>().active);
+                if (dagger.GetComponent<Dagger>().active == false) //hiçbir düşmana çarpmamış
+                    speedSkill(0);
+                else
+                    dagger.GetComponent<Dagger>().active = false;
             }
         }
     }
