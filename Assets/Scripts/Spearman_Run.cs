@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Spearman_Run : StateMachineBehaviour
 {
-    const string attack = "Miniboss_attack";     //tüm animation isimleri deðiþip buradan respective þekilde deðiþmeli
-    const string idle = "Miniboss_idle";
+    const string attack = "Spearman_attack";
+    const string idle = "Spearman_idle";
     public float attackRange;
     public float speed = 1f;
 
     private bool isFlipped = false;
 
-    Spearman_Manager boss; // tüm "boss"lar spear'a deðiþmeli, düzen, önemli!
+    Spearman_Manager spear;
     Transform player;
     Rigidbody2D rb;
     Vector3 movement;
@@ -21,13 +21,13 @@ public class Spearman_Run : StateMachineBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = animator.GetComponent<Rigidbody2D>();
-        boss = animator.GetComponent<Spearman_Manager>();
+        spear = animator.GetComponent<Spearman_Manager>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (boss.playerNear)
+        if (spear.playerNear)
         {
             Vector2 target = new Vector2(player.position.x, rb.position.y);
             Vector2 newpos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
@@ -35,8 +35,8 @@ public class Spearman_Run : StateMachineBehaviour
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName(attack))
                 LookAtPlayer();
 
-            if (!boss.shieldBroke)
-                boss.shieldcoll.SetActive(true);
+            if (!spear.shieldBroke)
+                spear.shieldcoll.SetActive(true);
 
 
             if (Vector2.Distance(player.position, rb.position) <= attackRange)
@@ -46,11 +46,11 @@ public class Spearman_Run : StateMachineBehaviour
 
             if (Vector2.Distance(player.position, rb.position) <= attackRange)
             {
-                boss.inRange = true;
-                if (boss.attackTimer <= 0)
+                spear.inRange = true;
+                if (spear.attackTimer <= 0)
                 {
                     animator.Play(attack);
-                    boss.attackTimer = boss.autoAttackTimer;                      //attacks are checked from the animation events
+                    spear.attackTimer = spear.autoAttackTimer;                      //attacks are checked from the animation events
                 }
                 else
                 {
@@ -63,7 +63,7 @@ public class Spearman_Run : StateMachineBehaviour
             }
             else
             {
-                boss.inRange = false;
+                spear.inRange = false;
                 rb.MovePosition(newpos);
             }
         }
@@ -77,7 +77,7 @@ public class Spearman_Run : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        boss.shieldcoll.SetActive(false);
+        spear.shieldcoll.SetActive(false);
     }
 
     public void LookAtPlayer()
@@ -99,9 +99,9 @@ public class Spearman_Run : StateMachineBehaviour
 
     void AutoMove()
     {
-        if (!boss.playerNear)
+        if (!spear.playerNear)
         {
-            if (boss.Moveright)
+            if (spear.Moveright)
             {
                 movement = new Vector3(speed, 0f, 0f);
                 rb.transform.position = rb.transform.position + movement * Time.deltaTime;
@@ -118,28 +118,28 @@ public class Spearman_Run : StateMachineBehaviour
     {
         if (player.position.x > (rb.transform.position.x + 0.5f))
         {
-            if (!boss.Moveright)
+            if (!spear.Moveright)
             {
                 rb.transform.Rotate(0f, 180f, 0f);
-                boss.Moveright = true;
+                spear.Moveright = true;
             }
         }
         else
         {
-            if (boss.Moveright)
+            if (spear.Moveright)
             {
                 rb.transform.Rotate(0f, 180f, 0f);
-                boss.Moveright = false;
+                spear.Moveright = false;
             }
         }
     }
     void CheckAttack()
     {
-        if (Vector2.Distance(rb.transform.position, player.position) <= boss.triggerRange)
+        if (Vector2.Distance(rb.transform.position, player.position) <= spear.triggerRange)
         {
-            boss.playerNear = true;
+            spear.playerNear = true;
         }
         else
-            boss.playerNear = false;
+            spear.playerNear = false;
     }
 }

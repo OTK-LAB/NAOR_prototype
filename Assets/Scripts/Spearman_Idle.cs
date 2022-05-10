@@ -24,7 +24,7 @@ public class Spearman_Idle : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
        if(boss.attackTimer <= 0)
-         animator.Play("Miniboss_walk");   //animasyon ismi deðiþmeli
+         animator.Play("Spearman_walk");
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

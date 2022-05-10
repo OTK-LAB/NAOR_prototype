@@ -11,6 +11,10 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - MinibossShield
+  - Miniboss
+  - Spearman
+  - SpearmanShield
   layers:
   - Default
   - TransparentFX

@@ -61,7 +61,6 @@ public class Spearman_Manager : MonoBehaviour
     }
 
 
-
 	public void Attack()
 	{
 		isInvulnerable = false;                          //bad way to fix it, works tho (animation event could be used)
@@ -93,25 +92,19 @@ public class Spearman_Manager : MonoBehaviour
 			return;
 
 		health -= damage;
-		
-
-		if (health <= 130)
-		{
-			anim.SetBool("IsEnraged", true);
-		}
-
+				
 		if (health <= 0)
 		{
 			Die();
 		}else
         {
-			if(anim.GetCurrentAnimatorStateInfo(0).IsName("Miniboss_hit"))
-				anim.Play("Miniboss_hit");
+			if(anim.GetCurrentAnimatorStateInfo(0).IsName("Spearman_hit"))
+				anim.Play("Spearman_hit");
 
         }
 	}
 
-	public void Parry() //ismi guard a deðiþmeli bilmem bir þey bozar mý xd
+	public void Guard()
 	{
 		Vector3 pos2 = transform.position;
 		pos2 += transform.right * attackOffset.x;
@@ -130,7 +123,7 @@ public class Spearman_Manager : MonoBehaviour
 			}
 			else
             {
-				anim.Play("Miniboss_shield");
+				anim.Play("Spearman_shield");
 			}
 		}
 	}
@@ -148,7 +141,7 @@ public class Spearman_Manager : MonoBehaviour
     {
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
-        anim.Play("Miniboss_dead");
+        anim.Play("Spearman_dead");
         Invoke("Eliminate", 5f);     
     }
     private void Eliminate()

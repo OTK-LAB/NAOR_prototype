@@ -1801,6 +1801,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3908183987080856738, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
+      propertyPath: m_TagString
+      value: SpearmanShield
+      objectReference: {fileID: 0}
     - target: {fileID: 3908183987080856740, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
       propertyPath: m_Size.x
       value: 0.25113702
@@ -1840,6 +1844,10 @@ PrefabInstance:
     - target: {fileID: 3908183987561754701, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
       propertyPath: m_Name
       value: HeroKnight
+      objectReference: {fileID: 0}
+    - target: {fileID: 3908183987561754701, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
+      propertyPath: m_TagString
+      value: Spearman
       objectReference: {fileID: 0}
     - target: {fileID: 3908183987561754703, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
       propertyPath: m_Size.x
@@ -1916,6 +1924,10 @@ PrefabInstance:
     - target: {fileID: 3908183987978470361, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3908183987978470361, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
+      propertyPath: m_TagString
+      value: SpearmanShield
       objectReference: {fileID: 0}
     - target: {fileID: 3908183987978470363, guid: 256e95eeb4308db4b87fbbb07d807e72, type: 3}
       propertyPath: m_Size.x

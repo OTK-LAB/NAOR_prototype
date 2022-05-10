@@ -353,11 +353,11 @@ public class PlayerController : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
-            if (enemy.CompareTag("Miniboss"))
+            if (enemy.CompareTag("Spearman"))
                 enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
 
-            if (enemy.CompareTag("MinibossShield"))
-                enemy.transform.parent.GetComponent<Spearman_Manager>().Parry();
+            if (enemy.CompareTag("SpearmanShield"))
+                enemy.transform.parent.GetComponent<Spearman_Manager>().Guard();
 
             if (enemy.CompareTag("Enemy"))
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
