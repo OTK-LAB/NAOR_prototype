@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     public int attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
+    public bool isHeavyAttacking;
     private PlayerManager playerManager;
     private float stamina;
     [HideInInspector] public bool inCheckpointRange;
@@ -353,10 +354,10 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             if (enemy.CompareTag("Miniboss"))
-                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+                enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
 
             if (enemy.CompareTag("MinibossShield"))
-                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
+                enemy.transform.parent.GetComponent<Spearman_Manager>().Parry();
 
             if (enemy.CompareTag("Enemy"))
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);

@@ -2,26 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Miniboss_idle : StateMachineBehaviour
+public class Spearman_Idle : StateMachineBehaviour
 {
 
-    Boss_Manager boss;
+    Spearman_Manager boss;
     Transform player;
     Rigidbody2D rb;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = animator.GetComponent<Rigidbody2D>();
-        boss = animator.GetComponent<Boss_Manager>();
-        boss.shieldcoll.SetActive(true);
+        boss = animator.GetComponent<Spearman_Manager>();
+
+        if(!boss.shieldBroke)
+            boss.shieldcoll.SetActive(true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
        if(boss.attackTimer <= 0)
-         animator.Play("Miniboss_walk");
+         animator.Play("Miniboss_walk");   //animasyon ismi deðiþmeli
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
