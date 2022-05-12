@@ -13,6 +13,10 @@ TagManager:
   - Villager
   - Limit
   - Sword
+  - Legolas
+  - MinionwPoke
+  - keys
+  - Backpack
   layers:
   - Default
   - TransparentFX
