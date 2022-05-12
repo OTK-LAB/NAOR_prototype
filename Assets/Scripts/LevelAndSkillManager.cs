@@ -96,9 +96,11 @@ public class LevelAndSkillManager {
     {
         if (!IsSkillUnlocked(skillType))
         {
+            skillPoints--;
             unlockedSkillTypeList.Add(skillType);
             OnSkillUnlocked?.Invoke(this, new OnSkillUnlockedEventArgs { skillType = skillType });
         }
+       
     }
 
     public bool IsSkillUnlocked(SkillType skillType)
@@ -125,7 +127,6 @@ public class LevelAndSkillManager {
             {
                 if (skillPoints > 0)
                 {
-                    skillPoints--;
                     UnlockSkill(skillType);
                     Debug.Log("sonuc SKILL ACILDI ONCUL SKILL ACIK");
                     return true;
@@ -146,7 +147,6 @@ public class LevelAndSkillManager {
         {
             if(skillPoints > 0)
             {
-                skillPoints--;
                 UnlockSkill(skillType);
                 Debug.Log("sonuc SKILL ACILDI ONCUL SKILL YOK");
                 return true;
