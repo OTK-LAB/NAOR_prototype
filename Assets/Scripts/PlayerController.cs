@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private bool isRolling = false;
     public GameObject rollColl;
     public float iFrame = 0.3f;
+    private bool canElevate = false;
 
     //Jumping
     [Header("Jumping")]
@@ -216,14 +217,22 @@ public class PlayerController : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isWallSliding && !playerManager.isHealing)
+            if (isGrounded && !isPraying && !isAttacking && !isWallSliding && !playerManager.isHealing)
             {
+                if (isRolling)
+                {
+                    StopCoroutine(Roll());
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                }
+                    
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
             }
             if (isWallSliding)
                 wallJumpPressed = true;
+            if (canElevate)
+                Elevate();
         }
         if (Input.GetButton("Jump") && isJumping)
             if (jumpTimeCounter > 0)
@@ -396,6 +405,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator Roll()
     {
         isRolling = true;
+        canElevate = true;
         playerManager.damageable = false;
         rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
@@ -410,6 +420,13 @@ public class PlayerController : MonoBehaviour
         playerManager.damageable = true;
         rollColl.SetActive(false);
         GetComponent<BoxCollider2D>().enabled = true;
+        yield return new WaitForSeconds(.2f);
+        canElevate = false;
+    }
+
+    void Elevate()
+    {
+        Debug.Log("Boom Elevate Babeeeyyy!");
     }
     void performGuard()
     {
