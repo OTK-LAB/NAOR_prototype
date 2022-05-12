@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //Experimental
+    DrillSkill skill;
+    [SerializeField]
+    private float drillRange;
+    public LayerMask enemyLayer;
     //Movement
     [Header("Movement")]
     public float runSpeed;
@@ -110,6 +115,7 @@ public class PlayerController : MonoBehaviour
         daggerStack.SetItem(daggerobj, daggerAmount);
         daggerCooldownController = GetComponent<CooldownController>();
         daggerCooldownController.SetCooldown(cooldownTime);
+        skill = new DrillSkill(this.gameObject,drillRange, 20.0f, enemyLayer);
     }
 
     void Start()
@@ -272,6 +278,11 @@ public class PlayerController : MonoBehaviour
                     Potion.instance.UsePotions(1);
                 }
             }
+        }
+        //Experimental
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            skill.UseSkill();
         }
     }
     
