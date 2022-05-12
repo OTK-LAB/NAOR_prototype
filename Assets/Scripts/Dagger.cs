@@ -28,7 +28,7 @@ public class Dagger : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {    
+    {
         if (collision.CompareTag("Enemy"))
         {
             collision.GetComponent<Minion_wfireball>().TakeDamage(daggerDamage);
@@ -59,9 +59,6 @@ public class Dagger : MonoBehaviour
             active = true;
             sendHit();
         }
-
-
-
     }
     public void sendHit()
     {

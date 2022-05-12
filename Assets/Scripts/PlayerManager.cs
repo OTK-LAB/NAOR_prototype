@@ -144,6 +144,7 @@ public class PlayerManager : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             lives--;
+            player.hitCount = 0;
             if (lives == 1)
             {
                 dead = true;

@@ -73,21 +73,24 @@ public class PlayerController : MonoBehaviour
     private string currentState;
     const string idle = "PlayerIdle";
     const string run = "PlayerRun";
+    const string speedrun = "PlayerSpeedRun";
     const string jump = "PlayerJump";
     const string fall = "PlayerFall";
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
     const string climb = "PlayerClimb";
+
     //skill
-    public Collider2D daggerhit;
-    public bool daggerCollision=false;
+    public bool daggerCollision=false; 
+    bool speedSkillControl = false; //animasyon değiştirirken kullanılıyor
+    [HideInInspector] public int hitCount = 0;
+
     //Combat
     [Header("Combat")]
     public Transform attackPoint;
     private float attackTime = 0.0f;
     private int attackCount = 0;
-    [HideInInspector] public int hitCount = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
@@ -468,7 +471,13 @@ public class PlayerController : MonoBehaviour
                         if(xAxis == 0)
                             ChangeAnimationState(idle);
                         else
-                            ChangeAnimationState(run); 
+                        {
+                            if(!speedSkillControl)
+                                ChangeAnimationState(run);
+                            else
+                                ChangeAnimationState(speedrun);
+                        }
+                            
                     }
                     if(isAttacking)
                     {                 
@@ -597,6 +606,7 @@ public class PlayerController : MonoBehaviour
         {
             runSpeed += runSpeed * 0.2f;
             hitCount = 0;
+            speedSkillControl = true;
             StartCoroutine(startSpeedTime());
         }
         else
@@ -609,6 +619,7 @@ public class PlayerController : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             runSpeed -= speedQuantity;
+            speedSkillControl = false;
         }
     }
     public void ThrowDagger()
