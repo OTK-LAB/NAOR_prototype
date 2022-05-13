@@ -76,7 +76,7 @@ public class PlayerManager : MonoBehaviour
         {
             CurrentHealth = 100;
         }
-            
+        Actions.OnHealthChanged();
     }
     void CancelHealState()
     {
@@ -96,6 +96,7 @@ public class PlayerManager : MonoBehaviour
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //blocking damage status
                     case 2:
@@ -103,6 +104,7 @@ public class PlayerManager : MonoBehaviour
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //parry status
                     case 3:
