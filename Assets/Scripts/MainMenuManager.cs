@@ -14,6 +14,7 @@ public class MainMenuManager : MonoBehaviour
     public GameObject SettingsMenu;
     public GameObject ExitMenu;
     public GameObject QuoteText;
+    public CanvasGroup canvasGroup;
     int RandNum;
     public void Start()
     {
@@ -35,11 +36,16 @@ public class MainMenuManager : MonoBehaviour
         Menu.SetActive(false);
         StartMenu.SetActive(true);
     }
-
-    public void StartGame()
+    IEnumerator Transition()
     {
+        canvasGroup.alpha = 1;
+        yield return new WaitForSeconds(5);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
     }
+    public void StartGame(){
+        StartCoroutine(Transition());
+    }
+    
     public void Continue()
     {
         ContinueMenu.SetActive(true);

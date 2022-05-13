@@ -45,9 +45,13 @@ public class SettingsManager : MonoBehaviour
         QualitySettings.SetQualityLevel(qualityIndex);
     }
     
-    public void SetVolume(float value)
+    public void SetMusicVolume(float value)
     {
-        audiomixer.SetFloat("Volume", value);
+        audiomixer.SetFloat("MusicVolume", value);
+    }
+    public void SetAmbianceVolume(float value)
+    {
+        audiomixer.SetFloat("AmbianceVolume", value);
     }
 
     public void SetFullscreen(bool fullscreenEnabled)
