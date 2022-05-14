@@ -27,7 +27,24 @@ public class StaminaBar : MonoBehaviour
         staminaBar.maxValue = maxStamina;
         staminaBar.value = maxStamina;
     }
-    public void useStamina(int amount)
+    void Update()
+    {
+        if (currentStamina != staminaBar.value)
+        {
+            staminaBar.value = Mathf.Lerp(staminaBar.value, currentStamina, smoothing * Time.deltaTime);
+        }
+        //stamina kullanma fonksiyonu
+        //başka scriptte çağırmak için 
+        //StaminaBar.instance.useStamina(12);
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            useStamina(15);
+        }
+
+        if(currentStamina >= 100)
+            currentStamina = 100;
+    }
+    public void useStamina(float amount)
     {
         if (currentStamina - amount >= 0)
         {
@@ -45,21 +62,6 @@ public class StaminaBar : MonoBehaviour
         {
             Debug.Log("Not enough stamina");
         }
-    }
-    void Update()
-    {
-        if (currentStamina != staminaBar.value)
-        {
-            staminaBar.value = Mathf.Lerp(staminaBar.value, currentStamina, smoothing * Time.deltaTime);
-        }
-        //stamina kullanma fonksiyonu
-        //başka scriptte çağırmak için 
-        //StaminaBar.instance.useStamina(12);
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            useStamina(15);
-        }
-
     }
 
 

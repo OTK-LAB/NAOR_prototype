@@ -18,12 +18,14 @@ public class PlayerManager : MonoBehaviour
     private int lives = 2;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
+    public bool isHealing;
     //[HideInInspector] 
     public bool damageable = true;
     //[HideInInspector] 
     public bool dead = false;
     [HideInInspector] public bool isReviving;
-     public int status;
+    public int status;
+    private bool revived = false;
 
 
     //Animations
@@ -31,6 +33,7 @@ public class PlayerManager : MonoBehaviour
     const string death = "PlayerDeath";
     const string revive = "PlayerRevive";
     const string counter = "PlayerCounter";
+    const string heal = "PlayerHeal";
     [HideInInspector] public bool hitAnimRunning;
 
 
@@ -62,23 +65,27 @@ public class PlayerManager : MonoBehaviour
     {
         instance = this;
     }
-
-   public void HealthPotion(float heal)
+    public void HealthPotion(float health)
     {
-        if(CurrentHealth < 100)
-        {
-            CurrentHealth += heal;
-        }
+        if(!revived)
+            CurrentHealth += health;
+        player.ChangeAnimationState(heal);
+        isHealing = true;
+        rb.velocity = new Vector2(0,0);
+        Invoke("CancelHealState", 0.8f);
         if (CurrentHealth > 100)
         {
             CurrentHealth = 100;
         }
             
+    }
+    void CancelHealState()
+    {
+        isHealing = false;
     } 
-
     public virtual void DamagePlayer(float damage)
     {
-        if (damageable == true) 
+        if (damageable)
         {
             if ((CurrentHealth - damage) >= 0)
             {
@@ -93,7 +100,7 @@ public class PlayerManager : MonoBehaviour
                         break;
                     //blocking damage status
                     case 2:
-                        CurrentHealth -= damage / 2;
+                        CurrentHealth -= damage * 0.6f;
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -106,7 +113,16 @@ public class PlayerManager : MonoBehaviour
                         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
                         foreach (Collider2D enemy in hitEnemies)
                         {
-                            enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 3);    //parry dealt damage
+                            if(enemy.CompareTag("Enemy"))
+                                enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Villager"))
+                                enemy.GetComponent<VillagerHealthManager>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Sword"))
+                                enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("MinionwPoke"))
+                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Legolas"))
+                                enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }
@@ -164,12 +180,13 @@ public class PlayerManager : MonoBehaviour
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
         player.ChangeAnimationState(revive);
         yield return new WaitForSeconds(.5f);
+        revived = true;
         isReviving = false;
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
         flickering = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         damageable = true;
         flickering = false;
     }
@@ -177,6 +194,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator RespawnPlayer()
     {
         yield return new WaitForSeconds(1f);
+        revived = false;
         transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, transform.position.y, currentCheckPoint.transform.position.z);
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
