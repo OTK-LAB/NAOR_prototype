@@ -110,19 +110,75 @@ public class PlayerManager : MonoBehaviour
                         player.canMove = false;             // stop when parrying
                         player.ChangeAnimationState(counter);
                         //invoke?
+
                         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
+
+                        IEnumerator Stun()
+                        {
+                            yield return new WaitForSeconds(1f);
+
+                            foreach (Collider2D enemystun in hitEnemies)
+                            {
+                                if (enemystun.CompareTag("Enemy"))
+                                    enemystun.GetComponent<Minion_wfireball>().enabled = true;
+                                if (enemystun.CompareTag("Villager"))
+                                    enemystun.GetComponent<VillagerRunning>().enabled = true;
+                                if (enemystun.CompareTag("Sword"))
+                                    enemystun.GetComponent<Sword_Behaviour>().enabled = true;
+                                if (enemystun.CompareTag("MinionwPoke"))
+                                    enemystun.GetComponent<Minion_wpoke>().enabled = true;
+                                if (enemystun.CompareTag("Legolas"))
+                                    enemystun.GetComponent<Legolas>().enabled = true;
+                            }
+                        }
+
                         foreach (Collider2D enemy in hitEnemies)
                         {
-                            if(enemy.CompareTag("Enemy"))
+                            if (enemy.CompareTag("Enemy"))
+                            {
                                 enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);
-                            if(enemy.CompareTag("Villager"))
-                                enemy.GetComponent<VillagerHealthManager>().TakeDamage(player.attackDamage * 1.25f);
-                            if(enemy.CompareTag("Sword"))
+                                enemy.GetComponent<Minion_wfireball>().enabled = false;
+                                if (enemy.GetComponent<Minion_wfireball>().currentHealth >= 0)
+                                {
+                                    StartCoroutine(Stun());
+                                }
+                            }
+                            if (enemy.CompareTag("Villager"))
+                            {
+                                enemy.GetComponent<VillagerHealthManager>().TakeDamage(player.attackDamage * 1.25f); 
+                                enemy.GetComponent<VillagerRunning>().enabled = false;
+                                if (enemy.GetComponent<VillagerHealthManager>().currentHealth >= 0)
+                                {
+                                    StartCoroutine(Stun());
+                                }
+                            }
+                            if (enemy.CompareTag("Sword"))
+                            {
                                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
-                            if(enemy.CompareTag("MinionwPoke"))
+                                enemy.GetComponent<Sword_Behaviour>().enabled = false;
+                                if (enemy.GetComponent<Sword_Behaviour>().currentHealth >= 0)
+                                {
+                                    StartCoroutine(Stun());
+                                }
+                            }
+                            if (enemy.CompareTag("MinionwPoke"))
+                            {
                                 enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
-                            if(enemy.CompareTag("Legolas"))
+                                enemy.GetComponent<Minion_wpoke>().enabled = false;
+                                if (enemy.GetComponent<Minion_wpoke>().currentHealth >= 0)
+                                {
+                                    StartCoroutine(Stun());
+                                }
+                            }
+                            if (enemy.CompareTag("Legolas"))
+                            {
                                 enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
+                                enemy.GetComponent<Legolas>().enabled = false;
+                                if (enemy.GetComponent<Legolas>().currentHealth >= 0)
+                                {
+                                    StartCoroutine(Stun());
+                                }
+                            }
                         }
                         break;
                 }
