@@ -8,7 +8,21 @@ public class GemSO : ScriptableObject
     public enum Gemtype
     {
         AttackBuff,
-        SpeedBuff
+        SpeedBuff,
+        DefenseBuff,
+        ExperienceBuff,
+        PowerfulLaunch,
+        QuickHand,
+        Ghost,
+        ShieldUp,
+        Vaulter,
+        BarbedArmor,
+        Regen,
+        Acrobatics,
+        Runner,
+        DurableBody,
+        BloodThirsty,
+        DexterityIncrease
     };
 
     public Gemtype gemtype;

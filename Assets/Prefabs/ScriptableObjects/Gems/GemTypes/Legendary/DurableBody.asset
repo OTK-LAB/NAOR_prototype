@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48c723b40086e7b418f73c7e1de262e3, type: 3}
-  m_Name: Rare2
+  m_Name: DurableBody
   m_EditorClassIdentifier: 
-  gemtype: 1
-  buffRate: 5
-  title: Rare Speed Gem
-  description: It Gives You %5 Movement Speed
+  gemtype: 2
+  isActive: 0
+  buffRate: 40
+  title: Durable Body
+  description: "Al\u0131nan hasar\u0131 %40 azalt\u0131r"

@@ -99,6 +99,10 @@ public class GateManager : MonoBehaviour
                 Debug.Log("yeni runspeed degeri " +_playerController.runSpeed);
                 Debug.Log("yeni walkspeed degeri " +_playerController.walkSpeed);
                 break;
+            case GemSO.Gemtype.DefenseBuff:
+                _playerManager.defenceRate += _playerManager.defenceRate*gem.buffRate/100;
+                break;
+            
         }
     }
 
@@ -107,5 +111,6 @@ public class GateManager : MonoBehaviour
         _playerController.attackDamage = 10;
         _playerController.runSpeed = 4;
         _playerController.walkSpeed = 1.4f;
+        _playerManager.defenceRate = 0;
     }
 }

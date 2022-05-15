@@ -37,7 +37,9 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public bool hitAnimRunning;
 
 
-
+    //Gemler icin eklediklerim
+    public float defenceRate=0;
+    public float shieldDefenceRate = 0.4f;
 
 
     // Start is called before the first frame update
@@ -92,7 +94,7 @@ public class PlayerManager : MonoBehaviour
                 {
                     //normal damage status
                     case 1:
-                        CurrentHealth -= damage;
+                        CurrentHealth -= (damage*(1-defenceRate/100));
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -100,7 +102,7 @@ public class PlayerManager : MonoBehaviour
                         break;
                     //blocking damage status
                     case 2:
-                        CurrentHealth -= damage * 0.6f;
+                        CurrentHealth -= (damage*(1-defenceRate/100)) * (1-shieldDefenceRate/100);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);

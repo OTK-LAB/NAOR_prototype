@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48c723b40086e7b418f73c7e1de262e3, type: 3}
-  m_Name: Rare1
+  m_Name: RareQuickHand
   m_EditorClassIdentifier: 
-  gemtype: 0
-  buffRate: 5
-  title: Rare Attack Gem
-  description: It Gives You %5 Attack Power
+  gemtype: 5
+  isActive: 0
+  buffRate: 0
+  title: Quick Hand
+  description: "Dagger'\u0131n bekleme s\xFCresi 9 saniyeden 6 saniyeye d\xFC\u015Fer"

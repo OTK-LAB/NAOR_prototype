@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48c723b40086e7b418f73c7e1de262e3, type: 3}
-  m_Name: LegendaryGem2
+  m_Name: RareRegen
   m_EditorClassIdentifier: 
-  gemtype: 1
-  buffRate: 10
-  title: Legendary Speed Gem
-  description: It Gives You %10 Movement Speed
+  gemtype: 10
+  isActive: 0
+  buffRate: 0
+  title: Regen
+  description: Can potu %30 daha etkili olur

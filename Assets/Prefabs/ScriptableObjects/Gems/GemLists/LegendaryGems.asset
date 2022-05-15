@@ -15,3 +15,6 @@ MonoBehaviour:
   gemList:
   - {fileID: 11400000, guid: fe0ff64358e1e414db232d917eb8c69c, type: 2}
   - {fileID: 11400000, guid: 95de006f437015e4db8df827477a96d7, type: 2}
+  - {fileID: 11400000, guid: bf263bee561c7714a8094bfe0de735d2, type: 2}
+  - {fileID: 11400000, guid: 95bb7c1eba29eee4da1444c2126c06bc, type: 2}
+  - {fileID: 11400000, guid: 08193a333e28a64418a287df744956b7, type: 2}

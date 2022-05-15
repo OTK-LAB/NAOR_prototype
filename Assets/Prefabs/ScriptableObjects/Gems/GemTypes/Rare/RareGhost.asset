@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750604dae16b40f418715f279c33fe11, type: 3}
-  m_Name: 1percentage
+  m_Script: {fileID: 11500000, guid: 48c723b40086e7b418f73c7e1de262e3, type: 3}
+  m_Name: RareGhost
   m_EditorClassIdentifier: 
-  percentage: 1
-  classes: 0
-  maxGemCount: 1
-  activeGems:
-  - {fileID: 0}
+  gemtype: 6
   isActive: 0
+  buffRate: 0
+  title: Ghost
+  description: "Birimlerin i\xE7inden ge\xE7er"

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48c723b40086e7b418f73c7e1de262e3, type: 3}
-  m_Name: Common1
+  m_Name: BloodThirsty
   m_EditorClassIdentifier: 
-  gemtype: 0
-  buffRate: 1
-  title: Common Attack Gem
-  description: It Gives You %1 Attack Power
+  gemtype: 14
+  isActive: 0
+  buffRate: 10
+  title: Blood Thirsty
+  description: "D\xFCz vuru\u015Flar\u0131n\u0131n %10'u kadar iyile\u015Fir"
