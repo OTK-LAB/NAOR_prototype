@@ -35,6 +35,9 @@ public class Legolas : MonoBehaviour
     public float damage = 20;
     private GameObject player;
     bool playerAlive = true;
+
+    Rigidbody Legolasrgb;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -42,6 +45,7 @@ public class Legolas : MonoBehaviour
         CalculatedTime = TimeBtwEachShot;
         PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player");
+        Legolasrgb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame

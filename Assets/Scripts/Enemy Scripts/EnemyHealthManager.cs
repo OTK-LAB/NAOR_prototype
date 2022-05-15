@@ -1,150 +1,104 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealthManager : MonoBehaviour
 {
 
-    public class minion
+    public class Enemy
     {
-        public float MinionMaxHealth = 100;
-        public float MinionCurrentHealth;
-        public float MinionDamage = 15f;
-        public float regeneration = 1;
-        public void TakeDamage(float damage)
+        public float MaxHealth;
+        public float CurrentHealth;
+        public float Damage;
+        public float Regen = 1;
+
+        bool hurt = false;
+        bool alive = true;
+
+        Rigidbody rgb;
+        
+
+
+        public void TakeDamage(float Damage)
         {
-            currentHealth -= damage;
-            if (MinionCurrentHealth <= 0)
+            CurrentHealth -= Damage;
+            if (CurrentHealth <= 0)
             {
                 alive = false;
                 hurt = false;
-                Die();
+                
             }
             else
             {
                 hurt = true;
-                ChangeAnimations();
             }
         }
-        public void regen (float MinionCurrentHealth) 
-            {
-            if (MinionCurrentHealth < MinionMaxHealth)
-                MinionCurrentHealth += regeneration * Time.deltaTime;
+
+        public void regen()
+        {
+            if (CurrentHealth < MaxHealth)
+                CurrentHealth += Regen * Time.deltaTime;
         }
-               
+
+
+        public Enemy (float GivenMaxHealth , Rigidbody Givenrgb )
+        {
+            MaxHealth = GivenMaxHealth;
+            rgb = Givenrgb;
+        }
+
+
+
+        
     }
 
-    public class preacher
+   /* public class Minion : Enemy
+    {       
+        MaxHealth = 40;
+        Regen = 1;
+    }
+
+    public class Minion2 : Enemy
     {
-        public float PreacherMaxHealth = 100;
-        public float PreacherCurrentHealth;
-        public float PreachorDamage = 15f;
-        public float regeneration = 1;
-        public void TakeDamage(float damage)
-        {
-            PreacherCurrentHealth -= damage;
-            if (PreacherCurrentHealth <= 0)
-            {
-                alive = false;
-                hurt = false;
-                Die();
-            }
-            else
-            {
-                hurt = true;
-                ChangeAnimations();
-            }
-        }
-        public void regen(float PreacherCurrentHealth)
-        {
-            if (PreacherCurrentHealth < PreacherMaxHealth)
-                PreacherCurrentHealth += regeneration * Time.deltaTime;
-        }
-}
+        MaxHealth = 20;
+        Regen = 1;
+    }
 
-    public class legolas
+    public class preacher : Enemy
     {
-        public float LegolasMaxHealth = 100;
-        public float LegolasCurrentHealth;
-        public float LegolasDamage = 15f;
-        public float regeneration = 1;
-        public void TakeDamage(float damage)
-        {
-            LegolasCurrentHealth -= damage;
-            if (LegolasCurrentHealth <= 0)
-            {
-                alive = false;
-                hurt = false;
-                Die();
-            }
-            else
-            {
-                hurt = true;
-                ChangeAnimations();
-            }
-        }
-        public void regen(float LegolasCurrentHealth)
-        {
-            if (LegolasCurrentHealth < LegolasMaxHealth)
-                LegolasCurrentHealth += regeneration * Time.deltaTime;
-        }
-}
+        MaxHealth = 60;
+        Regen = 1;
+    }
 
-    public class swordEnemy
+    public class Legolas : Enemy
     {
-        public float SwordEnemyMaxHealth = 100;
-        public float SwordEnemyCurrentHealth;
-        public float SwordEnemyDamage = 15f;
-        public float regeneration = 1;
-        public void TakeDamage(float damage)
-        {
-            SwordEnemyCurrentHealth -= damage;
-            if (SwordEnemyCurrentHealth <= 0)
-            {
-                alive = false;
-                hurt = false;
-                Die();
-            }
-            else
-            {
-                hurt = true;
-                ChangeAnimations();
-            }
-        }
-        public void regen(float SwordEnemyCurrentHealth)
-        {
-            if (SwordEnemyCurrentHealth < SwordEnemyMaxHealth)
-                    SwordEnemyCurrentHealth += regeneration * Time.deltaTime;
-        }
-}
+        MaxHealth = 60;
+        Regen = 1;
+    }
 
-    public class villager
+    public class Sovalye : Enemy
     {
-        public float VillagerMaxHealth = 100;
-        public float VillagerCurrentHealth;
-        public float VillagerDamage = 15f;
-        public float regeneration = 1;
-        public void TakeDamage(float damage)
-        {
-            VillagerCurrentHealth -= damage;
-            if (VillagerCurrentHealth <= 0)
-            {
-                alive = false;
-                hurt = false;
-                Die();
-            }
-            else
-            {
-                hurt = true;
-                ChangeAnimations();
-            }
-        }
-        public void regen(float VillagerCurrentHealth)
-        {
-            if (VillagerCurrentHealth < VillagerMaxHealth)
-                    VillagerCurrentHealth += regeneration * Time.deltaTime;
-        }
+        MaxHealth = 110;
+        Regen = 1;
+    }
+
+    public class UltimateSovalye : Enemy
+    {
+        MaxHealth = 350;
+        Regen = 1;
+    }
+
+    public class Villager : Enemy
+    {
+        MaxHealth = 10;
+        Regen = 1;
+    }
+
+    public class Mercenarie : Enemy
+    {
+        MaxHealth = 110;
+        Regen = 1;
+    }
+*/
+
 }
-
-
-} */
