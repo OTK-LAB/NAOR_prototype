@@ -94,7 +94,7 @@ public class PlayerManager : MonoBehaviour
                 {
                     //normal damage status
                     case 1:
-                        CurrentHealth -= (damage*(1-defenceRate/100));
+                        CurrentHealth -= (damage*(1-defenceRate));
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -102,7 +102,7 @@ public class PlayerManager : MonoBehaviour
                         break;
                     //blocking damage status
                     case 2:
-                        CurrentHealth -= (damage*(1-defenceRate/100)) * (1-shieldDefenceRate/100);
+                        CurrentHealth -= (damage*(1-defenceRate)) * (1-shieldDefenceRate);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);

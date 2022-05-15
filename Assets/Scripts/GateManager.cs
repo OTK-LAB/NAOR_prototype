@@ -100,9 +100,19 @@ public class GateManager : MonoBehaviour
                 Debug.Log("yeni walkspeed degeri " +_playerController.walkSpeed);
                 break;
             case GemSO.Gemtype.DefenseBuff:
-                _playerManager.defenceRate += _playerManager.defenceRate*gem.buffRate/100;
+                _playerManager.defenceRate += gem.buffRate/100;
                 break;
-            
+            case GemSO.Gemtype.Acrobatics:
+                _playerController.rollStaminaRate +=  gem.buffRate / 100;
+                _playerController.jumpForce += _playerController.jumpForce * gem.buffRate / 100;
+                break;
+            case GemSO.Gemtype.BloodThirsty:
+                _playerController.lifeStealRate +=  gem.buffRate / 100;
+                Debug.Log(gem.buffRate + "Can calma alindi");
+                Debug.Log(_playerController.lifeStealRate);
+                break;
+
+
         }
     }
 
@@ -112,5 +122,6 @@ public class GateManager : MonoBehaviour
         _playerController.runSpeed = 4;
         _playerController.walkSpeed = 1.4f;
         _playerManager.defenceRate = 0;
+        _playerController.lifeStealRate = 0;
     }
 }

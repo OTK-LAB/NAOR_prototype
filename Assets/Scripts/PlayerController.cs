@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
-    public int attackDamage = 10;
+    public float attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
     private PlayerManager playerManager;
@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
     //gems icin eklediklerim
     public float rollStaminaRate=0;
+    public float lifeStealRate = 0;
     private void Awake()
     {
         daggerStack = GetComponent<ItemStack>();
@@ -357,8 +358,24 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
             if(enemy.CompareTag("MinionwPoke"))
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage * 1.25f);
+            StealLife(lifeStealRate);
+            
         }
         attackTime = 0f;
+    }
+
+    public void StealLife(float stealRate)
+    {
+        if (playerManager.CurrentHealth < playerManager.MaxHealth)
+        {
+            playerManager.CurrentHealth += attackDamage * stealRate;
+            Debug.Log(attackDamage * stealRate + "Can calindi");
+            Actions.OnHealthChanged();
+            if (playerManager.CurrentHealth>100)
+            {
+                playerManager.CurrentHealth = 100;
+            }
+        }
     }
     public void ThrowDagger()
     {

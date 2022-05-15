@@ -27,7 +27,7 @@ public class GemSO : ScriptableObject
 
     public Gemtype gemtype;
     public bool isActive;
-    public int buffRate;
+    public float buffRate;
     public string title;
     public string description;
 }
