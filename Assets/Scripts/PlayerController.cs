@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
             isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
             if(isTouchingLedgeDown)
             {
-                ledgePosBot = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer).rigidbody.position;
+                ledgePosBot = ledgeCheckDown.position;
              }
         }
         else
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
             isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
             if(isTouchingLedgeDown)
             { 
-                ledgePosBot = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer).rigidbody.position;
+                ledgePosBot = ledgeCheckDown.position;
             }        
         }
 
