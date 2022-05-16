@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour
     void CheckInputs()
     {
         //Get Horizontal Input
-        if(!isWallJumping)
+        if(!isWallJumping && !canClimbLedge)
         {
             xAxis = Input.GetAxisRaw("Horizontal");
         }
@@ -325,11 +325,9 @@ public class PlayerController : MonoBehaviour
     public void FinishLedgeClimb()
     {
         canClimbLedge = false;
-        Debug.Log("canClimbLedge FALSE");
         canMove = true;
         canFlip = true;
         ledgeDetected = false;
-        Debug.Log("LedgeDetected FALSE");
         rb.gravityScale = gravity;
     }
   
