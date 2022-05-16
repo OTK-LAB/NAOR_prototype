@@ -108,6 +108,8 @@ public class PlayerController : MonoBehaviour
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
 
+    public GameObject moveList;
+
     private void Awake()
     {
         daggerStack = GetComponent<ItemStack>();
@@ -276,6 +278,11 @@ public class PlayerController : MonoBehaviour
                     Potion.instance.UsePotions(1);
                 }
             }
+        }
+        //Toggle Move List
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            moveList.SetActive(!moveList.activeInHierarchy);
         }
     }
     
