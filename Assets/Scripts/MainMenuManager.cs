@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+//using UnityEngine.SceneManagement;
 using TMPro;
 public class MainMenuManager : MonoBehaviour
 {
@@ -13,12 +13,11 @@ public class MainMenuManager : MonoBehaviour
     public GameObject ContinueMenu;
     public GameObject SettingsMenu;
     public GameObject ExitMenu;
-    public GameObject QuoteText;
-    public CanvasGroup canvasGroup;
-    int RandNum;
+    public GameObject PrologueCanvas;
+    public GameObject MenuCanvas;
     public void Start()
     {
-        GenerateQuote();
+      
     }
 
 
@@ -36,14 +35,15 @@ public class MainMenuManager : MonoBehaviour
         Menu.SetActive(false);
         StartMenu.SetActive(true);
     }
-    IEnumerator Transition()
+   public void Transition()
     {
-        canvasGroup.alpha = 1;
-        yield return new WaitForSeconds(5);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
+        PrologueCanvas.SetActive(true);
+        MenuCanvas.SetActive(false);
+       // yield return new WaitForSeconds(5);
+       // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
     }
     public void StartGame(){
-        StartCoroutine(Transition());
+        Transition();
     }
     
     public void Continue()
@@ -81,12 +81,5 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void GenerateQuote()
-    {
-        RandNum = Random.Range(0, 3);
-        string[] Quotes = { "\"Face the bars.Solve the lock. Defeat the cage.\n\tRun to hands of freedom.(laughs)\"\n" +"Kahve".PadLeft(80),
-                            "\"But we are different kid. We are nnot fighting with cages.\n\tOur revenge oath is to destroy the cagemaker.\"\n" +"-Kahve".PadLeft(80),
-                            "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n\tsed do eiusmod tempor incididunt ut labore et.\""+"-Kahve".PadLeft(80)};
-        QuoteText.GetComponent<TMPro.TextMeshProUGUI>().text = Quotes[RandNum];
-    }
+ 
 }
