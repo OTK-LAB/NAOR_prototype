@@ -266,13 +266,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 4
+  walkSpeed: 1.8
   facingRight: 1
   canMove: 1
   canFlip: 1
   rollSpeed: 10
-  rollColl: {fileID: 2303616366377848007}
+  rollColl: {fileID: 2303616366377848005}
   iFrame: 0.3
   jumpForce: 10
+  jumpTimer: 0
   isGrounded: 0
   groundCheck: {fileID: 2303616366928244962}
   groundCheckRadius: 0.08
@@ -288,9 +290,9 @@ MonoBehaviour:
   wallJumpLerp: 1
   ledgeCheckUp: {fileID: 1963275755}
   ledgeCheckDown: {fileID: 1514436766}
-  ledgeDistance: 1
-  ledgeXOffset1: 0.3
-  ledgeYOffset1: 0
+  ledgeDistance: 0.3
+  ledgeXOffset1: -0.5
+  ledgeYOffset1: 0.6
   ledgeXOffset2: 1
   ledgeYOffset2: 2
   attackPoint: {fileID: 2303616366658647844}
@@ -324,6 +326,7 @@ MonoBehaviour:
   flickerSpeed: 5
   MaxHealth: 100
   CurrentHealth: 100
+  isHealing: 0
   damageable: 1
   dead: 0
   isReviving: 0
