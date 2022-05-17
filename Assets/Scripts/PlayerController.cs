@@ -250,7 +250,7 @@ public class PlayerController : MonoBehaviour
                 isPraying = true;
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isGuarding)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
