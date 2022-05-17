@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.ComponentModel.Design;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,7 +22,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text RelicTitleText;
     public TMP_Text PowerText;
     public TMP_Text DescriptionText;
-
+    
+    
+    
     #region ButtonLists
     public List<Button> CommonButtonList;//common gem slotlarinin listesi
     public List<Button> CommonGemsButtonList;//common gem butonlarinin listesi
@@ -32,12 +35,16 @@ public class UIManager : MonoBehaviour
     public List<Button> LegendaryGemsButtonList;
     
     #endregion
+
     
-    
+
+
     private int buttonIndex;// bastigimiz slot butonunun indexini tutan deger
     int gemButtonIndex; // tikladigimiz gem butonunun indexi
     private int healthGateIndex; // healthgate indexini tutar deger
     private GemSO selectedGem;  // tikladigimiz butona gore secili gemi tutan degisken
+
+    
 
     public void OnCommonGemsButtonPressed()
     {
@@ -110,7 +117,39 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-
+    public void SlotsColors()
+    {
+        
+        foreach (var healthGates in _gateManager.healthGateListSo.HealthGateList)
+        {
+            foreach (var activeGem in healthGates.activeGems)
+            {
+                if (activeGem != null)
+                {
+                    switch (healthGates.percentage)
+                    {
+                        case 1:
+                            LegendaryButtonList1per[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                                Color.green;
+                            break;
+                        case 33:
+                            CommonButtonList[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                                Color.green;
+                            break;
+                        case 66:
+                            RareButtonList[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                                Color.green;
+                            break;
+                        case 99:
+                            LegendaryButtonList99per[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                                Color.green;
+                            break;
+                    }
+                   
+                }
+            }
+        }
+    }
     #region RareButtonFunctions
 
     public void OnRareButtonPressed(Button button)
