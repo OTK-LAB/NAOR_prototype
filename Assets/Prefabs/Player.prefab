@@ -321,9 +321,9 @@ MonoBehaviour:
   wallJumpLerp: 1
   ledgeCheckUp: {fileID: 1963275755}
   ledgeCheckDown: {fileID: 1514436766}
-  ledgeDistance: 1
-  ledgeXOffset1: 0.3
-  ledgeYOffset1: 0
+  ledgeDistance: 0.3
+  ledgeXOffset1: -0.5
+  ledgeYOffset1: 0.6
   ledgeXOffset2: 1
   ledgeYOffset2: 2
   attackPoint: {fileID: 2303616366658647844}
@@ -342,6 +342,7 @@ MonoBehaviour:
   daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
   daggerAmount: 3
   cooldownTime: 3
+  moveList: {fileID: 0}
 --- !u!114 &2303616365481814413
 MonoBehaviour:
   m_ObjectHideFlags: 0

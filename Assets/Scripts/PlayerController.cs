@@ -61,12 +61,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 ledgePosBot;
     private Vector2 ledgePos1;
     private Vector2 ledgePos2;
+
     [SerializeField]
     private float ledgeDistance;
     public float ledgeXOffset1 = 0.0f;
     public float ledgeYOffset1 = 0.0f;
     public float ledgeXOffset2 = 0.0f;
     public float ledgeYOffset2 = 0.0f;
+    private float gravity;
 
     //Animations
     private Animator animator;
@@ -121,6 +123,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gravity = rb.gravityScale;
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
     }
@@ -159,12 +162,19 @@ public class PlayerController : MonoBehaviour
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
             isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            if(isTouchingLedgeDown)
+            {
+                ledgePosBot = ledgeCheckDown.position;
+             }
         }
         else
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
             isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
-
+            if(isTouchingLedgeDown)
+            { 
+                ledgePosBot = ledgeCheckDown.position;
+            }        
         }
 
         if(grabFront || grabBack)
@@ -201,14 +211,13 @@ public class PlayerController : MonoBehaviour
 
         if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
             ledgeDetected = true;
-            ledgePosBot = ledgeCheckDown.position;
         }
 
     }
     void CheckInputs()
     {
         //Get Horizontal Input
-        if(!isWallJumping)
+        if(!isWallJumping && !canClimbLedge)
         {
             xAxis = Input.GetAxisRaw("Horizontal");
         }
@@ -286,11 +295,14 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void CheckLedgeClimb()
+   private void CheckLedgeClimb()
     {
         if(ledgeDetected && !canClimbLedge)
         {
+            
             canClimbLedge = true;
+            Debug.Log("canClimbLedge TRUE");
+
             if(facingRight)
             {
                 ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
@@ -301,24 +313,33 @@ public class PlayerController : MonoBehaviour
                 ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
                 ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
             }
+
             canMove = false;
             canFlip = false;
+
+            rb.velocity = new Vector2(0,0);
+            transform.position = ledgePos1;
+            rb.gravityScale = 0;
         }
 
-        if(canClimbLedge)
+        if(canClimbLedge && Input.GetKeyDown(KeyCode.Space))
         {
-            transform.position = ledgePos1;
+            transform.position = ledgePos2;
             FinishLedgeClimb();
         }
+        if(canClimbLedge && Input.GetKeyDown(KeyCode.S))
+        {
+            FinishLedgeClimb();
+        }   
     }
 
     public void FinishLedgeClimb()
     {
         canClimbLedge = false;
-        transform.position = ledgePos2;
         canMove = true;
         canFlip = true;
         ledgeDetected = false;
+        rb.gravityScale = gravity;
     }
   
     void Move()
