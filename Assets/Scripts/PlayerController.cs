@@ -327,7 +327,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!isWallJumping)
             {
-                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isFallAttacking)
                 {
                     if (!isGuarding)
                     {
@@ -389,7 +389,7 @@ public class PlayerController : MonoBehaviour
 
     void WallSlide()
     {
-        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0)
+        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0 && !isFallAttacking)
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
@@ -540,7 +540,7 @@ public class PlayerController : MonoBehaviour
         {
             if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
             {
-                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing)
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isFallAttacking)
                 {
                     if (isCombo && attackTime > 0.3f)
                         Attack();
@@ -549,11 +549,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 4)
+        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 4 && !isFallAttacking && !isWallSliding)
         {
             StaminaBar.instance.useStamina(50);
             isFallAttacking = true;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 1f);
+            rb.velocity = new Vector2(0, rb.velocity.y - 1f);
             //rb.constraints = RigidbodyConstraints2D.FreezePositionX;
             FallAttack();
         }
@@ -614,6 +614,13 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(40);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(40);
+        }
+    }
+    public void FallAttackTransition()
+    {
+        if(isGrounded)
+        {
+            ChangeAnimationState("PlayerFallAttackLanding");
         }
     }
     public void FallAttackDone()
