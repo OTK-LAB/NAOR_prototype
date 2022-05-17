@@ -21,7 +21,9 @@ public class BoatScript : MonoBehaviour
             ePressed = true;
         if(usingBoat)
         {
-            rb.velocity = new Vector2(Input.GetAxis("Horizontal") * boatSpeed, rb.velocity.y);
+            if(boatSpeed < 4)
+                boatSpeed += Time.deltaTime;
+            rb.velocity = new Vector2(boatSpeed, rb.velocity.y);
         }
         else
             rb.velocity = new Vector2(0,0);
