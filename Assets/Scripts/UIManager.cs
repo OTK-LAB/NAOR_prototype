@@ -13,7 +13,8 @@ public class UIManager : MonoBehaviour
     public Button CommonGemsUI;
     public Button RareGemsUI;
     public Button LegendaryGemsUI;
-    
+    public Button OKButton;
+
     public GameObject CommonSelectionUI;
     public GameObject RareSelectionUI;
     public GameObject LegendarySelectionUI;
@@ -76,7 +77,13 @@ public class UIManager : MonoBehaviour
     
     public void OnOKButtonPressed()
     {
+        
+        if (_gateManager.healthGateListSo.HealthGateList[healthGateIndex].activeGems[buttonIndex] != null)
+        {
+            _gateManager.healthGateListSo.HealthGateList[healthGateIndex].activeGems[buttonIndex].isActive = false;
+        }
         _gateManager.healthGateListSo.HealthGateList[healthGateIndex].activeGems[buttonIndex] = selectedGem;
+        selectedGem.isActive = true;
     }
 
     #region CommonButtonFunctions
@@ -112,6 +119,14 @@ public class UIManager : MonoBehaviour
         RelicTitleText.text =gemTypeListSO.gemTypeList[0].gemList[gemButtonIndex].title;
         DescriptionText.text=gemTypeListSO.gemTypeList[0].gemList[gemButtonIndex].description;
         selectedGem=gemTypeListSO.gemTypeList[0].gemList[gemButtonIndex];
+        if (selectedGem.isActive == true)
+        {
+            OKButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            OKButton.gameObject.SetActive(true);
+        }
         Debug.Log(selectedGem.name);
     }//gemlere tikladigimizda gerceklesen olaylar
 
@@ -126,6 +141,7 @@ public class UIManager : MonoBehaviour
             {
                 if (activeGem != null)
                 {
+                   
                     switch (healthGates.percentage)
                     {
                         case 1:
@@ -146,6 +162,65 @@ public class UIManager : MonoBehaviour
                             break;
                     }
                    
+                }
+            }
+        }
+        IsGemsActive();
+    }
+
+    public void IsGemsActive()
+    {
+        foreach (var gems in gemTypeListSO.gemTypeList)
+        {
+            foreach (var gemss in gems.gemList)
+            {
+                if (gemTypeListSO.gemTypeList.IndexOf(gems)== 0 )
+                {
+                    if (gemss.isActive == true)
+                    {
+                        Color color =CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
+                        color.a = 0.5f;
+                        CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;
+                    }
+                    else
+                    {
+                        Color color =CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
+                        color.a = 1f;
+                        CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;
+                    }
+                    
+                }
+                else if (gemTypeListSO.gemTypeList.IndexOf(gems)== 1 )
+                {
+                    if (gemss.isActive == true)
+                    {
+                        Color color =RareGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
+                        color.a = 0.5f;
+                        RareGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color; 
+                    }
+                    else
+                    {
+                        Color color =RareGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
+                        color.a = 1f;
+                        RareGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;
+                    }
+                    
+                }
+                else if (gemTypeListSO.gemTypeList.IndexOf(gems)== 2 )
+                {
+                    if (gemss.isActive == true)
+                    {
+                        Color color =LegendaryGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
+                        color.a = 0.5f;
+                        LegendaryGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;   
+                    }
+                    else
+                    {
+                        Color color =LegendaryGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
+                        color.a = 1f;
+                        LegendaryGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;
+                    }
+                    
                 }
             }
         }
@@ -184,6 +259,14 @@ public class UIManager : MonoBehaviour
         RelicTitleText.text =gemTypeListSO.gemTypeList[1].gemList[gemButtonIndex].title;
         DescriptionText.text=gemTypeListSO.gemTypeList[1].gemList[gemButtonIndex].description;
         selectedGem=gemTypeListSO.gemTypeList[1].gemList[gemButtonIndex];
+        if (selectedGem.isActive == true)
+        {
+            OKButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            OKButton.gameObject.SetActive(true);
+        }
         Debug.Log(selectedGem.name);
     }//gemlere tikladigimizda gerceklesen olaylar
 
@@ -240,6 +323,14 @@ public class UIManager : MonoBehaviour
         RelicTitleText.text =gemTypeListSO.gemTypeList[2].gemList[gemButtonIndex].title;
         DescriptionText.text=gemTypeListSO.gemTypeList[2].gemList[gemButtonIndex].description;
         selectedGem=gemTypeListSO.gemTypeList[2].gemList[gemButtonIndex];
+        if (selectedGem.isActive == true)
+        {
+            OKButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            OKButton.gameObject.SetActive(true);
+        }
         Debug.Log(selectedGem.name);
     }//gemlere tikladigimizda gerceklesen olaylar
     

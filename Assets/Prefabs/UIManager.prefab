@@ -20949,6 +20949,7 @@ MonoBehaviour:
   CommonGemsUI: {fileID: 1343839293179480566}
   RareGemsUI: {fileID: 9219629838202619968}
   LegendaryGemsUI: {fileID: 7067396976953599492}
+  OKButton: {fileID: 2315825546989411677}
   CommonSelectionUI: {fileID: 2090020452789426962}
   RareSelectionUI: {fileID: 3271537048099788399}
   LegendarySelectionUI: {fileID: 8950760764918839375}
