@@ -10,7 +10,8 @@ TagManager:
   - Ground
   - Dagger
   - CheckPoint
-  - DockRange
+  - DockTrigger
+  - DockTrigger2
   layers:
   - Default
   - TransparentFX

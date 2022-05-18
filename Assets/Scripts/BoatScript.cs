@@ -11,6 +11,7 @@ public class BoatScript : MonoBehaviour
     private bool ePressed;
     [HideInInspector] public bool inBoat;
     private bool docksReached = true;
+    private bool endDocksReached = false;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -18,13 +19,17 @@ public class BoatScript : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E) && inBoat && docksReached)
+        if(Input.GetKeyDown(KeyCode.E) && inBoat && (docksReached || rb.velocity.x == 0))
             ePressed = true;
 
         if(usingBoat)
         {
-            if(boatSpeed < 4)
+            if(boatSpeed < 4 && docksReached)
                 boatSpeed += Time.deltaTime;
+            if(boatSpeed > 0 && endDocksReached)
+                boatSpeed -= Time.deltaTime;
+            else if(boatSpeed < 0)
+                boatSpeed = 0;
             rb.velocity = new Vector2(boatSpeed, rb.velocity.y);
         }
         else
@@ -72,8 +77,11 @@ public class BoatScript : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
             inBoat = true;
-        if(other.gameObject.CompareTag("DockRange"))
-            docksReached = !docksReached;
+        if(other.gameObject.CompareTag("DockTrigger"))
+            docksReached = false;
+        if(other.gameObject.CompareTag("DockTrigger2"))
+            endDocksReached = true;
+            
 
     }
     private void OnTriggerExit2D(Collider2D other) 
