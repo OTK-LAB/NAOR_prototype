@@ -258,7 +258,6 @@ public class PlayerController : MonoBehaviour
             if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
             {
                 isPraying = true;
-                //canMove = false;
                 rb.velocity = new Vector2(0, 0);
             }
         //Roll
