@@ -256,7 +256,11 @@ public class PlayerController : MonoBehaviour
         //Pray
         if (Input.GetKeyDown(KeyCode.C))
             if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
+            {
                 isPraying = true;
+                //canMove = false;
+                rb.velocity = new Vector2(0, 0);
+            }
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
             if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isGuarding)
