@@ -126,7 +126,7 @@ public class PlayerManager : MonoBehaviour
                     //normal damage status
                     case 1:
                         CurrentHealth -= damage;
-                        healthBar.SetHealth(CurrentHealth);
+                       //
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -134,7 +134,7 @@ public class PlayerManager : MonoBehaviour
                     //blocking damage status
                     case 2:
                         CurrentHealth -= damage * 0.6f;
-                        healthBar.SetHealth(CurrentHealth);
+                        //
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
@@ -155,7 +155,7 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 CurrentHealth = 0;
-                healthBar.SetHealth(CurrentHealth);
+               //
 
             }
             Die();
@@ -178,7 +178,7 @@ public class PlayerManager : MonoBehaviour
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
                 CurrentHealth = 1;
-                healthBar.SetHealth(CurrentHealth);
+               //
                 healthBar.DeathDefienceGem(lives);
             }
             if (lives == 2)
@@ -202,7 +202,7 @@ public class PlayerManager : MonoBehaviour
                 player.enabled = false;
                 StartCoroutine(RespawnPlayer());
                 healthBar.RevertHealthBar();
-                healthBar.SetHealth(CurrentHealth);
+                //
             }
         }
     }

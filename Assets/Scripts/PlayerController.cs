@@ -176,7 +176,6 @@ public class PlayerController : MonoBehaviour
                     {
                         PlayerManager.instance.HealthPotion(33);
                         Potion.instance.UsePotions(1);
-                        healthBar.SetHealth(playerManager.CurrentHealth);
                     }
                 }
             }
