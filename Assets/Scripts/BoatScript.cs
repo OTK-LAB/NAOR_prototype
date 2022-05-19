@@ -12,6 +12,7 @@ public class BoatScript : MonoBehaviour
     [HideInInspector] public bool inBoat;
     private bool docksReached = true;
     private bool endDocksReached = false;
+    public AudioSource music;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -19,15 +20,24 @@ public class BoatScript : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E) && inBoat && (docksReached || rb.velocity.x == 0))
+        if(Input.GetKeyDown(KeyCode.E) && inBoat && rb.velocity.x == 0)
+        {
             ePressed = true;
+            if(docksReached)
+                music.PlayDelayed(1);
+        }
+
+        if(music.isPlaying && music.volume < 1)
+        {
+            music.volume += Time.deltaTime / 10;
+        }
 
         if(usingBoat)
         {
             if(boatSpeed < 4 && docksReached)
                 boatSpeed += Time.deltaTime;
             if(boatSpeed > 0 && endDocksReached)
-                boatSpeed -= Time.deltaTime;
+                boatSpeed -= Time.deltaTime / 2;
             else if(boatSpeed < 0)
                 boatSpeed = 0;
             rb.velocity = new Vector2(boatSpeed, rb.velocity.y);
