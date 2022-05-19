@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
     public Transform fallAttackBox;
     public Vector3 fallAttackSize;
     private float attackTime = 0.0f;
-    private int attackCount = 0;
+    public int attackCount = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 10;
     public LayerMask enemyLayers;
