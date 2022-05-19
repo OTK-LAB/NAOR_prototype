@@ -231,8 +231,13 @@ public class PlayerController : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing)
+            if (isGrounded && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing)
             {
+                if (isRolling)
+                {
+                    StopCoroutine(Roll());
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                }
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
@@ -262,7 +267,7 @@ public class PlayerController : MonoBehaviour
             }
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isGuarding)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isGuarding && !isJumping)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
