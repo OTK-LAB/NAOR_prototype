@@ -11,6 +11,8 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - Miniboss
+  - MinibossShield
   - Limit
   - Sword
   - Legolas
@@ -28,6 +30,7 @@ TagManager:
   - Enemy
   - Player
   - RollCollider
+  - Miniboss
   - 
   - 
   - 
