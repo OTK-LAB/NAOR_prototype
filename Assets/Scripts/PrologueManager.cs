@@ -50,7 +50,7 @@ public class PrologueManager : MonoBehaviour
          }
      }*/
     
-    IEnumerator FadeOut()
+    /*IEnumerator FadeOut()
     {
         for (float f = 0; f <= 2; f += Time.deltaTime)
         {
@@ -58,14 +58,15 @@ public class PrologueManager : MonoBehaviour
             yield return null;
         }
         this.GetComponent<CanvasGroup>().alpha = 0;
-       /* for (float f = 0; f <= 2; f += Time.deltaTime)
+       for (float f = 0; f <= 2; f += Time.deltaTime)
         {
             this.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(0f, 1f, f / 2);
             yield return null;
         }
-        this.GetComponent<CanvasGroup>().alpha = 1;*/
+        this.GetComponent<CanvasGroup>().alpha = 1;
         async.allowSceneActivation = true;
     }
+*/
 
     IEnumerator PrintLines()
     {
@@ -76,10 +77,10 @@ public class PrologueManager : MonoBehaviour
             if (index == 4)
             {
                 //typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
-                typeWriterScript1.time = 5f;
+                typeWriterScript1.time = 4f;
                 transform.GetChild(index).gameObject.SetActive(true);
                 
-                yield return new WaitForSecondsRealtime(7);
+                yield return new WaitForSecondsRealtime(9);
                 //transform.GetChild(index).gameObject.SetActive(false);
                 index++;
             }
@@ -90,10 +91,11 @@ public class PrologueManager : MonoBehaviour
                 typeWriterScript2.time = 5f;
                 transform.GetChild(index).gameObject.SetActive(true);
                 index++;
-               yield return new WaitForSecondsRealtime(10);
                 async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
                 async.allowSceneActivation = false;
-                StartCoroutine(FadeOut());
+                yield return new WaitForSecondsRealtime(10);
+                async.allowSceneActivation = true;
+               // StartCoroutine(FadeOut());
             }
             // if (index == 3) time = 4;
             //else if (index == 4) time = 5;
