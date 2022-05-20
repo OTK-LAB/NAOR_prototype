@@ -701,7 +701,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isBusy()
     {
-        if (isAttacking || isFallAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
+        if (isAttacking || isFallAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing || canClimbLedge)
             return true;
         else
             return false;
