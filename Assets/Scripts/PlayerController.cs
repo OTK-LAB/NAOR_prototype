@@ -20,8 +20,10 @@ public class PlayerController : MonoBehaviour
     [Header("Roll")]
     public float rollSpeed;
     private bool isRolling = false;
+    private bool rollCheck;
     public GameObject rollColl;
     public float iFrame = 0.3f;
+    
 
     //Jumping
     [Header("Jumping")]
@@ -149,6 +151,8 @@ public class PlayerController : MonoBehaviour
 
         grabFront = Physics2D.OverlapCircle(wallGrabPointFront.position, wallDistance, groundLayer);
         grabBack = Physics2D.OverlapCircle(wallGrabPointBack.position, wallDistance, groundLayer);
+        rollCheck = Physics2D.Raycast(ledgeCheckUp.position, transform.up, 0.1f, groundLayer);
+
         if(facingRight)
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
@@ -405,7 +409,10 @@ public class PlayerController : MonoBehaviour
         else
             rb.velocity = new Vector2(-rollSpeed, rb.velocity.y);
 
+
         yield return new WaitForSeconds(.5f);
+        while(rollCheck) yield return null;
+
         isRolling = false;
         playerManager.damageable = true;
         rollColl.SetActive(false);
