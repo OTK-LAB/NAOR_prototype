@@ -4,15 +4,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 public class PrologueManager : MonoBehaviour
 {
-    
-    int index;
+    TypeWriterEffect typeWriterScript;
+    AsyncOperation async;
+    int index=0;
     //public Transform[] allChildren;
     //List<GameObject> childObjects = new List<GameObject>();
-    void Start()
+    void OnEnable()
     {
-        index = 0;
+        StartCoroutine(PrintLines());
         /*allChildren = GetComponentsInChildren<Transform>(true);
         
         foreach (Transform child in allChildren)
@@ -25,27 +27,18 @@ public class PrologueManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown)
-        {
-            if (index < 5)
-            {
-                
-                transform.GetChild(index).gameObject.SetActive(false);
-                index++;
-                transform.GetChild(index).gameObject.SetActive(true);
-                
-            }
-            else if (index == 5)
-            {
-                transform.GetChild(index + 1).gameObject.SetActive(true);
-                index++;
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
-            }
-            
-        }
+
+
+        
+
+       // else if (index == 5)
+        //{
+          //  transform.GetChild(index).gameObject.SetActive(false);
+            //index++;
+        //}
+       
+          }  
+        
 
         /* if (Input.anyKeyDown)
          {
@@ -56,7 +49,76 @@ public class PrologueManager : MonoBehaviour
              }
          }
      }*/
+    
+    IEnumerator FadeOut()
+    {
+        for (float f = 0; f <= 2; f += Time.deltaTime)
+        {
+            this.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(1f, 0f, f / 2);
+            yield return null;
+        }
+        this.GetComponent<CanvasGroup>().alpha = 0;
+       /* for (float f = 0; f <= 2; f += Time.deltaTime)
+        {
+            this.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(0f, 1f, f / 2);
+            yield return null;
+        }
+        this.GetComponent<CanvasGroup>().alpha = 1;*/
+        async.allowSceneActivation = true;
     }
 
-   
+    IEnumerator PrintLines()
+    {
+        int time;
+        while(index <= 5)
+        {
+            time = 4;
+            if (index == 4)
+            {
+                
+                transform.GetChild(index).gameObject.SetActive(true);
+                typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
+                typeWriterScript.time = 3;
+                yield return new WaitForSecondsRealtime(time);
+                //transform.GetChild(index).gameObject.SetActive(false);
+                index++;
+            }
+
+            else if (index == 5)
+            {
+                transform.GetChild(index).gameObject.SetActive(true);
+                typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
+                typeWriterScript.time = 5;
+               // yield return new WaitForSecondsRealtime(time);
+                async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
+                async.allowSceneActivation = false;
+                StartCoroutine(FadeOut());
+            }
+            // if (index == 3) time = 4;
+            //else if (index == 4) time = 5;
+            //else if (index == 5) time = 7;
+            else
+            {
+                transform.GetChild(index).gameObject.SetActive(true);
+                yield return new WaitForSecondsRealtime(time);
+                //transform.GetChild(index).gameObject.SetActive(false);
+                index++;
+            }
+            
+
+            // transform.GetChild(index).gameObject.SetActive(true);
+
+            
+        }
+
+        //time = 3;
+        //yield return new WaitForSecondsRealtime(time);
+        
+        
+
+
+    }
 }
+
+
+

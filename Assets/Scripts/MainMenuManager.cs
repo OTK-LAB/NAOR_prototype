@@ -15,9 +15,11 @@ public class MainMenuManager : MonoBehaviour
     public GameObject ExitMenu;
     public GameObject PrologueCanvas;
     public GameObject MenuCanvas;
+    public AudioSource audioSource;
+    public AudioClip Seslendirme;
     public void Start()
     {
-      
+        audioSource = audioSource.GetComponent<AudioSource>();
     }
 
 
@@ -38,9 +40,11 @@ public class MainMenuManager : MonoBehaviour
    public void Transition()
     {
         PrologueCanvas.SetActive(true);
-        MenuCanvas.SetActive(false);
-       // yield return new WaitForSeconds(5);
-       // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
+        audioSource.clip = Seslendirme;
+        audioSource.Play();
+        Destroy(MenuCanvas);
+        // yield return new WaitForSeconds(5);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
     }
     public void StartGame(){
         Transition();
