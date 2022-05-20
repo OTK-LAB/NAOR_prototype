@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 ledgePosBot;
     private Vector2 ledgePos1;
     private Vector2 ledgePos2;
+    RaycastHit2D hit;
 
     [SerializeField]
     private float ledgeDistance;
@@ -161,7 +162,8 @@ public class PlayerController : MonoBehaviour
         if(facingRight)
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
-            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
             if(isTouchingLedgeDown)
             {
                 ledgePosBot = ledgeCheckDown.position;
@@ -170,7 +172,8 @@ public class PlayerController : MonoBehaviour
         else
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
-            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
             if(isTouchingLedgeDown)
             { 
                 ledgePosBot = ledgeCheckDown.position;
@@ -209,7 +212,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
+        if(isTouchingLedgeDown && !isTouchingLedgeUp && hit.collider.CompareTag("Climbable") && !ledgeDetected ){
             ledgeDetected = true;
         }
 
