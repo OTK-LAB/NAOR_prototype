@@ -569,7 +569,7 @@ public class PlayerController : MonoBehaviour
         {
             if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
             {
-                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isFallAttacking)
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isFallAttacking && !canClimbLedge)
                 {
                     if (isCombo && attackTime > 0.3f)
                         Attack();
