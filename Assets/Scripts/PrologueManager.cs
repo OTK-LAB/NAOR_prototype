@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class PrologueManager : MonoBehaviour
 {
-    TypeWriterEffect typeWriterScript;
+    public TypeWriterEffect typeWriterScript1;
+    public TypeWriterEffect typeWriterScript2;
     AsyncOperation async;
     int index=0;
     //public Transform[] allChildren;
@@ -25,8 +26,7 @@ public class PrologueManager : MonoBehaviour
     }
   
     // Update is called once per frame
-    void Update()
-    {
+  
 
 
         
@@ -37,7 +37,7 @@ public class PrologueManager : MonoBehaviour
             //index++;
         //}
        
-          }  
+       
         
 
         /* if (Input.anyKeyDown)
@@ -75,21 +75,22 @@ public class PrologueManager : MonoBehaviour
             time = 4;
             if (index == 4)
             {
-                
+                //typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
+                typeWriterScript1.time = 5f;
                 transform.GetChild(index).gameObject.SetActive(true);
-                typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
-                typeWriterScript.time = 3;
-                yield return new WaitForSecondsRealtime(time);
+                
+                yield return new WaitForSecondsRealtime(7);
                 //transform.GetChild(index).gameObject.SetActive(false);
                 index++;
             }
 
             else if (index == 5)
             {
+                //typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
+                typeWriterScript2.time = 5f;
                 transform.GetChild(index).gameObject.SetActive(true);
-                typeWriterScript = transform.GetChild(index).gameObject.GetComponent<TypeWriterEffect>();
-                typeWriterScript.time = 5;
-               // yield return new WaitForSecondsRealtime(time);
+                index++;
+               yield return new WaitForSecondsRealtime(10);
                 async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
                 async.allowSceneActivation = false;
                 StartCoroutine(FadeOut());

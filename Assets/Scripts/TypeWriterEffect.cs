@@ -7,7 +7,7 @@ public class TypeWriterEffect : MonoBehaviour {
 	//public float delay = 0.1f;
 	//public string fullText;
 	//private string currentText = "";
-	public int time = 0;
+	public float time = 0.1f;
 	// Use this for initialization
 	void OnEnable() {
 		
