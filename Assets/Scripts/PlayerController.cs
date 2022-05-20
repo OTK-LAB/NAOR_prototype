@@ -213,6 +213,13 @@ public class PlayerController : MonoBehaviour
             ledgeDetected = true;
         }
 
+        //stop rolling if not grounded
+        if(isRolling && !isGrounded)
+        {
+            StopCoroutine(Roll());
+            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+        }
+
     }
     void CheckInputs()
     {
