@@ -13,6 +13,12 @@ TagManager:
   - Villager
   - Miniboss
   - MinibossShield
+  - Limit
+  - Sword
+  - Legolas
+  - MinionwPoke
+  - keys
+  - Backpack
   layers:
   - Default
   - TransparentFX
@@ -25,6 +31,7 @@ TagManager:
   - Player
   - RollCollider
   - Miniboss
+  - 
   - 
   - 
   - 
