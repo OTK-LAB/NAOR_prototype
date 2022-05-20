@@ -298,6 +298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 4
   walkSpeed: 1.8
+  isStunned: 0
   facingRight: 1
   canMove: 1
   canFlip: 1
@@ -430,7 +431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2303616366377848006}
   - component: {fileID: 2303616366377848007}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RollCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

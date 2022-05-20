@@ -621,6 +621,8 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
             if (enemy.CompareTag("MinibossShield"))
                 enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
         }
@@ -641,6 +643,8 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(40);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(40);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
             if (enemy.CompareTag("MinibossShield"))
                 enemy.transform.parent.GetComponent<Boss_Manager>().Parry();    
         }
