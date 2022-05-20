@@ -25,7 +25,7 @@ public class CheckPointMenuScript : MonoBehaviour
         TogglePause();
         CheckPointMenu.SetActive(false);  
     }
-    void TogglePause()
+    public void TogglePause()
     {
         if(Time.timeScale == 0f)
         {

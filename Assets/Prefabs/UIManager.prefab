@@ -8515,7 +8515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2315825546897311626
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17938,7 +17938,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CheckPointMenuScript, Assembly-CSharp
-        m_MethodName: CloseCheckPointMenu
+        m_MethodName: TogglePause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20956,6 +20956,7 @@ MonoBehaviour:
   RelicTitleText: {fileID: 2315825546443459373}
   PowerText: {fileID: 2315825546405725084}
   DescriptionText: {fileID: 2315825547706185174}
+  HPText: {fileID: 2315825547835533350}
   CommonButtonList:
   - {fileID: 2315825546879556642}
   - {fileID: 2315825546524872542}

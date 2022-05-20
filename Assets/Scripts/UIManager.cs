@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text RelicTitleText;
     public TMP_Text PowerText;
     public TMP_Text DescriptionText;
+    public TMP_Text HPText;
     
     
     
@@ -47,31 +48,34 @@ public class UIManager : MonoBehaviour
 
     
 
-    public void OnCommonGemsButtonPressed()
+    public void OnCommonGemsButtonPressed(String hpText)
     {
         CommonSelectionUI.SetActive(true);
         RareSelectionUI.SetActive(false);
         LegendarySelectionUI.SetActive(false);
         PowerText.text = "Common";
         PowerText.color = Color.blue;
+        HPText.text = hpText;
         //DescriptionUI.SetActive(true);
     }
-    public void OnRareGemsButtonPressed()
+    public void OnRareGemsButtonPressed(String hpText)
     {
         RareSelectionUI.SetActive(true);
         LegendarySelectionUI.SetActive(false);
         CommonSelectionUI.SetActive(false);
         PowerText.text = "Rare";
         PowerText.color = Color.magenta;
+        HPText.text = hpText;
         //DescriptionUI.SetActive(true);
     }
-    public void OnLegendaryGemsButtonPressed()
+    public void OnLegendaryGemsButtonPressed(String hpText)
     {
         LegendarySelectionUI.SetActive(true);
         CommonSelectionUI.SetActive(false);
         RareSelectionUI.SetActive(false);
         PowerText.text = "Legendary";
         PowerText.color = Color.yellow;
+        HPText.text = hpText;
         //DescriptionUI.SetActive(true);
     }
     
@@ -93,7 +97,7 @@ public class UIManager : MonoBehaviour
         healthGateIndex = 1;
         if (!CommonSelectionUI.activeSelf)
         {
-            OnCommonGemsButtonPressed();
+            OnCommonGemsButtonPressed("%33-66");
         }
         foreach (var a in CommonButtonList)
         {
@@ -233,7 +237,7 @@ public class UIManager : MonoBehaviour
         healthGateIndex = 2;
         if (!RareSelectionUI.activeSelf)
         {
-            OnRareGemsButtonPressed();
+            OnRareGemsButtonPressed("%66-99");
         }
         foreach (var a in RareButtonList)
         {
@@ -277,10 +281,11 @@ public class UIManager : MonoBehaviour
     public void OnLegendaryButtonPressed1per(Button button)
     {
         healthGateIndex = 0;
-        if (!LegendarySelectionUI.activeSelf)
+        /*if (!LegendarySelectionUI.activeSelf)
         {
-            OnLegendaryGemsButtonPressed();
-        }
+            OnLegendaryGemsButtonPressed("%0-33");
+        }*/
+        OnLegendaryGemsButtonPressed("%0-33");
         foreach (var a in LegendaryButtonList1per)
         {
             if (a == button)
@@ -295,10 +300,11 @@ public class UIManager : MonoBehaviour
     public void OnLegendaryButtonPressed99per(Button button)
     {
         healthGateIndex = 3;
-        if (!LegendarySelectionUI.activeSelf)
+       /* if (!LegendarySelectionUI.activeSelf)
         {
-            OnLegendaryGemsButtonPressed();
-        }
+            OnLegendaryGemsButtonPressed("%99-100");
+        }*/
+       OnLegendaryGemsButtonPressed("%99-100");
         foreach (var a in LegendaryButtonList99per)
         {
             if (a == button)
