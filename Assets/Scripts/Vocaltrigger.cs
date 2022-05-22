@@ -13,6 +13,6 @@ public class Vocaltrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
             Vocals.instance.Say(clipToPlay);
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 1f);
     }
 }
