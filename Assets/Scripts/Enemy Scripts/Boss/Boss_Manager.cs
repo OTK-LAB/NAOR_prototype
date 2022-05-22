@@ -7,7 +7,7 @@ public class Boss_Manager : MonoBehaviour
 	                                                                    //small note for miniboss: the animations must be long in order to damage the miniboss
 															         	//if the animation is done it will revert to idle (if nearby) and change direction towards us.
     public PlayerManager player;  //do not try this at home
-    public int health = 500;
+    public float health = 500;
 
 	public GameObject deathEffect;
 
@@ -72,7 +72,7 @@ public class Boss_Manager : MonoBehaviour
 	}
 
 
-	public void TakeDamage(int damage)
+	public void TakeDamage(float damage)
 	{
 		if (isInvulnerable)
 			return;

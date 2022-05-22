@@ -17,8 +17,8 @@ TagManager:
   - Sword
   - Legolas
   - MinionwPoke
+  - CheckPointMenuManager
   - keys
-  - Backpack
   layers:
   - Default
   - TransparentFX
@@ -31,7 +31,6 @@ TagManager:
   - Player
   - RollCollider
   - Miniboss
-  - 
   - 
   - 
   - 

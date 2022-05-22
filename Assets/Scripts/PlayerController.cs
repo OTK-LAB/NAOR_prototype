@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
-    public int attackDamage = 10;
+    public float attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
     private bool isFallAttacking;
@@ -111,7 +111,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownTime;
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
+    //Gems
+    public float rollStaminaRate=0;
+    public float lifeStealRate = 0;
 
+    [Header("Miscellaneous")]
+    //Move list
     public GameObject moveList;
 
     private void Awake()
@@ -433,7 +438,7 @@ public class PlayerController : MonoBehaviour
         playerManager.damageable = false;
         rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        StaminaBar.instance.useStamina(30);
+        StaminaBar.instance.useStamina(30 * rollStaminaRate);
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
@@ -653,6 +658,19 @@ public class PlayerController : MonoBehaviour
     {
         isFallAttacking = false;
         //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+    }
+    public void StealLife(float stealRate)
+    {
+        if (playerManager.CurrentHealth < playerManager.MaxHealth)
+        {
+            playerManager.CurrentHealth += attackDamage * stealRate;
+            Debug.Log(attackDamage * stealRate + "Can calindi");
+            Actions.OnHealthChanged();
+            if (playerManager.CurrentHealth > 100)
+            {
+                playerManager.CurrentHealth = 100;
+            }
+        }
     }
     public void ThrowDagger()
     {
