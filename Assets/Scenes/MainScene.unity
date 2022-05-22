@@ -714,7 +714,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674e5bd5f3edfc94282e0810d15ff11a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbilitiesButton: {fileID: 1118476962}
+  RelicsButton: {fileID: 1205286808}
+  SkillTreeMenu: {fileID: 741301814}
+  ShallowGraveMenu: {fileID: 1147216700}
   CheckPointMenu: {fileID: 805057029}
+--- !u!1 &741301814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2315825546436632235, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+  m_PrefabInstance: {fileID: 1140117651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &768407900
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1625,6 +1634,11 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!1 &1118476962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2315825546323376170, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+  m_PrefabInstance: {fileID: 1140117651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1130037625 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5231379577768601385, guid: eda2ae928340a594ebe4dbdc18898838, type: 3}
@@ -1643,10 +1657,279 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2315825546231730334, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546323376170, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546405725075, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 77
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546436632235, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546443459372, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 393.5074
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546443459372, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 220.90552
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546443459372, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546443459373, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2315825546443459373, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2315825546595731968, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 479.1115
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546595731968, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 101.70361
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546604095894, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546604095894, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825546604095894, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546604095894, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: CheckPointMenuScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546608917547, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_text
+      value: Select
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546608917547, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.94117653
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546608917547, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.94117653
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546608917547, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.94117653
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546608917547, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4293980400
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546617504169, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 815.6254
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546617504169, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 350.68726
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546659078722, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546659078722, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825546659078722, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546659078722, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: CheckPointMenuScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546897311630, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 434.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 44.411
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.98602
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.98602
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.98602
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 239.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411676, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411678, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_Color.b
+      value: 0.058823533
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411678, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_Color.g
+      value: 0.16470589
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546989411678, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547277875551, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9875
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547277875551, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547419601671, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547419601671, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825547419601671, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547419601671, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: CheckPointMenuScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547458536434, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547706185173, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 58.916
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547706185173, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -37
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547706185174, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_text
+      value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi euismod
+        luctus eros, eu '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547819814632, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547819814633, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547819814633, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547835533349, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 232.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547835533349, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -253.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476472, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
       objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
+      value: CheckPointMenuScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476475, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548219663316, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2315825548219663316, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 2462859141893595372, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -1691,12 +1974,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3271537048099788399, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6111378956557017866, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+--- !u!1 &1147216700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2315825547819814632, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+  m_PrefabInstance: {fileID: 1140117651}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1205286808 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2315825547458536434, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+  m_PrefabInstance: {fileID: 1140117651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1318580751
 PrefabInstance:
   m_ObjectHideFlags: 0
