@@ -73,6 +73,7 @@ public class PlayerManager : MonoBehaviour
             CurrentHealth += health;
         player.ChangeAnimationState(heal);
         isHealing = true;
+        rb.velocity = new Vector2(0,0);
         Invoke("CancelHealState", 0.8f);
         if (CurrentHealth > 100)
         {
@@ -123,7 +124,9 @@ public class PlayerManager : MonoBehaviour
                             if(enemy.CompareTag("Sword"))
                                 enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
                             if(enemy.CompareTag("MinionwPoke"))
-                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f); 
+                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Legolas"))
+                                enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }
@@ -135,6 +138,27 @@ public class PlayerManager : MonoBehaviour
             }
             Die();
         }
+    }
+
+    public void StunPlayer(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        if (player.facingRight)
+              rb.AddForce(new Vector2(-100,0));
+        else
+              rb.AddForce(new Vector2(100,0));
+        player.isStunned = true;
+        StartCoroutine(Stunned(stuntime));
+    }
+
+    IEnumerator Stunned(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        yield return new WaitForSeconds(0.3f);
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(stuntime);
+        rb.constraints = ~RigidbodyConstraints2D.FreezeAll;
+        player.isStunned = false;
     }
     void CancelHitState()
     {
