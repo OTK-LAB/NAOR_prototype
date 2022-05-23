@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     private ItemStack daggerStack;
 
     //gems icin eklediklerim
-    public float rollStaminaRate=1;
+    public float rollStaminaRate=0;
     public float lifeStealRate = 0;
     private void Awake()
     {
@@ -218,8 +218,7 @@ public class PlayerController : MonoBehaviour
         playerManager.damageable = false;
         rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        StaminaBar.instance.useStamina(30*(1-rollStaminaRate));
-        Debug.Log(30*(1-rollStaminaRate) + "stamina kullanildi");
+        StaminaBar.instance.useStamina(30*rollStaminaRate/100);
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
