@@ -37,7 +37,9 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public bool hitAnimRunning;
 
 
-
+    //Gemler icin eklediklerim
+    public float defenceRate=0;
+    public float shieldDefenceRate = 0.4f;
 
 
     // Start is called before the first frame update
@@ -77,7 +79,7 @@ public class PlayerManager : MonoBehaviour
         {
             CurrentHealth = 100;
         }
-            
+        Actions.OnHealthChanged();
     }
     void CancelHealState()
     {
@@ -93,17 +95,19 @@ public class PlayerManager : MonoBehaviour
                 {
                     //normal damage status
                     case 1:
-                        CurrentHealth -= damage;
+                        CurrentHealth -= (damage*(1-defenceRate));
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //blocking damage status
                     case 2:
-                        CurrentHealth -= damage * 0.6f;
+                        CurrentHealth -= (damage*(1-defenceRate)) * (1-shieldDefenceRate);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //parry status
                     case 3:
@@ -134,6 +138,27 @@ public class PlayerManager : MonoBehaviour
             }
             Die();
         }
+    }
+
+    public void StunPlayer(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        if (player.facingRight)
+              rb.AddForce(new Vector2(-100,0));
+        else
+              rb.AddForce(new Vector2(100,0));
+        player.isStunned = true;
+        StartCoroutine(Stunned(stuntime));
+    }
+
+    IEnumerator Stunned(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        yield return new WaitForSeconds(0.3f);
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(stuntime);
+        rb.constraints = ~RigidbodyConstraints2D.FreezeAll;
+        player.isStunned = false;
     }
     void CancelHitState()
     {

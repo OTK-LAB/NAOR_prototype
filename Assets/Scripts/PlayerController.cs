@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed;
     private float xAxis;
     private bool walkToggle;
+    [HideInInspector] public bool isStunned = false;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
@@ -83,6 +84,7 @@ public class PlayerController : MonoBehaviour
     const string parry = "PlayerParry";
     const string fallattack = "PlayerFallAttack";
     const string climb = "PlayerClimb";
+    const string stun = "PlayerStun";
 
     //Combat
     [Header("Combat")]
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
-    public int attackDamage = 10;
+    public float attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
     private bool isFallAttacking;
@@ -110,7 +112,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownTime;
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
+    //Gems
+    public float rollStaminaRate=0;
+    public float lifeStealRate = 0;
 
+    [Header("Miscellaneous")]
+    //Move list
     public GameObject moveList;
 
     private void Awake()
@@ -241,7 +248,7 @@ public class PlayerController : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing)
+            if (isGrounded && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing && !isStunned)
             {
                 if (isRolling)
                 {
@@ -270,14 +277,14 @@ public class PlayerController : MonoBehaviour
         }
         //Pray
         if (Input.GetKeyDown(KeyCode.C))
-            if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
+            if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned)
             {
                 isPraying = true;
                 rb.velocity = new Vector2(0, 0);
             }
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isGuarding && !isJumping)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned && stamina >= 30 && !isGuarding && !isJumping)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
@@ -297,7 +304,7 @@ public class PlayerController : MonoBehaviour
         //Potion
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if(isGrounded && !isRolling && !isAttacking && !isFallAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+            if(isGrounded && !isRolling && !isAttacking && !isFallAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing  && !isStunned)
             {
                 if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
                 {
@@ -366,7 +373,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!isWallJumping)
             {
-                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isFallAttacking)
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isStunned && !isFallAttacking)
                 {
                     if (!isGuarding)
                     {
@@ -449,7 +456,7 @@ public class PlayerController : MonoBehaviour
         playerManager.damageable = false;
         rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        StaminaBar.instance.useStamina(30);
+        StaminaBar.instance.useStamina(30 * rollStaminaRate);
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
@@ -463,7 +470,7 @@ public class PlayerController : MonoBehaviour
     }
     void performGuard()
     {
-        if(!isRolling && isGrounded && !isPraying && !isAttacking)
+        if(!isRolling && isGrounded && !isPraying && !isAttacking && !isStunned)
         {
             if(!parryStamina)
             {
@@ -483,7 +490,7 @@ public class PlayerController : MonoBehaviour
     
     void FlipPlayer()
     {
-        if(!isRolling && !isPraying && !isAttacking)
+        if(!isRolling && !isPraying && !isAttacking && !isStunned)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -510,7 +517,7 @@ public class PlayerController : MonoBehaviour
         {
             if(!isRolling && !isGuarding)
             {
-                    if(!isAttacking && !isPraying)
+                    if(!isAttacking && !isPraying && !isStunned)
                     { 
                         if(xAxis == 0)
                             ChangeAnimationState(idle);
@@ -528,6 +535,8 @@ public class PlayerController : MonoBehaviour
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
                     }
+                    if(isStunned)
+                        ChangeAnimationState(stun);
             }
             else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
@@ -579,7 +588,7 @@ public class PlayerController : MonoBehaviour
         {
             if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
             {
-                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isFallAttacking && !canClimbLedge)
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isStunned && !isFallAttacking && !canClimbLedge)
                 {
                     if (isCombo && attackTime > 0.3f)
                         Attack();
@@ -588,7 +597,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 4 && !isFallAttacking && !isWallSliding)
+        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 6 && !isFallAttacking && !isWallSliding)
         {
             StaminaBar.instance.useStamina(50);
             isFallAttacking = true;
@@ -635,6 +644,10 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
         }
         attackTime = 0f;
     }
@@ -653,6 +666,10 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(40);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(40);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();    
         }
     }
     public void FallAttackTransition()
@@ -666,6 +683,19 @@ public class PlayerController : MonoBehaviour
     {
         isFallAttacking = false;
         //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+    }
+    public void StealLife(float stealRate)
+    {
+        if (playerManager.CurrentHealth < playerManager.MaxHealth)
+        {
+            playerManager.CurrentHealth += attackDamage * stealRate;
+            Debug.Log(attackDamage * stealRate + "Can calindi");
+            Actions.OnHealthChanged();
+            if (playerManager.CurrentHealth > 100)
+            {
+                playerManager.CurrentHealth = 100;
+            }
+        }
     }
     public void ThrowDagger()
     {

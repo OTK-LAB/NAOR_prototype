@@ -11,11 +11,15 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - Miniboss
+  - MinibossShield
   - Limit
   - Sword
   - MinionwPoke
   - Legolas
   - Climbable
+  - CheckPointMenuManager
+  - keys
   layers:
   - Default
   - TransparentFX
@@ -27,7 +31,7 @@ TagManager:
   - Enemy
   - Player
   - RollCollider
-  - 
+  - Miniboss
   - 
   - 
   - 
