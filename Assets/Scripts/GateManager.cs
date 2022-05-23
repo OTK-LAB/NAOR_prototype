@@ -22,6 +22,8 @@ public class GateManager : MonoBehaviour
 
     private void Start()
     {
+        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        _playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         ResetBuffs();
         OnHealthChanged();
     }
