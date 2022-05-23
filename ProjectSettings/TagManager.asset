@@ -15,8 +15,9 @@ TagManager:
   - MinibossShield
   - Limit
   - Sword
-  - Legolas
   - MinionwPoke
+  - Legolas
+  - Climbable
   - CheckPointMenuManager
   - keys
   layers:

@@ -325,7 +325,7 @@ MonoBehaviour:
   ledgeDistance: 0.3
   ledgeXOffset1: -0.5
   ledgeYOffset1: 0.6
-  ledgeXOffset2: 1
+  ledgeXOffset2: 1.5
   ledgeYOffset2: 2
   attackPoint: {fileID: 2303616366658647844}
   fallAttackBox: {fileID: 1472543736}
