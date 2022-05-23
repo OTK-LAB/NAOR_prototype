@@ -3297,7 +3297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125, y: -5.2}
+  m_AnchoredPosition: {x: 125, y: 77}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825546405725085
@@ -4070,8 +4070,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 187.8269, y: 76.01929}
-  m_SizeDelta: {x: 327.3501, y: 44}
+  m_AnchoredPosition: {x: 220.90552, y: 25}
+  m_SizeDelta: {x: 393.5074, y: 44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825546443459374
 CanvasRenderer:
@@ -5075,8 +5075,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 52, y: 0}
-  m_SizeDelta: {x: 522.5187, y: 79.403}
+  m_AnchoredPosition: {x: 101.70361, y: 0}
+  m_SizeDelta: {x: 479.1115, y: 79.403}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825546595731970
 CanvasRenderer:
@@ -5663,10 +5663,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2315825546436632235}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CheckPointMenuScript, Assembly-CSharp
+        m_MethodName: CloseCheckPointMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5809,7 +5809,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Okey
+  m_text: Select
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5818,8 +5818,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4293980400
+  m_fontColor: {r: 0.94117653, g: 0.94117653, b: 0.94117653, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6048,8 +6048,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 411, y: 244}
-  m_SizeDelta: {x: 695, y: 149}
+  m_AnchoredPosition: {x: 350.68726, y: 244}
+  m_SizeDelta: {x: 815.6254, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825546617504171
 CanvasRenderer:
@@ -6368,10 +6368,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2315825547819814632}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CheckPointMenuScript, Assembly-CSharp
+        m_MethodName: CloseCheckPointMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9088,7 +9088,7 @@ RectTransform:
   m_GameObject: {fileID: 2315825546989411667}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.98602, y: 0.98602, z: 0.98602}
   m_Children:
   - {fileID: 2315825546608917546}
   m_Father: {fileID: 2315825547181541226}
@@ -9096,8 +9096,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 431.5, y: 83.019}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 239.22, y: -95}
+  m_SizeDelta: {x: 434.52, y: 44.411}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825546989411679
 CanvasRenderer:
@@ -9120,7 +9120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6039216, g: 0.16470589, b: 0.058823533, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11778,7 +11778,7 @@ RectTransform:
   m_GameObject: {fileID: 2315825547277875550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9875, y: 1.0125, z: 1}
   m_Children: []
   m_Father: {fileID: 2315825546897311626}
   m_RootOrder: 0
@@ -13081,10 +13081,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2315825547819814632}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CheckPointMenuScript, Assembly-CSharp
+        m_MethodName: CloseCheckPointMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -14964,8 +14964,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 238.8269, y: -58.980713}
-  m_SizeDelta: {x: 429.23, y: 71.8314}
+  m_AnchoredPosition: {x: 238.8269, y: -37}
+  m_SizeDelta: {x: 429.23, y: 58.916}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825547706185175
 CanvasRenderer:
@@ -14996,7 +14996,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi euismod
-    luctus eros, eu lacinia augue aliquet ut. '
+    luctus eros, eu '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -15684,7 +15684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -73.900024, y: 6.5999756}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825547819814635
@@ -16017,8 +16017,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -252, y: 0}
-  m_SizeDelta: {x: 177.9075, y: 86.742}
+  m_AnchoredPosition: {x: -253.9, y: 0}
+  m_SizeDelta: {x: 232.1, y: 86.742}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315825547835533351
 CanvasRenderer:
@@ -17825,7 +17825,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2315825548088476478}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!114 &2315825548088476474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17938,7 +17938,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CheckPointMenuScript, Assembly-CSharp
-        m_MethodName: TogglePause
+        m_MethodName: CloseCheckPointMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
