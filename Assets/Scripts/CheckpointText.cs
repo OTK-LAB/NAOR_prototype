@@ -10,7 +10,7 @@ public class CheckpointText : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("CheckPoint"))
+        if (collision.gameObject.CompareTag("CheckPoint_1"))
         {
             //StartCoroutine(thesequence());
             textbox.GetComponent<TextMeshProUGUI>().text = "Press c button";
@@ -24,7 +24,7 @@ public class CheckpointText : MonoBehaviour
     }*/
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("CheckPoint"))
+        if (collision.gameObject.CompareTag("CheckPoint_1"))
         {
             //StartCoroutine(thesequence());
             textbox.GetComponent<TextMeshProUGUI>().text = "";

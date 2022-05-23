@@ -8,6 +8,9 @@ TagManager:
   - turn
   - fire
   - Ground
+  - CheckPoint
+  - Dagger
+  - CheckPoint_1
   layers:
   - Default
   - TransparentFX
