@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 ledgePosBot;
     private Vector2 ledgePos1;
     private Vector2 ledgePos2;
+    RaycastHit2D hit;
 
     [SerializeField]
     private float ledgeDistance;
@@ -168,7 +169,8 @@ public class PlayerController : MonoBehaviour
         if(facingRight)
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
-            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
             if(isTouchingLedgeDown)
             {
                 ledgePosBot = ledgeCheckDown.position;
@@ -177,7 +179,8 @@ public class PlayerController : MonoBehaviour
         else
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
-            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
             if(isTouchingLedgeDown)
             { 
                 ledgePosBot = ledgeCheckDown.position;
@@ -216,8 +219,15 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
+        if(isTouchingLedgeDown && !isTouchingLedgeUp && hit.collider.CompareTag("Climbable") && !ledgeDetected ){
             ledgeDetected = true;
+        }
+
+        //stop rolling if not grounded
+        if(isRolling && !isGrounded)
+        {
+            StopCoroutine(Roll());
+            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
         }
 
     }
@@ -238,8 +248,13 @@ public class PlayerController : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing && !isStunned)
+            if (isGrounded && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing && !isStunned)
             {
+                if (isRolling)
+                {
+                    StopCoroutine(Roll());
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                }
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
@@ -263,10 +278,13 @@ public class PlayerController : MonoBehaviour
         //Pray
         if (Input.GetKeyDown(KeyCode.C))
             if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned)
+            {
                 isPraying = true;
+                rb.velocity = new Vector2(0, 0);
+            }
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned && stamina >= 30)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned && stamina >= 30 && !isGuarding && !isJumping)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
@@ -355,7 +373,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!isWallJumping)
             {
-                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isStunned)
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isStunned && !isFallAttacking)
                 {
                     if (!isGuarding)
                     {
@@ -417,7 +435,7 @@ public class PlayerController : MonoBehaviour
 
     void WallSlide()
     {
-        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0)
+        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0 && !isFallAttacking)
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
@@ -572,7 +590,7 @@ public class PlayerController : MonoBehaviour
         {
             if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
             {
-                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isStunned)
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isStunned && !isFallAttacking && !canClimbLedge)
                 {
                     if (isCombo && attackTime > 0.3f)
                         Attack();
@@ -581,11 +599,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 4)
+        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 6 && !isFallAttacking && !isWallSliding)
         {
             StaminaBar.instance.useStamina(50);
             isFallAttacking = true;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 1f);
+            rb.velocity = new Vector2(0, rb.velocity.y - 1f);
             //rb.constraints = RigidbodyConstraints2D.FreezePositionX;
             FallAttack();
         }
@@ -656,6 +674,13 @@ public class PlayerController : MonoBehaviour
                 enemy.transform.parent.GetComponent<Boss_Manager>().Parry();    
         }
     }
+    public void FallAttackTransition()
+    {
+        if(isGrounded)
+        {
+            ChangeAnimationState("PlayerFallAttackLanding");
+        }
+    }
     public void FallAttackDone()
     {
         isFallAttacking = false;
@@ -718,7 +743,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isBusy()
     {
-        if (isAttacking || isFallAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
+        if (isAttacking || isFallAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing || canClimbLedge)
             return true;
         else
             return false;
