@@ -745,5 +745,9 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }  
+    } 
+
+    public ItemStack GetDaggerStack(){
+        return daggerStack;
+    }
 }
