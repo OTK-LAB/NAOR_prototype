@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 3908183987080856740}
   m_Layer: 9
   m_Name: ShieldCollider (1)
-  m_TagString: MinibossShield
+  m_TagString: SpearmanShield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,7 +104,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.24509561, y: 0.84728765}
+  m_Offset: {x: 0.3744315, y: 0.84728765}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -115,7 +115,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5098088, y: 0.5358441}
+  m_Size: {x: 0.25113702, y: 0.5358441}
   m_EdgeRadius: 0
 --- !u!1 &3908183987561754701
 GameObject:
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 3908183987561754700}
   m_Layer: 7
   m_Name: HeroKnight
-  m_TagString: Miniboss
+  m_TagString: Spearman
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 3908183987561754701}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.83, y: -7.33, z: 0}
-  m_LocalScale: {x: 2.446875, y: 5.7337093, z: 1}
+  m_LocalScale: {x: 1.3320787, y: 2.1432607, z: 1}
   m_Children:
   - {fileID: 3908183986324863553}
   - {fileID: 3908183987978470360}
@@ -213,16 +213,16 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
+  m_Sprite: {fileID: 21300000, guid: af16cb225967af543b9c764da4690c2e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1.28, y: 0.96}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!50 &3908183987561754702
 Rigidbody2D:
@@ -258,18 +258,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.34667566, y: 0.95284003}
+  m_Offset: {x: -0.025482982, y: 0.9633467}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 3.125, y: 1.71875}
-    newSize: {x: 2, y: 2}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 0.96}
+    newSize: {x: 1.28, y: 0.96}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.64807886, y: 0.72336185}
+  m_Size: {x: 0.8847471, y: 0.7023485}
   m_EdgeRadius: 0
 --- !u!114 &3908183987561754700
 MonoBehaviour:
@@ -290,12 +290,12 @@ MonoBehaviour:
   autoAttackTimer: 3
   attackDamage: 25
   shieldBroke: 0
-  attackOffset: {x: 2, y: 4.3, z: 0}
+  attackOffset: {x: 1, y: 2, z: 0}
   damageRange: 1
   attackMask:
     serializedVersion: 2
     m_Bits: 1
-  triggerRange: 0
+  triggerRange: 5
   playerNear: 0
   Moveright: 1
   inRange: 0
@@ -312,11 +312,11 @@ GameObject:
   - component: {fileID: 3908183987978470363}
   m_Layer: 7
   m_Name: ShieldCollider
-  m_TagString: MinibossShield
+  m_TagString: SpearmanShield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3908183987978470360
 Transform:
   m_ObjectHideFlags: 0
@@ -345,7 +345,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.2512107, y: 0.84728765}
+  m_Offset: {x: 0.37637448, y: 0.84728765}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -356,5 +356,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4975786, y: 0.5358441}
+  m_Size: {x: 0.24725106, y: 0.5358441}
   m_EdgeRadius: 0
