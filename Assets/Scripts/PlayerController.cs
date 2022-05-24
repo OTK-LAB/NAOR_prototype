@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
     const string fallattack = "PlayerFallAttack";
     const string climb = "PlayerClimb";
     const string stun = "PlayerStun";
+    const string wallSlide = "PlayerWallSlide";
 
     //Combat
     [Header("Combat")]
@@ -547,7 +548,7 @@ public class PlayerController : MonoBehaviour
         //Air Animations --> Jump and Fall
         if(!isGrounded)
         {
-            if(!isAttacking && !isFallAttacking)
+            if(!isAttacking && !isFallAttacking && !isWallSliding)
             {
                 if(rb.velocity.y > 0)
                     ChangeAnimationState(jump);
@@ -566,6 +567,8 @@ public class PlayerController : MonoBehaviour
                 {
                     ChangeAnimationState(fallattack);
                 }
+                if (isWallSliding)
+                    ChangeAnimationState(wallSlide);
             }
         }
    
