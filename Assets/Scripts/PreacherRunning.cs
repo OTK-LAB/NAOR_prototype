@@ -17,16 +17,17 @@ public class PreacherRunning : MonoBehaviour
 
     private int b = 0;
 
-    private bool isGrounded;
-    public Transform groundDetection;
+
+
     public float distance;
-    public LayerMask WhatIsGround;
+
+
     private Animator animator;
     private string currentState;
     const string idle = "PreacherIdle";
     const string run = "PreacherMoveAnimation";
 
-   
+
 
 
 
@@ -72,8 +73,7 @@ public class PreacherRunning : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, detectedAreaRadius);
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(groundDetection.position, distance);
+
     }
 
     void Detected()
@@ -81,35 +81,35 @@ public class PreacherRunning : MonoBehaviour
 
 
         playerDetected = Physics2D.OverlapCircle(gameObject.transform.position, detectedAreaRadius, WhatIsPlayer);
-        isGrounded = Physics2D.OverlapCircle(groundDetection.transform.position, distance, WhatIsGround);
 
 
 
-            if (isGrounded == true)
+
+
+
+        if (playerDetected == true || b == 1)
         {
-            if (playerDetected == true || b == 1)
-            {
-                
-                RunAway();
-                ControlOn();
-                if (!GetComponent<PreacherHealthManager>().isHurting)
-                    ChangeAnimationState(run);
-            }
-            else if (playerDetected == false && b == 1)
-            {
-                
-                RunAway();
-                if (!GetComponent<PreacherHealthManager>().isHurting)
-                    ChangeAnimationState(run);
-            }
 
-            else if (playerDetected == false)
-            {
-                
-                if (!GetComponent<PreacherHealthManager>().isHurting)
-                    ChangeAnimationState(idle);
-            }
+            RunAway();
+            ControlOn();
+            if (!GetComponent<PreacherHealthManager>().isHurting)
+                ChangeAnimationState(run);
         }
+        else if (playerDetected == false && b == 1)
+        {
+
+            RunAway();
+            if (!GetComponent<PreacherHealthManager>().isHurting)
+                ChangeAnimationState(run);
+        }
+
+        else if (playerDetected == false)
+        {
+
+            if (!GetComponent<PreacherHealthManager>().isHurting)
+                ChangeAnimationState(idle);
+        }
+
 
     }
     void ChangeAnimationState(string newState)
@@ -122,4 +122,19 @@ public class PreacherRunning : MonoBehaviour
     {
         b = 1;
     }
+
 }
+
+
+
+
+
+
+   /* void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "regen")
+        {
+            if (curHealth < maxHealth)
+                curHealth += regeneration * Time.deltaTime; ;
+        }
+    }*/

@@ -321,7 +321,9 @@ public class PlayerController : MonoBehaviour
                 if(enemy.CompareTag("Enemy"))
                     enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
                 if(enemy.CompareTag("Villager"))
-                    enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);    
+                    enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
+                if (enemy.CompareTag("Villager"))
+                    enemy.GetComponent<PreacherHealthManager>().TakeDamage(attackDamage);
             }
             
             

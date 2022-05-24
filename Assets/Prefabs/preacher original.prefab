@@ -1,35 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2190882072225534671
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2190882072225534668}
-  m_Layer: 0
-  m_Name: GroundCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2190882072225534668
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2190882072225534671}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2190882072370515166}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2190882072370515143
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,8 +12,6 @@ GameObject:
   - component: {fileID: 2190882072370515137}
   - component: {fileID: 2190882072370515139}
   - component: {fileID: 2190882072370515138}
-  - component: {fileID: 2190882072370515141}
-  - component: {fileID: 2190882072370515140}
   - component: {fileID: 3666409850686826081}
   m_Layer: 7
   m_Name: preacher original
@@ -62,8 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: -0.003263823, w: 0.9999947}
   m_LocalPosition: {x: 3.71, y: -3.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2190882072225534668}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.374}
@@ -165,44 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.57071376, y: 1.2284784}
   m_EdgeRadius: 0
---- !u!114 &2190882072370515141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2190882072370515143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d2cfe7da91cbab4ab59cbe9d7846923, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 1
-  currentHealth: 0
-  isHurting: 0
---- !u!114 &2190882072370515140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2190882072370515143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b274275abd4b1234c8c05d8307c5f6da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectedAreaRadius: 3.87
-  WhatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 256
-  speed: 2
-  facingRight: 1
-  groundDetection: {fileID: 2190882072225534668}
-  distance: 0.41
-  WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!95 &3666409850686826081
 Animator:
   serializedVersion: 3
