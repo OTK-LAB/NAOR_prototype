@@ -11,6 +11,7 @@ TagManager:
   - Dagger
   - CheckPoint
   - Villager
+  - Preacher
   layers:
   - Default
   - TransparentFX
