@@ -12,6 +12,9 @@ TagManager:
   - CheckPoint
   - DockTrigger
   - DockTrigger2
+  - BoatEnter
+  - BoatExit
+  - SubtitleEnter
   layers:
   - Default
   - TransparentFX
