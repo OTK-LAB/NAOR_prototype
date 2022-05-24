@@ -289,7 +289,9 @@ public class PlayerController : MonoBehaviour
         //Guard
         if (Input.GetMouseButton(1))
             if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
-                performGuard();
+                if(!isFallAttacking){
+                    performGuard();
+                }
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
             {
