@@ -14,7 +14,7 @@ public class BoatSubtitle : MonoBehaviour
         if (collision.gameObject.CompareTag("BoatEnter"))
         {
             //StartCoroutine(thesequence());
-            textbox.GetComponent<TextMeshProUGUI>().text = "Press E Button To Ride Boat";
+            textbox.GetComponent<TextMeshProUGUI>().text = "Press E to ride the boat.";
         }
         if (collision.gameObject.CompareTag("BoatExit"))
         {
@@ -28,7 +28,7 @@ public class BoatSubtitle : MonoBehaviour
     IEnumerator thesequence()
     {
         yield return new WaitForSeconds(2);
-        textbox.GetComponent<TextMeshProUGUI>().text = "Press E Button To Exit Boat";
+        textbox.GetComponent<TextMeshProUGUI>().text = "Press E to exit the boat.";
 
     }
   
