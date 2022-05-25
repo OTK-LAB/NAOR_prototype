@@ -35,10 +35,10 @@ public class UIManager : MonoBehaviour
     public List<Button> LegendaryButtonList1per;
     public List<Button> LegendaryButtonList99per;
     public List<Button> LegendaryGemsButtonList;
-    
+
     #endregion
 
-    
+    public Button LastButton;
 
 
     private int buttonIndex;// bastigimiz slot butonunun indexini tutan deger
@@ -46,7 +46,10 @@ public class UIManager : MonoBehaviour
     private int healthGateIndex; // healthgate indexini tutar deger
     private GemSO selectedGem;  // tikladigimiz butona gore secili gemi tutan degisken
 
-    
+    public void RevertColors()
+    {
+
+    }
 
     public void OnCommonGemsButtonPressed(String hpText)
     {
@@ -105,6 +108,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = CommonButtonList.IndexOf(a);
                
             }
@@ -245,6 +254,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = RareButtonList.IndexOf(a);
                
             }
@@ -292,6 +307,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = LegendaryButtonList1per.IndexOf(a);
                
             }
@@ -311,6 +332,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = LegendaryButtonList99per.IndexOf(a);
                
             }
