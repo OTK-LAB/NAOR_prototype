@@ -60,4 +60,16 @@ public class SettingsManager : MonoBehaviour
         fullscreenOnOff = fullscreenEnabled;
     }
 
+    //public void SaveSettings(){
+
+    //PlayerPrefs.SetInt("QualitySettingPreference",QualitySettings.GetQualityLevel());
+    //PlayerPrefs.SetInt("ResolutionPreference",resolutionDropdown.value);
+    //PlayerPrefs.SetInt("FullScreenPreference",Convert.ToInt32(Screen.fullScreen));
+    //PlayerPrefs.SetFloat("MusicVolumePreference",audiomixer.MusicVolume);
+    //PlayerPrefs.SetFloat("AmbianceVolumePreference",audiomxier.AmbianceVolume);
+    //}
+
+    //public void LoadSettings(){
+
+    //}
 }
