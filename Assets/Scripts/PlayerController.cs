@@ -656,6 +656,7 @@ public class PlayerController : MonoBehaviour
     void FallAttack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(fallAttackBox.position, fallAttackSize, enemyLayers);
+        this.GetComponent<PlayerManager>().damageable = false;
         foreach (Collider2D enemy in hitEnemies)
         {
             if(enemy.CompareTag("Enemy"))
@@ -685,6 +686,7 @@ public class PlayerController : MonoBehaviour
     {
         isFallAttacking = false;
         //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+        this.GetComponent<PlayerManager>().damageable = true;
     }
     public void StealLife(float stealRate)
     {
