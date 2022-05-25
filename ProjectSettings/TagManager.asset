@@ -13,6 +13,9 @@ TagManager:
   - Villager
   - Limit
   - Sword
+  - Legolas
+  - MinionwPoke
+  - Climbable
   layers:
   - Default
   - TransparentFX
