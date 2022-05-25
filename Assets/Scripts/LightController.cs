@@ -10,6 +10,7 @@ public class LightController : MonoBehaviour
     [SerializeField]
     private float intensityMin, intensityMax, flickerSpeed;
 
+    float timer = 0;
     void Awake()
     {
         torch = GetComponent<Light2D>();
@@ -18,6 +19,13 @@ public class LightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        torch.intensity = Mathf.Lerp(intensityMin, intensityMax, Mathf.PingPong(Time.time * flickerSpeed, 1));
+        if(this.CompareTag("fire"))
+        {
+            timer += Time.deltaTime;
+            torch.intensity = Mathf.Lerp(intensityMin, intensityMax, Mathf.PingPong(timer * flickerSpeed, 1));
+            Debug.Log("..");
+        }
+        else
+            torch.intensity = Mathf.Lerp(intensityMin, intensityMax, Mathf.PingPong(Time.time * flickerSpeed, 1));
     }
 }

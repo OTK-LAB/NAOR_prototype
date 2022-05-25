@@ -1,5 +1,125 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &792120399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 792120400}
+  m_Layer: 0
+  m_Name: WallCheckBack
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &792120400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792120399}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.28, y: 0.08699983, z: -0.19718692}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2303616365481814401}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1472543735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1472543736}
+  m_Layer: 8
+  m_Name: FallAttackBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1472543736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472543735}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.89, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2303616365481814401}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1514436765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1514436766}
+  m_Layer: 8
+  m_Name: LedgeCheckDown
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1514436766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514436765}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2303616365481814401}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1963275754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1963275755}
+  m_Layer: 8
+  m_Name: LedgeCheckUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1963275755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963275754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1, y: 0.45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2303616365481814401}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2303616365481814406
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,11 +135,8 @@ GameObject:
   - component: {fileID: 2303616365481814403}
   - component: {fileID: 2303616365481814402}
   - component: {fileID: 2303616365481814413}
-  - component: {fileID: 2303616365481814408}
   - component: {fileID: 2303616365481814415}
   - component: {fileID: 2303616365481814414}
-  - component: {fileID: 2142956813}
-  - component: {fileID: 2142956822}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -42,6 +159,11 @@ Transform:
   - {fileID: 2303616366658647844}
   - {fileID: 2303616366377848006}
   - {fileID: 2303616366078244552}
+  - {fileID: 8021724700209421849}
+  - {fileID: 792120400}
+  - {fileID: 1963275755}
+  - {fileID: 1514436766}
+  - {fileID: 1472543736}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -90,7 +212,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.27, y: 0.47}
+  m_Size: {x: 0.46875, y: 1.78125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -145,7 +267,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 2303616365481814406}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 117bea04202fd384b913248af21f7798, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -154,7 +276,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4, y: 2}
-    newSize: {x: 0.27, y: 0.47}
+    newSize: {x: 0.46875, y: 1.78125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -175,20 +297,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 4
+  walkSpeed: 1.8
+  isStunned: 0
   facingRight: 1
-  dodgeSpeed: 10
-  CooldownDuration: 6
-  regularColl: {fileID: 2303616365481814403}
-  rollColl: {fileID: 2303616366377848007}
+  canMove: 1
+  canFlip: 1
+  rollSpeed: 10
+  rollColl: {fileID: 2303616366377848005}
   iFrame: 0.3
-  jumpForce: 10
+  jumpForce: 7
+  jumpTimer: 0.25
   isGrounded: 0
   groundCheck: {fileID: 2303616366928244962}
   groundCheckRadius: 0.08
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallGrabPointFront: {fileID: 8021724700209421849}
+  wallGrabPointBack: {fileID: 792120400}
+  wallSlideSpeed: 3
+  wallDistance: 0.16
+  wallJumpTime: 0.05
+  xWallForce: 5
+  wallJumpLerp: 1
+  ledgeCheckUp: {fileID: 1963275755}
+  ledgeCheckDown: {fileID: 1514436766}
+  ledgeDistance: 0.3
+  ledgeXOffset1: -0.5
+  ledgeYOffset1: 0.6
+  ledgeXOffset2: 1.5
+  ledgeYOffset2: 2
   attackPoint: {fileID: 2303616366658647844}
+  fallAttackBox: {fileID: 1472543736}
+  fallAttackSize: {x: 2.5, y: 1.26, z: 0}
   attackRange: 0.91
   attackDamage: 10
   enemyLayers:
@@ -198,6 +339,13 @@ MonoBehaviour:
   dead: 0
   isCombo: 0
   isGuarding: 0
+  firePoint: {fileID: 2303616366078244552}
+  daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
+  daggerAmount: 3
+  cooldownTime: 3
+  rollStaminaRate: 0
+  lifeStealRate: 0
+  moveList: {fileID: 0}
 --- !u!114 &2303616365481814413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,27 +363,14 @@ MonoBehaviour:
   flickerSpeed: 5
   MaxHealth: 100
   CurrentHealth: 100
+  isHealing: 0
   damageable: 1
   dead: 0
   isReviving: 0
   status: 0
   hitAnimRunning: 0
---- !u!114 &2303616365481814408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2303616365481814406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68671aad1ef42924a935827f9ca6405a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 2303616366078244552}
-  daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
-  daggerAmount: 3
-  cooldownTime: 5
+  defenceRate: 0
+  shieldDefenceRate: 0.4
 --- !u!114 &2303616365481814415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,71 +395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c6e255207c0cb44b55a5806d64e2fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2142956813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2303616365481814406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: 00000000
-  m_ShapePath:
-  - {x: -0.103645325, y: 0.19651031, z: 0}
-  - {x: -0.26975632, y: -0.007129669, z: 0}
-  - {x: -0.21707916, y: -0.07485676, z: 0}
-  - {x: -0.23965454, y: -0.3683405, z: 0}
-  - {x: -0.19450378, y: -0.7671766, z: 0}
-  - {x: -0.22460175, y: -1.0078297, z: 0}
-  - {x: -0.08036804, y: -0.9950514, z: 0}
-  - {x: -0.07361984, y: -0.8253164, z: 0}
-  - {x: -0.006372452, y: -0.7145004, z: 0}
-  - {x: 0.09897995, y: -0.7348032, z: 0}
-  - {x: 0.10972786, y: -1.0078297, z: 0}
-  - {x: 0.26960945, y: -1.0003395, z: 0}
-  - {x: 0.2559719, y: -0.9298754, z: 0}
-  - {x: 0.19005203, y: -0.8753233, z: 0}
-  - {x: 0.27996063, y: -0.5889387, z: 0}
-  - {x: 0.29351425, y: -0.35582352, z: 0}
-  - {x: 0.38025475, y: -0.35040283, z: 0}
-  - {x: 0.4007206, y: -0.2898121, z: 0}
-  - {x: 0.29893494, y: -0.20402813, z: 0}
-  - {x: 0.24195862, y: 0.0831728, z: 0}
-  - {x: 0.18928337, y: 0.18852615, z: 0}
-  - {x: 0.19680786, y: 0.27130318, z: 0}
-  - {x: 0.2720604, y: 0.39170647, z: 0}
-  - {x: 0.19394875, y: 0.51086044, z: 0}
-  - {x: -0.03591919, y: 0.4431343, z: 0}
-  m_ShapePathHash: 83554175
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 57668
---- !u!114 &2142956822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2303616365481814406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 674ed7027cea3954ea502bf5fa2820fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localPosition: {x: 0, y: -3.48, z: 0}
-  localRotation: {x: 0, y: 0, z: -180}
-  localScale: {x: -1, y: 0.7, z: 1}
-  sprite: {fileID: 0}
-  spriteLayer: Default
-  spriteLayerOrder: -1
 --- !u!1 &2303616366078244559
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +404,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2303616366078244552}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2303616366377848006}
   - component: {fileID: 2303616366377848007}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: RollCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,7 +481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2303616366658647844}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2303616366928244962}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -461,4 +531,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2303616365481814401}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8021724700209421848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8021724700209421849}
+  m_Layer: 0
+  m_Name: WallCheckFront
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8021724700209421849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8021724700209421848}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.365, y: 0.087, z: -0.19718692}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2303616365481814401}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

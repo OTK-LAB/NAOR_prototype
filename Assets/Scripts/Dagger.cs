@@ -24,9 +24,31 @@ public class Dagger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<Minion_wfireball>().TakeDamage(50);
+            collision.GetComponent<Minion_wfireball>().TakeDamage(5);
+            this.gameObject.SetActive(false);
+        }
+        if(collision.CompareTag("Villager"))
+        {
+            collision.GetComponent<VillagerHealthManager>().TakeDamage(5);
+            this.gameObject.SetActive(false);
+        }
+        
+        if(collision.CompareTag("Sword"))
+        {
+            collision.GetComponent<Sword_Behaviour>().TakeDamage(5);
+            this.gameObject.SetActive(false);
+        }
+        if(collision.CompareTag("MinionwPoke"))
+        {
+            collision.GetComponent<Minion_wpoke>().TakeDamage(5);
+            this.gameObject.SetActive(false);
+        }
+        if(collision.CompareTag("Legolas"))
+        {
+            collision.GetComponent<Legolas>().TakeDamage(5);
+            this.gameObject.SetActive(false);
         }
     }
 }

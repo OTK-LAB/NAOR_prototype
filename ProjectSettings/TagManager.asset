@@ -15,6 +15,16 @@ TagManager:
   - BoatEnter
   - BoatExit
   - SubtitleEnter
+  - Villager
+  - Miniboss
+  - MinibossShield
+  - Limit
+  - Sword
+  - MinionwPoke
+  - Legolas
+  - Climbable
+  - CheckPointMenuManager
+  - keys
   layers:
   - Default
   - TransparentFX
@@ -26,7 +36,8 @@ TagManager:
   - Enemy
   - Player
   - Foreground
-  - 
+  - RollCollider
+  - Miniboss
   - 
   - 
   - 
