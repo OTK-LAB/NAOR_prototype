@@ -186,7 +186,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,6 +343,8 @@ MonoBehaviour:
   daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
   daggerAmount: 3
   cooldownTime: 3
+  rollStaminaRate: 0
+  lifeStealRate: 0
   moveList: {fileID: 0}
 --- !u!114 &2303616365481814413
 MonoBehaviour:
@@ -367,6 +369,8 @@ MonoBehaviour:
   isReviving: 0
   status: 0
   hitAnimRunning: 0
+  defenceRate: 0
+  shieldDefenceRate: 0.4
 --- !u!114 &2303616365481814415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,7 +435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2303616366377848006}
   - component: {fileID: 2303616366377848007}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: RollCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
