@@ -57,6 +57,9 @@ public class CheckPointController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.C) && !playerController.isGuarding)
             {
                 playerManager.currentCheckPoint = gameObject;
+                playerManager.lives=4;
+                playerManager.CurrentHealth += 100;
+                Actions.OnHealthChanged();
                 Debug.Log("Checkpoint Degisti");
             }
         }

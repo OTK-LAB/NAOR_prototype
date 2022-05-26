@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
     public float attackRange = 0.5f;
     public float attackDamage = 10;
     public LayerMask enemyLayers;
-    private bool isAttacking;
+    public bool isAttacking;
     private bool isFallAttacking;
     private PlayerManager playerManager;
     private float stamina;
@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviour
     //Gems
     public float rollStaminaRate=0;
     public float lifeStealRate = 0;
+    public float rollStaminaCost =30f;
 
     [Header("Miscellaneous")]
     //Move list
@@ -456,8 +457,8 @@ public class PlayerController : MonoBehaviour
         playerManager.damageable = false;
         rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        StaminaBar.instance.useStamina(30*(1-rollStaminaRate));
-        Debug.Log(30*(1-rollStaminaRate) + "stamina kullanildi");
+        StaminaBar.instance.useStamina(rollStaminaCost);
+        Debug.Log((rollStaminaCost) + "stamina kullanildi");
 
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);

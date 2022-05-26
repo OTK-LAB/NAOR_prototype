@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gemtype: 1
   isActive: 0
-  buffRate: 5
+  buffRate: 10
   title: Common Speed Gem
   description: It Gives You %5 Movement Speed

@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 0
   title: Regen
-  description: Can potu %30 daha etkili olur
+  description: Her 10 saniyede bir 5 can yeniler

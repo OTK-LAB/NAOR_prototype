@@ -17,6 +17,6 @@ MonoBehaviour:
   maxGemCount: 3
   activeGems:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: c7f3ba1f4d1c0fc49a48a0b2ebdba287, type: 2}
+  - {fileID: 11400000, guid: 9b04b21ac50f1d44e8284f253b35951c, type: 2}
   isActive: 0

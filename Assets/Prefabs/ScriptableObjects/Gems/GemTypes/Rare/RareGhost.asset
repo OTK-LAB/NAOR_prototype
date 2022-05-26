@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RareGhost
   m_EditorClassIdentifier: 
   gemtype: 6
-  isActive: 0
+  isActive: 1
   buffRate: 0
   title: Ghost
   description: "Birimlerin i\xE7inden ge\xE7er"
