@@ -1418,6 +1418,134 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131ee2c6090411a44a01309c515eb5a4, type: 3}
+--- !u!1001 &1442406460
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7852113585635172246, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_TagString
+      value: MinibossShield
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544801, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_Name
+      value: Minibos
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544801, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544801, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_TagString
+      value: Miniboss
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6.851597
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.851597
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.7128992
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.7574
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.3063
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544814, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1921787292}
+    - target: {fileID: 7852113586202544814, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: damageRange
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586269272465, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_TagString
+      value: MinibossShield
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7852113586202544814, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+--- !u!1 &1442406461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7852113586202544801, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+  m_PrefabInstance: {fileID: 1442406460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1442406462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442406461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd2d64201dc7634c866d3bf3a83ad6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1130037625}
+  health: 500
+  deathEffect: {fileID: 0}
+  attackTimer: 0
+  autoAttackTimer: 4
+  attackDamage: 35
+  shieldDamage: 5
+  enragedAttackDamage: 40
+  attackOffset: {x: 1.7, y: -1, z: 0}
+  attackRange: 1.7
+  attackMask:
+    serializedVersion: 2
+    m_Bits: 256
+  inRange: 0
+  shieldcoll: {fileID: 1741516259}
+  trainAttack: 0
+  trainAttackTimer: 1
 --- !u!1 &1600980148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1679,6 +1807,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731791508}
   m_CullTransparentMesh: 1
+--- !u!1 &1741516259 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7852113585635172246, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+  m_PrefabInstance: {fileID: 1442406460}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1766806246
 GameObject:
   m_ObjectHideFlags: 0
@@ -2225,6 +2358,10 @@ PrefabInstance:
     - target: {fileID: 7852113586202544801, guid: e1be62f2503896e4e811c8933a273159, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852113586202544801, guid: e1be62f2503896e4e811c8933a273159, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7852113586202544811, guid: e1be62f2503896e4e811c8933a273159, type: 3}
       propertyPath: m_RootOrder

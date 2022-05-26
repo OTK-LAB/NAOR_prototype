@@ -28,32 +28,6 @@ AnimatorTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 1
---- !u!114 &-6117854264187085413
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29269970d6d1d7c4f930352c59c02272, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-5740141760343938080
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 650576cdd63b1574bafb75590f2c4a72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackRange: 2
-  speed: 1
 --- !u!1101 &-3737381505656750151
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -127,12 +101,12 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Spearman_idle
+  m_Name: Miniboss_idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours:
-  - {fileID: -6117854264187085413}
+  - {fileID: 4486802877881256298}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -154,7 +128,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Spearman_dead
+  m_Name: Miniboss_dead
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -180,7 +154,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Spearman_hit
+  m_Name: Miniboss_hit
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -207,12 +181,12 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Spearman_walk
+  m_Name: Miniboss_walk
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours:
-  - {fileID: -5740141760343938080}
+  - {fileID: 6191642883650833204}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -286,7 +260,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Spearman_shield
+  m_Name: Miniboss_shield
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -313,7 +287,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Spearman_attack
+  m_Name: Miniboss_attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -438,6 +412,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &4486802877881256298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72707081fd3d09049acf571ccf347f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1101 &5516930280824197773
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -460,6 +446,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &6191642883650833204
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d681503d0394147b67c8e4a962a632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRushing: 0
+  attackRange: 3.6
+  speed: 1
+  rushSpeed: 3
 --- !u!1101 &8035193537555024509
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
