@@ -10,11 +10,12 @@ public class GateManager : MonoBehaviour
     [SerializeField] private PlayerController _playerController;
     private float percentage;
 
+    
     private void OnEnable()
     {
-        //ResetGems();
+        
 
-        ResetBuffs();
+        
         Actions.OnHealthChanged += OnHealthChanged;
     }
 
@@ -26,6 +27,7 @@ public class GateManager : MonoBehaviour
     private void Start()
     {
         ResetGems();
+        ResetBuffs();
         _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         
@@ -44,7 +46,7 @@ public class GateManager : MonoBehaviour
             ResetBuffs();
             foreach (var gems in healthGateListSo.HealthGateList[3].activeGems)
             {
-                if (gems != null)
+                if (gems.isActive)
                 {
                     GiveBuff(gems, gems.gemtype);
                 }
@@ -57,7 +59,7 @@ public class GateManager : MonoBehaviour
             ResetBuffs();
             foreach (var gems in healthGateListSo.HealthGateList[2].activeGems)
             {
-                if (gems != null)
+                if (gems.isActive)
                 {
                     GiveBuff(gems, gems.gemtype);
                 }
@@ -68,7 +70,7 @@ public class GateManager : MonoBehaviour
             ResetBuffs();
             foreach (var gems in healthGateListSo.HealthGateList[1].activeGems)
             {
-                if (gems != null)
+                if (gems.isActive)
                 {
                     GiveBuff(gems, gems.gemtype);
                 }
@@ -79,7 +81,7 @@ public class GateManager : MonoBehaviour
             ResetBuffs();
             foreach (var gems in healthGateListSo.HealthGateList[0].activeGems)
             {
-                if (gems != null)
+                if (gems.isActive)
                 {
                     GiveBuff(gems, gems.gemtype);
                 }

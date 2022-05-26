@@ -49,7 +49,35 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        
         RevertColors();
+        DisableGems();
+       
+    }
+
+    public void DisableGems()
+    {
+        foreach (var gems in gemTypeListSO.gemTypeList)
+        {
+            foreach (var gemss in gems.gemList)
+            {
+                if (gemTypeListSO.gemTypeList.IndexOf(gems) == 0)
+                {
+                    gemss.isActive = false;
+
+                }
+                else if (gemTypeListSO.gemTypeList.IndexOf(gems) == 1)
+                {
+                    gemss.isActive = false;
+
+                }
+                else if (gemTypeListSO.gemTypeList.IndexOf(gems) == 2)
+                {
+                    gemss.isActive = false;
+
+                }
+            }
+        }
     }
     public void RevertColors()
     {
@@ -89,7 +117,31 @@ public class UIManager : MonoBehaviour
 
         }
 
+        foreach (var healthGates in _gateManager.healthGateListSo.HealthGateList)
+        {
+            foreach (var activeGem in healthGates.activeGems)
+            {
 
+                
+              
+                        LegendaryButtonList1per[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                        
+                        CommonButtonList[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                        
+                        RareButtonList[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                        
+                        LegendaryButtonList99per[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                activeGem.isActive = false;
+
+
+
+            }
+
+        }
     }
     
 
@@ -196,7 +248,7 @@ public class UIManager : MonoBehaviour
         {
             foreach (var activeGem in healthGates.activeGems)
             {
-                if (activeGem != null)
+                if (activeGem.isActive == true)
                 {
                    
                     switch (healthGates.percentage)
@@ -222,7 +274,7 @@ public class UIManager : MonoBehaviour
                 }
                 
         }
-        IsGemsActive();
+       IsGemsActive();
     }
     }
     public void IsGemsActive()
@@ -238,6 +290,7 @@ public class UIManager : MonoBehaviour
                         Color color =CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
                         color.a = 0.5f;
                         CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;
+                        
                     }
                     else
                     {
