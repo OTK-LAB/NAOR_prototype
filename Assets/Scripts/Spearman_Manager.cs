@@ -44,14 +44,14 @@ public class Spearman_Manager : MonoBehaviour
 
 		if (player.transform.position.x < transform.position.x)
         {
-			if(transform.rotation.y == 180f)  //kýsaca spearmen player a bakýyor
+			if(transform.rotation.y == 180f)  //kï¿½saca spearmen player a bakï¿½yor
 				isInvulnerable = true;
 			else
 				isInvulnerable = false;
 		}
 		else if (player.transform.position.x > transform.position.x)
         {
-			if (transform.rotation.y == 0f)  //kýsaca spearmen player a bakýyor
+			if (transform.rotation.y == 0f)  //kï¿½saca spearmen player a bakï¿½yor
 				isInvulnerable = true;
 			else
 				isInvulnerable = false;
