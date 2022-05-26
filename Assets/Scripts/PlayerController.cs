@@ -289,7 +289,9 @@ public class PlayerController : MonoBehaviour
         //Guard
         if (Input.GetMouseButton(1))
             if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
-                performGuard();
+                if(!isFallAttacking){
+                    performGuard();
+                }
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
             {
@@ -656,6 +658,7 @@ public class PlayerController : MonoBehaviour
     void FallAttack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(fallAttackBox.position, fallAttackSize, enemyLayers);
+        this.GetComponent<PlayerManager>().damageable = false;
         foreach (Collider2D enemy in hitEnemies)
         {
             if(enemy.CompareTag("Enemy"))
@@ -685,6 +688,7 @@ public class PlayerController : MonoBehaviour
     {
         isFallAttacking = false;
         //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+        this.GetComponent<PlayerManager>().damageable = true;
     }
     public void StealLife(float stealRate)
     {
@@ -747,5 +751,9 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }  
+    } 
+
+    public ItemStack GetDaggerStack(){
+        return daggerStack;
+    }
 }
