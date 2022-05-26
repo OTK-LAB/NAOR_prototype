@@ -576,6 +576,8 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("FakeWall"))
+                enemy.GetComponent<FakeWallScript>().TakeDamage(attackDamage);
         }
         attackTime = 0f;
     }

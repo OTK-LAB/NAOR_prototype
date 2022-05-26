@@ -16,6 +16,7 @@ TagManager:
   - Legolas
   - MinionwPoke
   - Climbable
+  - FakeWall
   layers:
   - Default
   - TransparentFX
