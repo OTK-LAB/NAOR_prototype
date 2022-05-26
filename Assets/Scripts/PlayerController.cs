@@ -280,7 +280,7 @@ public class PlayerController : MonoBehaviour
                         else
                             ChangeAnimationState(run); 
                     }
-                    if(isAttacking)
+                    if(isAttacking && !isStunned)
                     {                 
                         ChangeAnimationState("PlayerAttack" + attackCount);
                         if(attackTime > 0.6f)    
@@ -364,6 +364,12 @@ public class PlayerController : MonoBehaviour
 
             if (enemy.CompareTag("Villager"))
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
+
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
 
         }
         attackTime = 0f;
