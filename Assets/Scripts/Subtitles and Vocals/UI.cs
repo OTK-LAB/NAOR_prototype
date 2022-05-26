@@ -85,7 +85,7 @@ public class UI : MonoBehaviour
         yield return new WaitForSeconds(2);
         subtitleText.text = "...";
         yield return new WaitForSeconds(3);
-        subtitleText.text = "My claim once was throne and helmet.";
+        subtitleText.text = "My claim once was a throne and a helmet.";
         yield return new WaitForSeconds(4);
         subtitleText.text = "Now it's nothing,";
         yield return new WaitForSeconds(2);
