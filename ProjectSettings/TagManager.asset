@@ -10,6 +10,11 @@ TagManager:
   - Ground
   - Dagger
   - CheckPoint
+  - DockTrigger
+  - DockTrigger2
+  - BoatEnter
+  - BoatExit
+  - SubtitleEnter
   - Villager
   - Miniboss
   - MinibossShield
@@ -30,6 +35,7 @@ TagManager:
   - Ground
   - Enemy
   - Player
+  - Foreground
   - RollCollider
   - Miniboss
   - 
@@ -54,6 +60,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Sky
+    uniqueID: 2063060093
+    locked: 0
+  - name: FifthRow
+    uniqueID: 3483057525
+    locked: 0
+  - name: Volcano
+    uniqueID: 3570889887
+    locked: 0
+  - name: ThirdRow
+    uniqueID: 493595405
+    locked: 0
+  - name: SecondRow
+    uniqueID: 2242316273
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: FirstRow
+    uniqueID: 1858891815
     locked: 0
