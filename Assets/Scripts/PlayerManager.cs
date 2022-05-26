@@ -207,7 +207,6 @@ public class PlayerManager : MonoBehaviour
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
                 CurrentHealth = (MaxHealth * 1) / 1;
-                crown.SetActive(true);
             }
             if (lives == 2)
             {
@@ -247,6 +246,7 @@ public class PlayerManager : MonoBehaviour
         player.ChangeAnimationState(revive);
         yield return new WaitForSeconds(1f);
         revived = true;
+        crown.SetActive(true);
         isReviving = false;
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
