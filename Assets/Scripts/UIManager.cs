@@ -89,6 +89,7 @@ public class UIManager : MonoBehaviour
         _gateManager.healthGateListSo.HealthGateList[healthGateIndex].activeGems[buttonIndex] = selectedGem;
         selectedGem.isActive = true;
         SlotsColors();
+        Actions.OnHealthChanged();
     }
 
     #region CommonButtonFunctions
