@@ -8,6 +8,7 @@ using System.ComponentModel.Design;
 
 public class UIManager : MonoBehaviour
 {
+
     public GemTypeListSO gemTypeListSO;
     public GateManager _gateManager;
     public Button CommonGemsUI;
@@ -46,10 +47,51 @@ public class UIManager : MonoBehaviour
     private int healthGateIndex; // healthgate indexini tutar deger
     private GemSO selectedGem;  // tikladigimiz butona gore secili gemi tutan degisken
 
+    private void Start()
+    {
+        RevertColors();
+    }
     public void RevertColors()
     {
+        var tempColor = new Color();
+
+        foreach (var a in CommonButtonList)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+
+        }
+        foreach (var a in RareButtonList)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+        }
+        foreach (var a in LegendaryButtonList1per)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+        }
+        foreach (var a in LegendaryButtonList99per)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+        }
+
 
     }
+    
 
     public void OnCommonGemsButtonPressed(String hpText)
     {
@@ -178,11 +220,11 @@ public class UIManager : MonoBehaviour
                     }
                    
                 }
-            }
+                
         }
         IsGemsActive();
     }
-
+    }
     public void IsGemsActive()
     {
         foreach (var gems in gemTypeListSO.gemTypeList)
