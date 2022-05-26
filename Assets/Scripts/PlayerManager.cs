@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public float flickerSpeed;
     private bool flickering;
+    public GameObject crown;
 
     public static PlayerManager instance;
 
@@ -206,7 +207,7 @@ public class PlayerManager : MonoBehaviour
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
                 CurrentHealth = (MaxHealth * 1) / 1;
-
+                crown.SetActive(true);
             }
             if (lives == 2)
             {
@@ -226,6 +227,7 @@ public class PlayerManager : MonoBehaviour
                 lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
+                crown.SetActive(false);
                 //StartCoroutine(RespawnPlayer());
             }
         }
