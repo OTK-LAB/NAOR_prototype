@@ -204,7 +204,7 @@ public class PlayerManager : MonoBehaviour
         isReviving = true;
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
         player.ChangeAnimationState(revive);
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         revived = true;
         isReviving = false;
         dead = false;
