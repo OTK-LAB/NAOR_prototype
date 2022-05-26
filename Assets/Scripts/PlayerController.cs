@@ -85,6 +85,10 @@ public class PlayerController : MonoBehaviour
     const string fallattack = "PlayerFallAttack";
     const string climb = "PlayerClimb";
     const string stun = "PlayerStun";
+    const string wallSlide = "PlayerWallSlide";
+    const string ledgeClimb = "PlayerLedgeClimb";
+    const string ledgeHang = "PlayerLedgeHang";
+
 
     //Combat
     [Header("Combat")]
@@ -289,7 +293,9 @@ public class PlayerController : MonoBehaviour
         //Guard
         if (Input.GetMouseButton(1))
             if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
-                performGuard();
+                if(!isFallAttacking){
+                    performGuard();
+                }
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
             {
@@ -326,9 +332,13 @@ public class PlayerController : MonoBehaviour
         {
             
             canClimbLedge = true;
+            if(canClimbLedge)
+            {
+                isWallSliding = false;
+            }
             Debug.Log("canClimbLedge TRUE");
-
-            if(facingRight)
+           
+            if (facingRight)
             {
                 ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
                 ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) + ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
@@ -338,19 +348,19 @@ public class PlayerController : MonoBehaviour
                 ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
                 ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
             }
-
+            ChangeAnimationState(ledgeHang);
             canMove = false;
             canFlip = false;
 
             rb.velocity = new Vector2(0,0);
-            transform.position = ledgePos1;
+            transform.position = new Vector2(ledgePos1.x + (facingRight ? .2f : -.2f), ledgePos1.y + (facingRight ? .5f : .5f));
             rb.gravityScale = 0;
+           
         }
 
         if(canClimbLedge && Input.GetKeyDown(KeyCode.Space))
         {
-            transform.position = ledgePos2;
-            FinishLedgeClimb();
+            ChangeAnimationState(ledgeClimb);
         }
         if(canClimbLedge && Input.GetKeyDown(KeyCode.S))
         {
@@ -366,7 +376,17 @@ public class PlayerController : MonoBehaviour
         ledgeDetected = false;
         rb.gravityScale = gravity;
     }
-  
+    public void ChangePlayerPosition()
+    {
+        canClimbLedge = false;
+        canMove = true;
+        canFlip = true;
+        ledgeDetected = false;
+        rb.gravityScale = gravity;
+        transform.position = new Vector2(ledgePos2.x, ledgePos2.y + .4f);
+        if (isGrounded)
+            ChangeAnimationState(idle);
+    }
     void Move()
     {
         if (canMove)
@@ -443,7 +463,11 @@ public class PlayerController : MonoBehaviour
         else if (jumpTime < Time.time)
         {
             isWallSliding = false;
-        }       
+        }  
+        else if (canClimbLedge == true)
+        {
+            isWallSliding = false;
+        }
         if (isWallSliding)
         {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
@@ -515,7 +539,7 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+        if(isGrounded && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing && !canClimbLedge)
         {
             if(!isRolling && !isGuarding)
             {
@@ -545,9 +569,9 @@ public class PlayerController : MonoBehaviour
         }
 
         //Air Animations --> Jump and Fall
-        if(!isGrounded)
+        if(!isGrounded && !canClimbLedge)
         {
-            if(!isAttacking && !isFallAttacking)
+            if(!isAttacking && !isFallAttacking && !isWallSliding)
             {
                 if(rb.velocity.y > 0)
                     ChangeAnimationState(jump);
@@ -566,6 +590,8 @@ public class PlayerController : MonoBehaviour
                 {
                     ChangeAnimationState(fallattack);
                 }
+                if (isWallSliding)
+                    ChangeAnimationState(wallSlide);
             }
         }
    
@@ -656,6 +682,7 @@ public class PlayerController : MonoBehaviour
     void FallAttack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(fallAttackBox.position, fallAttackSize, enemyLayers);
+        this.GetComponent<PlayerManager>().damageable = false;
         foreach (Collider2D enemy in hitEnemies)
         {
             if(enemy.CompareTag("Enemy"))
@@ -685,6 +712,7 @@ public class PlayerController : MonoBehaviour
     {
         isFallAttacking = false;
         //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+        this.GetComponent<PlayerManager>().damageable = true;
     }
     public void StealLife(float stealRate)
     {
@@ -747,5 +775,9 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
-    }  
+    } 
+
+    public ItemStack GetDaggerStack(){
+        return daggerStack;
+    }
 }
