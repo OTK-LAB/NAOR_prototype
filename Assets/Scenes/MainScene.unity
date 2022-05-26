@@ -3116,6 +3116,58 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2090020452789426962, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546604095894, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825546604095894, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546659078722, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825546659078722, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825546897311630, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547419601671, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825547419601671, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547438115043, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547458536434, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825547819814632, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 711081096}
+    - target: {fileID: 2315825548088476473, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CloseCheckPointMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 2462859141893595372, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -3160,9 +3212,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3271537048099788399, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6111378956557017866, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
       propertyPath: m_Name
       value: UIManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111378956557017866, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8950760764918839375, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4bbc0cf84b19c440b8d3f87a7f5d34e, type: 3}

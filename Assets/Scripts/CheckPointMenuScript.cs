@@ -10,8 +10,13 @@ public class CheckPointMenuScript : MonoBehaviour
     public GameObject ShallowGraveMenu;
     public GameObject CheckPointMenu;
     public static bool isMenuOpen = false;
-    
+
     // Update is called once per frame
+
+    private void Start()
+    {
+        this.enabled = false;
+    }
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.U))

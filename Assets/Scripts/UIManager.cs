@@ -8,6 +8,7 @@ using System.ComponentModel.Design;
 
 public class UIManager : MonoBehaviour
 {
+
     public GemTypeListSO gemTypeListSO;
     public GateManager _gateManager;
     public Button CommonGemsUI;
@@ -35,10 +36,10 @@ public class UIManager : MonoBehaviour
     public List<Button> LegendaryButtonList1per;
     public List<Button> LegendaryButtonList99per;
     public List<Button> LegendaryGemsButtonList;
-    
+
     #endregion
 
-    
+    public Button LastButton;
 
 
     private int buttonIndex;// bastigimiz slot butonunun indexini tutan deger
@@ -46,6 +47,102 @@ public class UIManager : MonoBehaviour
     private int healthGateIndex; // healthgate indexini tutar deger
     private GemSO selectedGem;  // tikladigimiz butona gore secili gemi tutan degisken
 
+    private void Start()
+    {
+        
+        RevertColors();
+        DisableGems();
+       
+    }
+
+    public void DisableGems()
+    {
+        foreach (var gems in gemTypeListSO.gemTypeList)
+        {
+            foreach (var gemss in gems.gemList)
+            {
+                if (gemTypeListSO.gemTypeList.IndexOf(gems) == 0)
+                {
+                    gemss.isActive = false;
+
+                }
+                else if (gemTypeListSO.gemTypeList.IndexOf(gems) == 1)
+                {
+                    gemss.isActive = false;
+
+                }
+                else if (gemTypeListSO.gemTypeList.IndexOf(gems) == 2)
+                {
+                    gemss.isActive = false;
+
+                }
+            }
+        }
+    }
+    public void RevertColors()
+    {
+        var tempColor = new Color();
+
+        foreach (var a in CommonButtonList)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+
+        }
+        foreach (var a in RareButtonList)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+        }
+        foreach (var a in LegendaryButtonList1per)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+        }
+        foreach (var a in LegendaryButtonList99per)
+        {
+            a.image.color = Color.white;
+            tempColor = a.image.color;
+            tempColor.a = 1f;
+            a.image.color = tempColor;
+
+        }
+
+        foreach (var healthGates in _gateManager.healthGateListSo.HealthGateList)
+        {
+            foreach (var activeGem in healthGates.activeGems)
+            {
+
+                
+              
+                        LegendaryButtonList1per[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                        
+                        CommonButtonList[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                        
+                        RareButtonList[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                        
+                        LegendaryButtonList99per[healthGates.activeGems.IndexOf(activeGem)].image.color =
+                            Color.white;
+                activeGem.isActive = false;
+
+
+
+            }
+
+        }
+    }
     
 
     public void OnCommonGemsButtonPressed(String hpText)
@@ -105,6 +202,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = CommonButtonList.IndexOf(a);
                
             }
@@ -145,7 +248,7 @@ public class UIManager : MonoBehaviour
         {
             foreach (var activeGem in healthGates.activeGems)
             {
-                if (activeGem != null)
+                if (activeGem.isActive == true)
                 {
                    
                     switch (healthGates.percentage)
@@ -169,11 +272,11 @@ public class UIManager : MonoBehaviour
                     }
                    
                 }
-            }
+                
         }
-        IsGemsActive();
+       IsGemsActive();
     }
-
+    }
     public void IsGemsActive()
     {
         foreach (var gems in gemTypeListSO.gemTypeList)
@@ -187,6 +290,7 @@ public class UIManager : MonoBehaviour
                         Color color =CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color ;
                         color.a = 0.5f;
                         CommonGemsButtonList[gems.gemList.IndexOf(gemss)].image.color = color;
+                        
                     }
                     else
                     {
@@ -245,6 +349,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = RareButtonList.IndexOf(a);
                
             }
@@ -292,6 +402,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = LegendaryButtonList1per.IndexOf(a);
                
             }
@@ -311,6 +427,12 @@ public class UIManager : MonoBehaviour
             if (a == button)
             {
                 button.image.color = Color.yellow;
+                /*MARK*/
+                if (LastButton != button && LastButton != null && LastButton.image.color == Color.yellow)
+                {
+                    LastButton.image.color = Color.white;
+                }
+                LastButton = button;
                 buttonIndex = LegendaryButtonList99per.IndexOf(a);
                
             }
