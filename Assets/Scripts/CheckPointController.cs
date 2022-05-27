@@ -7,16 +7,25 @@ public class CheckPointController : MonoBehaviour
     public bool checkpointReached;
     private PlayerManager playerManager;
     private PlayerController playerController;
+    private HealthBar healthBar;
+    public static CheckPointController instance;
     private CheckPointMenuScript checkPointMenuScript;
+
     //Animations
     private Animator animator;
     private string currentState;
     const string idle = "CheckPoint";
     const string activated = "CheckPointActivated";
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        healthBar = GameObject.FindGameObjectWithTag("Bar").GetComponent<HealthBar>();
         animator = GetComponent<Animator>();
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -29,6 +38,7 @@ public class CheckPointController : MonoBehaviour
         ChangeAnimations();
         SetCheckpoint();
     }
+
     void ChangeAnimations()
     {
 
@@ -37,6 +47,7 @@ public class CheckPointController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.C) && !playerController.isGuarding)
             {
                 ChangeAnimationState(activated);
+                healthBar.RevertHealthBar();
             }
 
         }
@@ -58,6 +69,10 @@ public class CheckPointController : MonoBehaviour
             {
                 playerManager.currentCheckPoint = gameObject;
                 Debug.Log("Checkpoint Degisti");
+                playerManager.lives = 4;
+                playerManager.CurrentHealth = 100;
+                healthBar.SetHealth(playerManager.CurrentHealth);
+                Potion.instance.CheckPoint(); 
             }
         }
         if(!checkpointReached)

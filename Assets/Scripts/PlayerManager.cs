@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
 
     public static PlayerManager instance;
 
-    private int lives = 4;
+    public int lives = 4;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
     public bool isHealing;
@@ -38,6 +38,8 @@ public class PlayerManager : MonoBehaviour
     const string heal = "PlayerHeal";
     [HideInInspector] public bool hitAnimRunning;
 
+    //HealthGate
+    public HealthBar healthBar;
 
     //Gemler icin eklediklerim
     public float defenceRate=0;
@@ -52,6 +54,7 @@ public class PlayerManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentCheckPoint = gameObject;
+        healthBar.SetMaxHealth(MaxHealth);
     }
 
     // Update is called once per frame
@@ -206,27 +209,30 @@ public class PlayerManager : MonoBehaviour
                 rb.velocity = new Vector2(0,0);                
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
-                CurrentHealth = (MaxHealth * 1) / 1;
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 2)
             {
-                CurrentHealth = (MaxHealth * 1) / 100;
-              
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 1)
             {
-                CurrentHealth = (MaxHealth * 1) / 100;
-               
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 0)
             {
                 dead = true;
                 player.ChangeAnimationState(deathDD);
                 CurrentHealth = MaxHealth;
+                healthBar.DeathDefienceGem(lives);
                 lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
                 crown.SetActive(false);
+                healthBar.RevertHealthBar();
                 //StartCoroutine(RespawnPlayer());
             }
         }

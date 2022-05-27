@@ -8,6 +8,7 @@ public class ObjectActivator : MonoBehaviour
     [SerializeField] string activatorTag = null;
     [SerializeField] bool deactivateOnExit = false;
     [SerializeField] GameObject[] objects = null;
+    [SerializeField] GameObject[] objectsToDeact = null;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -15,6 +16,8 @@ public class ObjectActivator : MonoBehaviour
         {
             foreach (var obj in objects)
                 obj.SetActive(true);
+            foreach (var obj in objectsToDeact)
+                obj.SetActive(false);
         }
     }
 

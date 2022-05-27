@@ -86,7 +86,6 @@ public class VillagerRunning : MonoBehaviour
         {
             if (playerDetected == true || b == 1)
             {
-                Debug.Log("Detected");
                 RunAway();
                 ControlOn();
                 if(!GetComponent<VillagerHealthManager>().isHurting)
@@ -94,7 +93,6 @@ public class VillagerRunning : MonoBehaviour
             }
             else if (playerDetected == false && b == 1)
             {
-                Debug.Log("Not Detected but run");
                 RunAway();
                 if(!GetComponent<VillagerHealthManager>().isHurting)
                     ChangeAnimationState(run);
@@ -102,7 +100,6 @@ public class VillagerRunning : MonoBehaviour
 
             else if (playerDetected == false)
             {
-                Debug.Log("Not Detected");
                 if(!GetComponent<VillagerHealthManager>().isHurting)
                     ChangeAnimationState(idle);
             }

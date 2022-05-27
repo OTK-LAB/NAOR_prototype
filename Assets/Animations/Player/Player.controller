@@ -88,25 +88,22 @@ AnimatorStateMachine:
     m_Position: {x: 300, y: 810, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4858967633202114271}
-    m_Position: {x: 335, y: 875, z: 0}
+    m_Position: {x: 300, y: 860, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6596186741573143075}
-    m_Position: {x: 370, y: 940, z: 0}
+    m_Position: {x: 300, y: 960, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7471958148664002899}
-    m_Position: {x: 405, y: 1005, z: 0}
+    m_Position: {x: 300, y: 1010, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5102393566264873002}
-    m_Position: {x: 440, y: 1070, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -5548437540635718698}
-    m_Position: {x: 475, y: 1135, z: 0}
+    m_Position: {x: 300, y: 1060, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5921492313846174761}
-    m_Position: {x: 510, y: 1200, z: 0}
+    m_Position: {x: 300, y: 910, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1090671063270739186}
-    m_Position: {x: 545, y: 1265, z: 0}
+    m_Position: {x: 300, y: 1110, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -268,32 +265,6 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 27a677e7b0dce9544a0bd91613ea7ea9, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &-5548437540635718698
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerIdleTransition
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b858e1a9847765944a7223de0c689a6d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
