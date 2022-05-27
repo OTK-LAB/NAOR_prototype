@@ -199,7 +199,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -311,8 +311,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 4
   walkSpeed: 1.8
+  isStunned: 0
   facingRight: 1
   canMove: 1
+  canFlip: 1
   rollSpeed: 10
   rollColl: {fileID: 5085563341442141496}
   iFrame: 0.3
@@ -324,7 +326,23 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallGrabPointFront: {fileID: 0}
+  wallGrabPointBack: {fileID: 0}
+  wallSlideSpeed: 0.2
+  wallDistance: 0.05
+  wallJumpTime: 0.1
+  xWallForce: 5
+  wallJumpLerp: 1
+  ledgeCheckUp: {fileID: 0}
+  ledgeCheckDown: {fileID: 0}
+  ledgeDistance: 0
+  ledgeXOffset1: 0
+  ledgeYOffset1: 0
+  ledgeXOffset2: 0
+  ledgeYOffset2: 0
   attackPoint: {fileID: 5085563341160904411}
+  fallAttackBox: {fileID: 0}
+  fallAttackSize: {x: 0, y: 0, z: 0}
   attackRange: 0.91
   attackDamage: 20
   enemyLayers:
@@ -338,6 +356,9 @@ MonoBehaviour:
   daggerobj: {fileID: 8750932659688192256, guid: c206ef443f6febc4bbbfe68b4a5d5660, type: 3}
   daggerAmount: 3
   cooldownTime: 3
+  rollStaminaRate: 0
+  lifeStealRate: 0
+  moveList: {fileID: 0}
 --- !u!114 &5085563342668687474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +374,7 @@ MonoBehaviour:
   currentCheckPoint: {fileID: 0}
   reviveEffect: {fileID: 1220232784898456290, guid: 634782ff9996dc744a994d61ae4a3497, type: 3}
   flickerSpeed: 5
+  crown: {fileID: 0}
   MaxHealth: 100
   CurrentHealth: 100
   isHealing: 0
@@ -361,6 +383,8 @@ MonoBehaviour:
   isReviving: 0
   status: 0
   hitAnimRunning: 0
+  defenceRate: 0
+  shieldDefenceRate: 0.4
 --- !u!114 &5085563342668687472
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -36,10 +36,12 @@ public class TutorialArmScript : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
+        {
             animator.Play("TutorialArmDespawn");
-        parchment.SetActive(false);
-        text.SetActive(false);
-        inRange = false;
+            parchment.SetActive(false);
+            text.SetActive(false);
+            inRange = false;
+        }
     }
 
     public void ChangeAnimationToSIdle()
