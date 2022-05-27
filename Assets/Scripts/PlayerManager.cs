@@ -12,11 +12,12 @@ public class PlayerManager : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public float flickerSpeed;
     private bool flickering;
+    public GameObject crown;
 
     public static PlayerManager instance;
 
     public int lives = 4;
-    public float MaxHealth = 100f;
+    public float MaxHealth = 100;
     public float CurrentHealth = 100f;
     public bool isHealing;
     //[HideInInspector] 
@@ -31,6 +32,7 @@ public class PlayerManager : MonoBehaviour
     //Animations
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
+    const string deathDD = "PlayerDeathDD";
     const string revive = "PlayerRevive";
     const string counter = "PlayerCounter";
     const string heal = "PlayerHeal";
@@ -38,6 +40,10 @@ public class PlayerManager : MonoBehaviour
 
     //HealthGate
     public HealthBar healthBar;
+
+    //Gemler icin eklediklerim
+    public float defenceRate=0;
+    public float shieldDefenceRate = 0.4f;
 
 
     // Start is called before the first frame update
@@ -48,8 +54,6 @@ public class PlayerManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentCheckPoint = gameObject;
-
-        //HealthGate
         healthBar.SetMaxHealth(MaxHealth);
     }
 
@@ -63,34 +67,31 @@ public class PlayerManager : MonoBehaviour
         if (status == 1 || status == 2) // continue moving after a parry
             player.canMove = true;
 
-        if (lives == 4)
-        {
-            if (CurrentHealth >= 100)
+        switch(lives){
+             case 4:
+                 if (CurrentHealth >= 100)
             {
                 CurrentHealth = 100;
             }
-
-        }
-        if (lives == 3)
-        {
-            if (CurrentHealth >= 1)
+                break;
+            case 3:
+                if (CurrentHealth >= 1)
             {
                 CurrentHealth = 1;
             }
-        } 
-        if (lives == 2)
-        {
-            if (CurrentHealth >= 1)
+                break;
+            case 2:
+                if (CurrentHealth >= 1)
             {
                 CurrentHealth = 1;
             }
-        }
-        if (lives == 1)
-        {
-            if (CurrentHealth >= 1)
+                break;
+            case 1:
+                if (CurrentHealth >= 1)
             {
                 CurrentHealth = 1;
             }
+                break;
         }
     }
 
@@ -104,12 +105,13 @@ public class PlayerManager : MonoBehaviour
             CurrentHealth += health;
         player.ChangeAnimationState(heal);
         isHealing = true;
+        rb.velocity = new Vector2(0,0);
         Invoke("CancelHealState", 0.8f);
         if (CurrentHealth > 100)
         {
             CurrentHealth = 100;
         }
-            
+        Actions.OnHealthChanged();
     }
     void CancelHealState()
     {
@@ -125,19 +127,19 @@ public class PlayerManager : MonoBehaviour
                 {
                     //normal damage status
                     case 1:
-                        CurrentHealth -= damage;
-                       //
+                        CurrentHealth -= (damage*(1-defenceRate));
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //blocking damage status
                     case 2:
-                        CurrentHealth -= damage * 0.6f;
-                        //
+                        CurrentHealth -= (damage*(1-defenceRate)) * (1-shieldDefenceRate);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //parry status
                     case 3:
@@ -147,7 +149,16 @@ public class PlayerManager : MonoBehaviour
                         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.attackPoint.position, player.attackRange, player.enemyLayers);
                         foreach (Collider2D enemy in hitEnemies)
                         {
-                            enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);    //parry dealt damage
+                            if(enemy.CompareTag("Enemy"))
+                                enemy.GetComponent<Minion_wfireball>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Villager"))
+                                enemy.GetComponent<VillagerHealthManager>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Sword"))
+                                enemy.GetComponent<Sword_Behaviour>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("MinionwPoke"))
+                                enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Legolas"))
+                                enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }
@@ -155,11 +166,31 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 CurrentHealth = 0;
-               //
 
             }
             Die();
         }
+    }
+
+    public void StunPlayer(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        if (player.facingRight)
+              rb.AddForce(new Vector2(-100,0));
+        else
+              rb.AddForce(new Vector2(100,0));
+        player.isStunned = true;
+        StartCoroutine(Stunned(stuntime));
+    }
+
+    IEnumerator Stunned(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        yield return new WaitForSeconds(0.3f);
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(stuntime);
+        rb.constraints = ~RigidbodyConstraints2D.FreezeAll;
+        player.isStunned = false;
     }
     void CancelHitState()
     {
@@ -175,10 +206,10 @@ public class PlayerManager : MonoBehaviour
                 dead = true;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
+                rb.velocity = new Vector2(0,0);                
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
                 CurrentHealth = 1;
-               //
                 healthBar.DeathDefienceGem(lives);
             }
             if (lives == 2)
@@ -194,15 +225,15 @@ public class PlayerManager : MonoBehaviour
             if (lives == 0)
             {
                 dead = true;
-                player.ChangeAnimationState(death);
+                player.ChangeAnimationState(deathDD);
                 CurrentHealth = MaxHealth;
                 healthBar.DeathDefienceGem(lives);
                 lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
-                StartCoroutine(RespawnPlayer());
+                crown.SetActive(false);
                 healthBar.RevertHealthBar();
-                //
+                //StartCoroutine(RespawnPlayer());
             }
         }
     }
@@ -219,8 +250,9 @@ public class PlayerManager : MonoBehaviour
         isReviving = true;
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
         player.ChangeAnimationState(revive);
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         revived = true;
+        crown.SetActive(true);
         isReviving = false;
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active

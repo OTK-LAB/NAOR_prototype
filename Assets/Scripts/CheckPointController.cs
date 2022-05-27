@@ -9,6 +9,7 @@ public class CheckPointController : MonoBehaviour
     private PlayerController playerController;
     private HealthBar healthBar;
     public static CheckPointController instance;
+    private CheckPointMenuScript checkPointMenuScript;
 
     //Animations
     private Animator animator;
@@ -28,6 +29,7 @@ public class CheckPointController : MonoBehaviour
         animator = GetComponent<Animator>();
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        checkPointMenuScript = GameObject.FindGameObjectWithTag("CheckPointMenuManager").GetComponent<CheckPointMenuScript>();
     }
 
     // Update is called once per frame
@@ -88,6 +90,7 @@ public class CheckPointController : MonoBehaviour
         {
             checkpointReached = true;
             playerController.inCheckpointRange = true;
+            checkPointMenuScript.enabled = true;
         }
     }
 
@@ -97,6 +100,7 @@ public class CheckPointController : MonoBehaviour
         {
             checkpointReached = false ;
             playerController.inCheckpointRange = false;
+            checkPointMenuScript.enabled = false;
         }
     }
 
