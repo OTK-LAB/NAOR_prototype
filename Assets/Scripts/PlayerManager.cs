@@ -270,7 +270,8 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         revived = false;
         damageable = true;
-        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, currentCheckPoint.transform.position.y, currentCheckPoint.transform.position.z);
+        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, currentCheckPoint.transform.position.y, 0);
+        rb.velocity = new Vector2(0,0);
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
