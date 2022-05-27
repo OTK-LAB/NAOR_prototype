@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
 
-    [HideInInspector] public GameObject currentCheckPoint;
+    public GameObject currentCheckPoint;
     private PlayerController player;
     private Rigidbody2D rb;
     public GameObject reviveEffect;
@@ -13,10 +13,11 @@ public class PlayerManager : MonoBehaviour
     public float flickerSpeed;
     private bool flickering;
     public GameObject crown;
+    [SerializeField] private SceneChanger scene;
 
     public static PlayerManager instance;
 
-    private int lives = 4;
+    public int lives = 4;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
     public bool isHealing;
@@ -51,7 +52,6 @@ public class PlayerManager : MonoBehaviour
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        currentCheckPoint = gameObject;
     }
 
     // Update is called once per frame
@@ -193,7 +193,7 @@ public class PlayerManager : MonoBehaviour
     {
         hitAnimRunning = false;
     }
-    void Die()
+    public void Die()
     {
         if (CurrentHealth <= 0)
         {
@@ -257,14 +257,16 @@ public class PlayerManager : MonoBehaviour
         flickering = false;
     }
 
-    IEnumerator RespawnPlayer()
+    public IEnumerator RespawnPlayer()
     {
         yield return new WaitForSeconds(1f);
         revived = false;
-        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, transform.position.y, currentCheckPoint.transform.position.z);
+        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, currentCheckPoint.transform.position.y, currentCheckPoint.transform.position.z);
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
+        currentCheckPoint.GetComponent<CheckPointController>().currentVCam.SetActive(true);
+        StartCoroutine(scene.WelcomeToScene());
     }
 
 }
