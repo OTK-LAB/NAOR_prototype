@@ -16,6 +16,7 @@ TagManager:
   - BoatExit
   - SubtitleEnter
   - Villager
+  - Bar
   - Miniboss
   - MinibossShield
   - Limit
