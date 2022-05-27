@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed;
     private float xAxis;
     private bool walkToggle;
+    [HideInInspector] public bool isStunned = false;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
     private bool isPraying;
@@ -20,10 +21,8 @@ public class PlayerController : MonoBehaviour
     [Header("Roll")]
     public float rollSpeed;
     private bool isRolling = false;
-    private bool rollCheck;
     public GameObject rollColl;
     public float iFrame = 0.3f;
-    
 
     //Jumping
     [Header("Jumping")]
@@ -63,12 +62,15 @@ public class PlayerController : MonoBehaviour
     private Vector2 ledgePosBot;
     private Vector2 ledgePos1;
     private Vector2 ledgePos2;
+    RaycastHit2D hit;
+
     [SerializeField]
     private float ledgeDistance;
     public float ledgeXOffset1 = 0.0f;
     public float ledgeYOffset1 = 0.0f;
     public float ledgeXOffset2 = 0.0f;
     public float ledgeYOffset2 = 0.0f;
+    private float gravity;
 
     //Animations
     private Animator animator;
@@ -80,17 +82,26 @@ public class PlayerController : MonoBehaviour
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
+    const string fallattack = "PlayerFallAttack";
     const string climb = "PlayerClimb";
+    const string stun = "PlayerStun";
+    const string wallSlide = "PlayerWallSlide";
+    const string ledgeClimb = "PlayerLedgeClimb";
+    const string ledgeHang = "PlayerLedgeHang";
+
 
     //Combat
     [Header("Combat")]
     public Transform attackPoint;
+    public Transform fallAttackBox;
+    public Vector3 fallAttackSize;
     private float attackTime = 0.0f;
     private int attackCount = 0;
     public float attackRange = 0.5f;
-    public int attackDamage = 10;
+    public float attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
+    private bool isFallAttacking;
     private PlayerManager playerManager;
     private float stamina;
     [HideInInspector] public bool inCheckpointRange;
@@ -105,6 +116,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownTime;
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
+    //Gems
+    public float rollStaminaRate=0;
+    public float lifeStealRate = 0;
+
+    [Header("Miscellaneous")]
+    //Move list
+    public GameObject moveList;
 
     private void Awake()
     {
@@ -117,6 +135,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gravity = rb.gravityScale;
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
     }
@@ -151,18 +170,25 @@ public class PlayerController : MonoBehaviour
 
         grabFront = Physics2D.OverlapCircle(wallGrabPointFront.position, wallDistance, groundLayer);
         grabBack = Physics2D.OverlapCircle(wallGrabPointBack.position, wallDistance, groundLayer);
-        rollCheck = Physics2D.Raycast(ledgeCheckUp.position, transform.up, 0.1f, groundLayer);
-
         if(facingRight)
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
-            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
+            if(isTouchingLedgeDown)
+            {
+                ledgePosBot = ledgeCheckDown.position;
+             }
         }
         else
         {
             isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
-            isTouchingLedgeDown = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
-
+            hit = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
+            if(isTouchingLedgeDown)
+            { 
+                ledgePosBot = ledgeCheckDown.position;
+            }        
         }
 
         if(grabFront || grabBack)
@@ -197,16 +223,22 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(isTouchingLedgeDown && !isTouchingLedgeUp && !ledgeDetected){
+        if(isTouchingLedgeDown && !isTouchingLedgeUp && hit.collider.CompareTag("Climbable") && !ledgeDetected ){
             ledgeDetected = true;
-            ledgePosBot = ledgeCheckDown.position;
+        }
+
+        //stop rolling if not grounded
+        if(isRolling && !isGrounded)
+        {
+            StopCoroutine(Roll());
+            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
         }
 
     }
     void CheckInputs()
     {
         //Get Horizontal Input
-        if(!isWallJumping)
+        if(!isWallJumping && !canClimbLedge)
         {
             xAxis = Input.GetAxisRaw("Horizontal");
         }
@@ -220,8 +252,13 @@ public class PlayerController : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isWallSliding && !playerManager.isHealing)
+            if (isGrounded && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing && !isStunned)
             {
+                if (isRolling)
+                {
+                    StopCoroutine(Roll());
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                }
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
@@ -244,16 +281,21 @@ public class PlayerController : MonoBehaviour
         }
         //Pray
         if (Input.GetKeyDown(KeyCode.C))
-            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing)
+            if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned)
+            {
                 isPraying = true;
+                rb.velocity = new Vector2(0, 0);
+            }
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned && stamina >= 30 && !isGuarding && !isJumping)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
             if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
-                performGuard();
+                if(!isFallAttacking){
+                    performGuard();
+                }
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
             {
@@ -268,7 +310,7 @@ public class PlayerController : MonoBehaviour
         //Potion
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+            if(isGrounded && !isRolling && !isAttacking && !isFallAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing  && !isStunned)
             {
                 if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
                 {
@@ -277,14 +319,26 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        //Toggle Move List
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            moveList.SetActive(!moveList.activeInHierarchy);
+        }
     }
     
-    private void CheckLedgeClimb()
+   private void CheckLedgeClimb()
     {
         if(ledgeDetected && !canClimbLedge)
         {
+            
             canClimbLedge = true;
-            if(facingRight)
+            if(canClimbLedge)
+            {
+                isWallSliding = false;
+            }
+            Debug.Log("canClimbLedge TRUE");
+           
+            if (facingRight)
             {
                 ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
                 ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) + ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
@@ -294,33 +348,52 @@ public class PlayerController : MonoBehaviour
                 ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
                 ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
             }
+            ChangeAnimationState(ledgeHang);
             canMove = false;
             canFlip = false;
+
+            rb.velocity = new Vector2(0,0);
+            transform.position = new Vector2(ledgePos1.x + (facingRight ? .2f : -.2f), ledgePos1.y + (facingRight ? .5f : .5f));
+            rb.gravityScale = 0;
+           
         }
 
-        if(canClimbLedge)
+        if(canClimbLedge && Input.GetKeyDown(KeyCode.Space))
         {
-            transform.position = ledgePos1;
-            FinishLedgeClimb();
+            ChangeAnimationState(ledgeClimb);
         }
+        if(canClimbLedge && Input.GetKeyDown(KeyCode.S))
+        {
+            FinishLedgeClimb();
+        }   
     }
 
     public void FinishLedgeClimb()
     {
         canClimbLedge = false;
-        transform.position = ledgePos2;
         canMove = true;
         canFlip = true;
         ledgeDetected = false;
+        rb.gravityScale = gravity;
     }
-  
+    public void ChangePlayerPosition()
+    {
+        canClimbLedge = false;
+        canMove = true;
+        canFlip = true;
+        ledgeDetected = false;
+        rb.gravityScale = gravity;
+        transform.position = new Vector2(ledgePos2.x, ledgePos2.y + .4f);
+        if (isGrounded)
+            ChangeAnimationState(idle);
+    }
     void Move()
     {
         if (canMove)
         {
             if (!isWallJumping)
             {
-                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing)
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isStunned && !isFallAttacking)
                 {
                     if (!isGuarding)
                     {
@@ -382,7 +455,7 @@ public class PlayerController : MonoBehaviour
 
     void WallSlide()
     {
-        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0)
+        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0 && !isFallAttacking)
         {
             isWallSliding = true;
             jumpTime = Time.time + wallJumpTime;
@@ -390,7 +463,11 @@ public class PlayerController : MonoBehaviour
         else if (jumpTime < Time.time)
         {
             isWallSliding = false;
-        }       
+        }  
+        else if (canClimbLedge == true)
+        {
+            isWallSliding = false;
+        }
         if (isWallSliding)
         {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
@@ -403,16 +480,15 @@ public class PlayerController : MonoBehaviour
         playerManager.damageable = false;
         rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        StaminaBar.instance.useStamina(30);
+        StaminaBar.instance.useStamina(30*(1-rollStaminaRate));
+        Debug.Log(30*(1-rollStaminaRate) + "stamina kullanildi");
+
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
             rb.velocity = new Vector2(-rollSpeed, rb.velocity.y);
 
-
         yield return new WaitForSeconds(.5f);
-        while(rollCheck) yield return null;
-
         isRolling = false;
         playerManager.damageable = true;
         rollColl.SetActive(false);
@@ -420,19 +496,19 @@ public class PlayerController : MonoBehaviour
     }
     void performGuard()
     {
-        if(!parryStamina)
+        if(!isRolling && isGrounded && !isPraying && !isAttacking && !isStunned)
         {
-            StaminaBar.instance.useStamina(10);
-            parryStamina = true;
-        }
-        guardTimer += Time.deltaTime;
-        if(guardTimer > 1)
-        {
-            guardTimer = 0;
-            StaminaBar.instance.useStamina(12.5f);
-        }
-        if(!isRolling && isGrounded && !isPraying && !isAttacking)
-        {
+            if(!parryStamina)
+            {
+                StaminaBar.instance.useStamina(10);
+                parryStamina = true;
+            }
+            guardTimer += Time.deltaTime;
+            if(guardTimer > 1)
+            {
+                guardTimer = 0;
+                StaminaBar.instance.useStamina(12.5f);
+            }
             ChangeAnimationState(parry);
             isGuarding = true;
         }
@@ -440,7 +516,7 @@ public class PlayerController : MonoBehaviour
     
     void FlipPlayer()
     {
-        if(!isRolling && !isPraying && !isAttacking)
+        if(!isRolling && !isPraying && !isAttacking && !isStunned)
         {
             if(xAxis < 0 && facingRight)
             {
@@ -463,11 +539,11 @@ public class PlayerController : MonoBehaviour
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+        if(isGrounded && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing && !canClimbLedge)
         {
             if(!isRolling && !isGuarding)
             {
-                    if(!isAttacking && !isPraying)
+                    if(!isAttacking && !isPraying && !isStunned)
                     { 
                         if(xAxis == 0)
                             ChangeAnimationState(idle);
@@ -485,15 +561,17 @@ public class PlayerController : MonoBehaviour
                         ChangeAnimationState(pray);
                         StartCoroutine(StopPraying());
                     }
+                    if(isStunned)
+                        ChangeAnimationState(stun);
             }
             else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
         }
 
         //Air Animations --> Jump and Fall
-        if(!isGrounded)
+        if(!isGrounded && !canClimbLedge)
         {
-            if(!isAttacking)
+            if(!isAttacking && !isFallAttacking && !isWallSliding)
             {
                 if(rb.velocity.y > 0)
                     ChangeAnimationState(jump);
@@ -501,10 +579,19 @@ public class PlayerController : MonoBehaviour
                     ChangeAnimationState(fall);    
             }
             else
-            {               
-                ChangeAnimationState("PlayerAttack" + attackCount);
-                if(attackTime > 0.6f)    
-                    isAttacking = false;
+            {       
+                if(isAttacking) 
+                {
+                    ChangeAnimationState("PlayerAttack" + attackCount);
+                    if(attackTime > 0.6f)    
+                        isAttacking = false;
+                }       
+                if(isFallAttacking)
+                {
+                    ChangeAnimationState(fallattack);
+                }
+                if (isWallSliding)
+                    ChangeAnimationState(wallSlide);
             }
         }
    
@@ -525,21 +612,30 @@ public class PlayerController : MonoBehaviour
         attackTime += Time.deltaTime;
         if (attackTime > 0.6f)
             isCombo = false;
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !Input.GetKey(KeyCode.S))
         {
             if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
             {
-                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing)
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isStunned && !isFallAttacking && !canClimbLedge)
+                {
                     if (isCombo && attackTime > 0.3f)
                         Attack();
                     else if (!isCombo)
                         Attack();
+                }
             }
+        }
+        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 6 && !isFallAttacking && !isWallSliding)
+        {
+            StaminaBar.instance.useStamina(50);
+            isFallAttacking = true;
+            rb.velocity = new Vector2(0, rb.velocity.y - 1f);
+            //rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+            FallAttack();
         }
     }
     void Attack()
     {
-
         isAttacking = true;
         if(isGrounded)
         {
@@ -576,10 +672,60 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
             if(enemy.CompareTag("Legolas"))
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
-            if(enemy.CompareTag("FakeWall"))
-                enemy.GetComponent<FakeWallScript>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
         }
         attackTime = 0f;
+    }
+    void FallAttack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(fallAttackBox.position, fallAttackSize, enemyLayers);
+        this.GetComponent<PlayerManager>().damageable = false;
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if(enemy.CompareTag("Enemy"))
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(40);
+            if(enemy.CompareTag("Villager"))
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(40);
+            if(enemy.CompareTag("Sword"))
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(40);
+            if(enemy.CompareTag("MinionwPoke"))
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(40);
+            if(enemy.CompareTag("Legolas"))
+                enemy.GetComponent<Legolas>().TakeDamage(40);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();    
+        }
+    }
+    public void FallAttackTransition()
+    {
+        if(isGrounded)
+        {
+            ChangeAnimationState("PlayerFallAttackLanding");
+        }
+    }
+    public void FallAttackDone()
+    {
+        isFallAttacking = false;
+        //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+        this.GetComponent<PlayerManager>().damageable = true;
+    }
+    public void StealLife(float stealRate)
+    {
+        if (playerManager.CurrentHealth < playerManager.MaxHealth)
+        {
+            playerManager.CurrentHealth += attackDamage * stealRate;
+            Debug.Log(attackDamage * stealRate + "Can calindi");
+            Actions.OnHealthChanged();
+            if (playerManager.CurrentHealth > 100)
+            {
+                playerManager.CurrentHealth = 100;
+            }
+        }
     }
     public void ThrowDagger()
     {
@@ -620,13 +766,18 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        Gizmos.DrawWireCube(fallAttackBox.position, fallAttackSize);
     }
 
     public bool isBusy()
     {
-        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing)
+        if (isAttacking || isFallAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing || canClimbLedge)
             return true;
         else
             return false;
-    }  
+    } 
+
+    public ItemStack GetDaggerStack(){
+        return daggerStack;
+    }
 }

@@ -7,7 +7,7 @@ public class CheckPointController : MonoBehaviour
     public bool checkpointReached;
     private PlayerManager playerManager;
     private PlayerController playerController;
-
+    private CheckPointMenuScript checkPointMenuScript;
     //Animations
     private Animator animator;
     private string currentState;
@@ -20,6 +20,7 @@ public class CheckPointController : MonoBehaviour
         animator = GetComponent<Animator>();
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        checkPointMenuScript = GameObject.FindGameObjectWithTag("CheckPointMenuManager").GetComponent<CheckPointMenuScript>();
     }
 
     // Update is called once per frame
@@ -28,7 +29,6 @@ public class CheckPointController : MonoBehaviour
         ChangeAnimations();
         SetCheckpoint();
     }
-
     void ChangeAnimations()
     {
 
@@ -75,6 +75,7 @@ public class CheckPointController : MonoBehaviour
         {
             checkpointReached = true;
             playerController.inCheckpointRange = true;
+            checkPointMenuScript.enabled = true;
         }
     }
 
@@ -84,6 +85,7 @@ public class CheckPointController : MonoBehaviour
         {
             checkpointReached = false ;
             playerController.inCheckpointRange = false;
+            checkPointMenuScript.enabled = false;
         }
     }
 

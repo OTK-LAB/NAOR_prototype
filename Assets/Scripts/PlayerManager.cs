@@ -12,10 +12,11 @@ public class PlayerManager : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public float flickerSpeed;
     private bool flickering;
+    public GameObject crown;
 
     public static PlayerManager instance;
 
-    private int lives = 2;
+    private int lives = 4;
     public float MaxHealth = 100;
     public float CurrentHealth = 100f;
     public bool isHealing;
@@ -31,13 +32,16 @@ public class PlayerManager : MonoBehaviour
     //Animations
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
+    const string deathDD = "PlayerDeathDD";
     const string revive = "PlayerRevive";
     const string counter = "PlayerCounter";
     const string heal = "PlayerHeal";
     [HideInInspector] public bool hitAnimRunning;
 
 
-
+    //Gemler icin eklediklerim
+    public float defenceRate=0;
+    public float shieldDefenceRate = 0.4f;
 
 
     // Start is called before the first frame update
@@ -59,6 +63,33 @@ public class PlayerManager : MonoBehaviour
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, 1);
         if (status == 1 || status == 2) // continue moving after a parry
             player.canMove = true;
+
+        switch(lives){
+             case 4:
+                 if (CurrentHealth >= 100)
+            {
+                CurrentHealth = 100;
+            }
+                break;
+            case 3:
+                if (CurrentHealth >= 1)
+            {
+                CurrentHealth = 1;
+            }
+                break;
+            case 2:
+                if (CurrentHealth >= 1)
+            {
+                CurrentHealth = 1;
+            }
+                break;
+            case 1:
+                if (CurrentHealth >= 1)
+            {
+                CurrentHealth = 1;
+            }
+                break;
+        }
     }
 
     private void Awake()
@@ -77,7 +108,7 @@ public class PlayerManager : MonoBehaviour
         {
             CurrentHealth = 100;
         }
-            
+        Actions.OnHealthChanged();
     }
     void CancelHealState()
     {
@@ -93,17 +124,19 @@ public class PlayerManager : MonoBehaviour
                 {
                     //normal damage status
                     case 1:
-                        CurrentHealth -= damage;
+                        CurrentHealth -= (damage*(1-defenceRate));
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //blocking damage status
                     case 2:
-                        CurrentHealth -= damage * 0.6f;
+                        CurrentHealth -= (damage*(1-defenceRate)) * (1-shieldDefenceRate);
                         player.ChangeAnimationState(hit);
                         hitAnimRunning = true;
                         Invoke("CancelHitState", .33f);
+                        Actions.OnHealthChanged();
                         break;
                     //parry status
                     case 3:
@@ -135,6 +168,27 @@ public class PlayerManager : MonoBehaviour
             Die();
         }
     }
+
+    public void StunPlayer(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        if (player.facingRight)
+              rb.AddForce(new Vector2(-100,0));
+        else
+              rb.AddForce(new Vector2(100,0));
+        player.isStunned = true;
+        StartCoroutine(Stunned(stuntime));
+    }
+
+    IEnumerator Stunned(float stuntime)
+    {
+        player.ChangeAnimationState(hit);
+        yield return new WaitForSeconds(0.3f);
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(stuntime);
+        rb.constraints = ~RigidbodyConstraints2D.FreezeAll;
+        player.isStunned = false;
+    }
     void CancelHitState()
     {
         hitAnimRunning = false;
@@ -144,25 +198,36 @@ public class PlayerManager : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             lives--;
-            if (lives == 1)
+            if (lives == 3)
             {
                 dead = true;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
+                rb.velocity = new Vector2(0,0);                
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
-                CurrentHealth = (MaxHealth * 40) / 100;
-
+                CurrentHealth = (MaxHealth * 1) / 1;
+            }
+            if (lives == 2)
+            {
+                CurrentHealth = (MaxHealth * 1) / 100;
+              
+            }
+            if (lives == 1)
+            {
+                CurrentHealth = (MaxHealth * 1) / 100;
+               
             }
             if (lives == 0)
             {
                 dead = true;
-                player.ChangeAnimationState(death);
+                player.ChangeAnimationState(deathDD);
                 CurrentHealth = MaxHealth;
-                lives = 2;
+                lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
-                StartCoroutine(RespawnPlayer());
+                crown.SetActive(false);
+                //StartCoroutine(RespawnPlayer());
             }
         }
     }
@@ -179,8 +244,9 @@ public class PlayerManager : MonoBehaviour
         isReviving = true;
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
         player.ChangeAnimationState(revive);
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         revived = true;
+        crown.SetActive(true);
         isReviving = false;
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
