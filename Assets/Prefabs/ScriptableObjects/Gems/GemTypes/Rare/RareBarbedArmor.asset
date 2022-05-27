@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c723b40086e7b418f73c7e1de262e3, type: 3}
   m_Name: RareBarbedArmor
   m_EditorClassIdentifier: 
-  gemtype: 9
+  gemtype: 0
   isActive: 0
-  buffRate: 0
+  buffRate: 20
   title: Barbed Armor
-  description: "Ald\u0131\u011F\u0131 hasar\u0131n %20'sini rakibe yans\u0131t\u0131r"
+  description: Hasari %20 artirir

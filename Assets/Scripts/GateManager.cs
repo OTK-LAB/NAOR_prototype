@@ -132,7 +132,20 @@ public class GateManager : MonoBehaviour
             case GemSO.Gemtype.Ghost: //RARE
                  Physics2D.IgnoreLayerCollision (7, 8, true);
                 break;
-            
+            case GemSO.Gemtype.QuickHand: //RARE
+                _playerController.cooldownTime = 6f;
+                break;
+            case GemSO.Gemtype.ShieldUp: // RARE
+                _playerManager.shieldDefenceRate = gem.buffRate / 100;
+                _playerController.shieldStamina = 0f;
+                break;
+            case GemSO.Gemtype.Vaulter: // RARE
+                _playerController.rollSeconds += gem.buffRate / 100;
+                break;
+            case GemSO.Gemtype.Regen:// RARE
+                _playerManager.regenHealth = gem.buffRate;
+                _playerManager.isRegen = true;
+                break;
 
         }
     }
@@ -229,6 +242,12 @@ public class GateManager : MonoBehaviour
         _playerController.rollStaminaCost= 30f;
         Dagger.instance.DaggerDamageDown();
         Physics2D.IgnoreLayerCollision (7, 8, false);
+        _playerController.cooldownTime = 9f;
+        _playerManager.shieldDefenceRate = 0.4f;
+        _playerController.shieldStamina = 10f;
+        _playerController.rollSeconds = 0.5f;
+        _playerManager.regenHealth = 5f;
+        _playerManager.isRegen = false;
     }
 }
 

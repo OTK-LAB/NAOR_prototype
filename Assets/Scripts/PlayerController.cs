@@ -109,13 +109,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject daggerobj;
     [SerializeField] private int daggerAmount;
-    [SerializeField] private float cooldownTime;
+    [SerializeField] public float cooldownTime;
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
     //Gems
     public float rollStaminaRate=0;
     public float lifeStealRate = 0;
     public float rollStaminaCost =30f;
+    public float shieldStamina = 10f;
+    public float rollSeconds = 0.5f;
+    public bool isRegen = false;
 
     [Header("Miscellaneous")]
     //Move list
@@ -161,6 +164,8 @@ public class PlayerController : MonoBehaviour
         WallJump();
         WallSlide();
     }
+
+    
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -465,7 +470,7 @@ public class PlayerController : MonoBehaviour
         else
             rb.velocity = new Vector2(-rollSpeed, rb.velocity.y);
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(rollSeconds);
         isRolling = false;
         playerManager.damageable = true;
         rollColl.SetActive(false);
@@ -477,14 +482,14 @@ public class PlayerController : MonoBehaviour
         {
             if(!parryStamina)
             {
-                StaminaBar.instance.useStamina(10);
+                StaminaBar.instance.useStamina(shieldStamina);
                 parryStamina = true;
             }
             guardTimer += Time.deltaTime;
             if(guardTimer > 1)
             {
                 guardTimer = 0;
-                StaminaBar.instance.useStamina(12.5f);
+                StaminaBar.instance.useStamina(shieldStamina*5/4);
             }
             ChangeAnimationState(parry);
             isGuarding = true;
