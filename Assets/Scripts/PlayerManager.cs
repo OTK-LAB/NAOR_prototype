@@ -225,6 +225,7 @@ public class PlayerManager : MonoBehaviour
             if (lives == 0)
             {
                 dead = true;
+                damageable = false;
                 player.ChangeAnimationState(deathDD);
                 CurrentHealth = MaxHealth;
                 healthBar.DeathDefienceGem(lives);
@@ -233,6 +234,7 @@ public class PlayerManager : MonoBehaviour
                 player.enabled = false;
                 crown.SetActive(false);
                 healthBar.RevertHealthBar();
+                Potion.instance.CheckPoint();
                 StartCoroutine(RespawnPlayer());
             }
         }
@@ -267,13 +269,13 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         revived = false;
+        damageable = true;
         transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, currentCheckPoint.transform.position.y, currentCheckPoint.transform.position.z);
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
         currentCheckPoint.GetComponent<CheckPointController>().currentVCam.SetActive(true);
         StartCoroutine(scene.WelcomeToScene());
-         
     }
 
 }
