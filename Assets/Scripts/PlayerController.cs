@@ -674,6 +674,8 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
             if (enemy.CompareTag("Miniboss"))
                 enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+             if (enemy.CompareTag("FakeWall"))
+                enemy.GetComponent<FakeWallScript>().TakeDamage(attackDamage);
             if (enemy.CompareTag("MinibossShield"))
                 enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
         }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class CheckPointController : MonoBehaviour
 {
     public bool checkpointReached;
-    private PlayerManager playerManager;
-    private PlayerController playerController;
+    public PlayerManager playerManager;
+    public PlayerController playerController;
     private CheckPointMenuScript checkPointMenuScript;
     //Animations
     private Animator animator;
