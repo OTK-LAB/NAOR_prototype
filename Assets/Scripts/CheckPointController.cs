@@ -5,11 +5,12 @@ using UnityEngine;
 public class CheckPointController : MonoBehaviour
 {
     public bool checkpointReached;
-    private PlayerManager playerManager;
-    private PlayerController playerController;
+    public PlayerManager playerManager;
+    public PlayerController playerController;
     private HealthBar healthBar;
     public static CheckPointController instance;
     private CheckPointMenuScript checkPointMenuScript;
+    public GameObject currentVCam;
 
     //Animations
     private Animator animator;
