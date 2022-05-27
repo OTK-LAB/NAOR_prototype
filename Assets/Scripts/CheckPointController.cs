@@ -8,6 +8,7 @@ public class CheckPointController : MonoBehaviour
     public PlayerManager playerManager;
     public PlayerController playerController;
     private CheckPointMenuScript checkPointMenuScript;
+    public GameObject currentVCam;
     //Animations
     private Animator animator;
     private string currentState;

@@ -67,7 +67,7 @@ public class SceneChanger : MonoBehaviour
             buttonEpressed = false;
     }
 
-    IEnumerator WelcomeToScene()
+    public IEnumerator WelcomeToScene()
     {
         for (float f = 0; f <= 2; f += Time.deltaTime)
         {
