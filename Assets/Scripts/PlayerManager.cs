@@ -39,6 +39,8 @@ public class PlayerManager : MonoBehaviour
     const string heal = "PlayerHeal";
     [HideInInspector] public bool hitAnimRunning;
 
+    //HealthGate
+    public HealthBar healthBar;
 
     //Gemler icin eklediklerim
     public float defenceRate=0;
@@ -52,6 +54,7 @@ public class PlayerManager : MonoBehaviour
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        healthBar.SetMaxHealth(MaxHealth);
     }
 
     // Update is called once per frame
@@ -206,28 +209,31 @@ public class PlayerManager : MonoBehaviour
                 rb.velocity = new Vector2(0,0);                
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
-                CurrentHealth = (MaxHealth * 1) / 1;
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 2)
             {
-                CurrentHealth = (MaxHealth * 1) / 100;
-              
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 1)
             {
-                CurrentHealth = (MaxHealth * 1) / 100;
-               
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 0)
             {
                 dead = true;
                 player.ChangeAnimationState(deathDD);
                 CurrentHealth = MaxHealth;
+                healthBar.DeathDefienceGem(lives);
                 lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
                 crown.SetActive(false);
-                //StartCoroutine(RespawnPlayer());
+                healthBar.RevertHealthBar();
+                StartCoroutine(RespawnPlayer());
             }
         }
     }
@@ -267,6 +273,7 @@ public class PlayerManager : MonoBehaviour
         player.enabled = true;
         currentCheckPoint.GetComponent<CheckPointController>().currentVCam.SetActive(true);
         StartCoroutine(scene.WelcomeToScene());
+         
     }
 
 }

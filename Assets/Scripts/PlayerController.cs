@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownTime;
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
+
     //Gems
     public float rollStaminaRate=0;
     public float lifeStealRate = 0;
@@ -312,9 +313,9 @@ public class PlayerController : MonoBehaviour
         {
             if(isGrounded && !isRolling && !isAttacking && !isFallAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing  && !isStunned)
             {
-                if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
+                if (Potion.instance.potionCount > 0 && playerManager.CurrentHealth < 100 && playerManager.lives == 4)
                 {
-                    PlayerManager.instance.HealthPotion(33);
+                    playerManager.HealthPotion(33);
                     Potion.instance.UsePotions(1);
                 }
             }
