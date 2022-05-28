@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 0
   title: Quick Hand
-  description: "Dagger'\u0131n bekleme s\xFCresi 9 saniyeden 6 saniyeye d\xFC\u015Fer"
+  description: Dagger cooldown 9->6 seconds

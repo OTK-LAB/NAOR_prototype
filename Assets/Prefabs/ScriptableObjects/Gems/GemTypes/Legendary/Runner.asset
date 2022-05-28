@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 200
   title: Runner
-  description: Kosma hareket hizini 3 katina cikarir
+  description: Sprinting speed x3

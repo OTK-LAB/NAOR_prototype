@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 50
   title: Powerful Launch
-  description: "Dagger hasarlar\u0131 %50 artar"
+  description: Dagger damage +%50

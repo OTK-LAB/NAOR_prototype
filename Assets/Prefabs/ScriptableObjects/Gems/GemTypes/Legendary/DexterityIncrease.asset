@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 40
   title: Dexterity Increase
-  description: "Verilen hasar\u0131 %40 art\u0131r\u0131r"
+  description: Damage given +%40

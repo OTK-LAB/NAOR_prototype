@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 0
   title: Ghost
-  description: "Birimlerin i\xE7inden ge\xE7er"
+  description: Walk inside enemies

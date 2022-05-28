@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 5
   title: Regen
-  description: Her 10 saniyede bir 5 can yeniler
+  description: Every 10 second, regens 5 health

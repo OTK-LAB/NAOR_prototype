@@ -16,4 +16,5 @@ MonoBehaviour:
   isActive: 0
   buffRate: 60
   title: Shield Up
-  description: Shielding stamina kaybettirmez ve %40 hasar yerine %60 hasar engeller
+  description: Blocking wont lose stamina and will block %60 of the damage instead
+    of %40

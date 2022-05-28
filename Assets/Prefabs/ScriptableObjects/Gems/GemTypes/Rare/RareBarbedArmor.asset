@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 20
   title: Barbed Armor
-  description: Hasari %20 artirir
+  description: Deals %20 of the damage taken to the enemy
