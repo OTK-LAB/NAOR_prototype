@@ -59,6 +59,10 @@ public class WaterReflectableScript : MonoBehaviour
     if(playersReflection)
     {
       Rigidbody2D playerRB = GetComponent<Rigidbody2D>();
+      if(GetComponent<PlayerController>().isGrounded)
+      {
+        playerReflection.transform.position = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y - 4.3f);
+      }
       if(!GameObject.Find("Boat").GetComponent<BoatScript>().inBoat)
       {
         rb.velocity = new Vector2(0, -playerRB.velocity.y);
@@ -71,10 +75,13 @@ public class WaterReflectableScript : MonoBehaviour
           playerReflection.transform.position = new Vector2(playerReflection.transform.position.x, playerReflection.transform.position.y + 0.4f);
           reflectionPosChanged = true;
         }
+        playerReflection.transform.position = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y - 3.25f);
         playerReflection.transform.position =  new Vector2(playerReflection.transform.position.x, playerReflection.transform.position.y + Mathf.Lerp(-0.5f, 0.5f, Mathf.PingPong(Time.time, 1)) * Time.deltaTime);
       }
         playerReflection.transform.position = new Vector2(this.gameObject.transform.position.x, playerReflection.transform.position.y);
+        playerReflection.transform.localScale = new Vector2(-this.gameObject.transform.localScale.x, this.gameObject.transform.localScale.y);
     }
+ 
   }
   void OnDestroy()
   {
