@@ -35,6 +35,30 @@ TextureImporter:
   - first:
       213: 5994452702226612021
     second: Normal Attack_10
+  - first:
+      213: -9112355794661378541
+    second: Normal Attack_11
+  - first:
+      213: -3656406057459773549
+    second: Normal Attack_12
+  - first:
+      213: 6082969216387257310
+    second: Normal Attack_13
+  - first:
+      213: -6853724689264235910
+    second: Normal Attack_14
+  - first:
+      213: -5539807570824799193
+    second: Normal Attack_15
+  - first:
+      213: 3282303646110841374
+    second: Normal Attack_16
+  - first:
+      213: -809401319684012152
+    second: Normal Attack_17
+  - first:
+      213: -5765561074389130039
+    second: Normal Attack_18
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -127,12 +151,12 @@ TextureImporter:
       name: Normal Attack_0
       rect:
         serializedVersion: 2
-        x: 22
-        y: 203
-        width: 33
-        height: 47
+        x: 0
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -148,12 +172,12 @@ TextureImporter:
       name: Normal Attack_1
       rect:
         serializedVersion: 2
-        x: 88
-        y: 203
-        width: 33
-        height: 47
+        x: 64
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -169,12 +193,12 @@ TextureImporter:
       name: Normal Attack_2
       rect:
         serializedVersion: 2
-        x: 152
-        y: 203
-        width: 33
-        height: 47
+        x: 128
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -190,12 +214,12 @@ TextureImporter:
       name: Normal Attack_3
       rect:
         serializedVersion: 2
-        x: 216
-        y: 203
-        width: 33
-        height: 47
+        x: 192
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -211,12 +235,12 @@ TextureImporter:
       name: Normal Attack_4
       rect:
         serializedVersion: 2
-        x: 280
-        y: 203
-        width: 33
-        height: 47
+        x: 256
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -232,12 +256,12 @@ TextureImporter:
       name: Normal Attack_5
       rect:
         serializedVersion: 2
-        x: 344
-        y: 203
-        width: 33
-        height: 47
+        x: 320
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -253,12 +277,12 @@ TextureImporter:
       name: Normal Attack_6
       rect:
         serializedVersion: 2
-        x: 408
-        y: 203
-        width: 33
-        height: 47
+        x: 384
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -274,12 +298,12 @@ TextureImporter:
       name: Normal Attack_7
       rect:
         serializedVersion: 2
-        x: 472
-        y: 203
-        width: 33
-        height: 47
+        x: 448
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -295,12 +319,12 @@ TextureImporter:
       name: Normal Attack_8
       rect:
         serializedVersion: 2
-        x: 24
-        y: 139
-        width: 33
-        height: 47
+        x: 0
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -316,12 +340,12 @@ TextureImporter:
       name: Normal Attack_9
       rect:
         serializedVersion: 2
-        x: 88
-        y: 139
-        width: 33
-        height: 47
+        x: 64
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -337,12 +361,12 @@ TextureImporter:
       name: Normal Attack_10
       rect:
         serializedVersion: 2
-        x: 152
-        y: 139
-        width: 33
-        height: 47
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -350,6 +374,174 @@ TextureImporter:
       bones: []
       spriteID: 53ff81309f2903350800000000000000
       internalID: 5994452702226612021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3167c302fa86a8180800000000000000
+      internalID: -9112355794661378541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_12
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39f068e2016d14dc0800000000000000
+      internalID: -3656406057459773549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed3166af54c0b6450800000000000000
+      internalID: 6082969216387257310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7aa41c25bda2e0a0800000000000000
+      internalID: -6853724689264235910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_15
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72cd7f09d56ae13b0800000000000000
+      internalID: -5539807570824799193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_16
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1af76796c51d8d20800000000000000
+      internalID: 3282303646110841374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_17
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8878083c9cd64c4f0800000000000000
+      internalID: -809401319684012152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Normal Attack_18
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c4673600cc9cffa0800000000000000
+      internalID: -5765561074389130039
       vertices: []
       indices: 
       edges: []
