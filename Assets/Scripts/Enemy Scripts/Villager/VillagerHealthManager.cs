@@ -12,14 +12,15 @@ public class VillagerHealthManager : MonoBehaviour
     [SerializeField]
     float currentHealth;
     [HideInInspector] public bool isHurting;
-
-
+    
+    
     
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
+        
     }
 
     // Update is called once per frame
@@ -55,5 +56,22 @@ public class VillagerHealthManager : MonoBehaviour
         if(currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
+    }
+
+
+    void OnTriggerEnter2D(Collider2D other)
+        
+    {
+
+       if( other.CompareTag("fire"))
+        {
+            TakeDamage(100);
+        }
+
+
+
+
+
+        
     }
 }
