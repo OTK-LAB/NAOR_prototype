@@ -31,7 +31,7 @@ public class AfterFall : MonoBehaviour
     IEnumerator thesequence()
     {
         yield return new WaitForSeconds(0);
-        subtitleText.text = "Before basing on Khan,";
+        subtitleText.text = "Before facing on Khan,";
         yield return new WaitForSeconds(2);
         subtitleText.text = "there are some important points";
         yield return new WaitForSeconds(2);
@@ -39,7 +39,7 @@ public class AfterFall : MonoBehaviour
         yield return new WaitForSeconds(3);
         subtitleText.text = "Kaizer is not the only element that";
         yield return new WaitForSeconds(2);
-        subtitleText.text = "has ensured the continuity of Köningsfort";
+        subtitleText.text = "has ensured the continuity of Kï¿½ningsfort";
         yield return new WaitForSeconds(2);
         subtitleText.text = "for centuries.";
         yield return new WaitForSeconds(1);

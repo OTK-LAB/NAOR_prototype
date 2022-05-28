@@ -74,7 +74,7 @@ public class Arrow : MonoBehaviour
         }
         if (collision.CompareTag("Ground"))
         {            
-            fire_loc = new Vector3(transform.position.x, (transform.position.y  + 0.16f), 0);
+            fire_loc = new Vector3(GameObject.Find("DamagePosition").transform.position.x, (transform.position.y  + 0.16f), 0);
             Instantiate(fire, fire_loc, Quaternion.LookRotation(Vector3.forward, fire_loc));
             hasItGround = true;
             rb.gravityScale = 0.0f;
