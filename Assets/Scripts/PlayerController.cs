@@ -337,7 +337,6 @@ public class PlayerController : MonoBehaviour
             {
                 isWallSliding = false;
             }
-            Debug.Log("canClimbLedge TRUE");
            
             if (facingRight)
             {
@@ -371,6 +370,7 @@ public class PlayerController : MonoBehaviour
 
     public void FinishLedgeClimb()
     {
+        transform.position = new Vector2(transform.position.x + (facingRight ?  -.1f : .1f), transform.position.y);
         canClimbLedge = false;
         canMove = true;
         canFlip = true;
