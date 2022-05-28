@@ -6,6 +6,7 @@ public class Vocals : MonoBehaviour
 {
     private AudioSource source;
     public static Vocals instance;
+    public bool x = false;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -22,5 +23,6 @@ public class Vocals : MonoBehaviour
         source.PlayOneShot(clip.clip);
         UI.instance.SetSubtitle(clip.subtitle, clip.clip.length);
     }
+    
 
 }
