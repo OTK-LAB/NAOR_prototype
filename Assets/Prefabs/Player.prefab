@@ -404,6 +404,8 @@ MonoBehaviour:
   reviveEffect: {fileID: 1220232784898456290, guid: 634782ff9996dc744a994d61ae4a3497, type: 3}
   flickerSpeed: 5
   crown: {fileID: 1678126433259598782}
+  scene: {fileID: 0}
+  lives: 4
   MaxHealth: 100
   CurrentHealth: 100
   isHealing: 0
@@ -412,6 +414,7 @@ MonoBehaviour:
   isReviving: 0
   status: 0
   hitAnimRunning: 0
+  healthBar: {fileID: 0}
   defenceRate: 0
   shieldDefenceRate: 0.4
 --- !u!114 &4623061542572516194
@@ -472,7 +475,7 @@ MonoBehaviour:
   - {x: -0.46177146, y: -1.0908242, z: 0}
   m_ShapePathHash: 1898667787
   m_Mesh: {fileID: 0}
-  m_InstanceId: -136166
+  m_InstanceId: 286772
 --- !u!1 &4623061543150599202
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,9 +516,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4623061543450723883}
   - component: {fileID: 4623061543450723882}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: RollCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

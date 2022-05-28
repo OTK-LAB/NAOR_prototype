@@ -89,7 +89,7 @@ public class UI : MonoBehaviour
         yield return new WaitForSeconds(4);
         subtitleText.text = "Now it's nothing,";
         yield return new WaitForSeconds(2);
-        subtitleText.text = "nothing but you";
+        subtitleText.text = "nothing but you.";
         yield return new WaitForSeconds(3);
         subtitleText.text = "";
         
