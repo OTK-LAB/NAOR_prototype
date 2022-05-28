@@ -34,6 +34,7 @@ public class PlatformUI : MonoBehaviour
         subtitleText.text = "Don't fear,We are on the getting high";
         yield return new WaitForSeconds(4);
         subtitleText.text = "";
+        GameObject.Find("Gradient").SetActive(false);
     }
 
 }

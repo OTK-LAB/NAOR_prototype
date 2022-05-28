@@ -62,5 +62,6 @@ public class AfterRiver : MonoBehaviour
         subtitleText.text = "for its inhabitants.";
         yield return new WaitForSeconds(3);
         subtitleText.text = "";
+        GameObject.Find("Gradient").SetActive(false);
     }
 }

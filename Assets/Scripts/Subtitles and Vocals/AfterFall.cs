@@ -58,6 +58,7 @@ public class AfterFall : MonoBehaviour
         subtitleText.text = "if it is worthy.";
         yield return new WaitForSeconds(2);
         subtitleText.text = "";
+        GameObject.Find("Gradient").SetActive(false);
     }
 
 }
