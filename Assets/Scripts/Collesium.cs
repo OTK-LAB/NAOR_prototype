@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Collesium : MonoBehaviour
 {
-    private static bool spawned = false;
-    public GameObject player;
+    public static bool keyAcquired = false;
+    public GameObject key;
     public Camera cam;
 
     private List<GameObject> enemies;
@@ -23,11 +23,10 @@ public class Collesium : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if(!spawned)
+        if(!keyAcquired)
         {
             if(other.CompareTag("Player"))
             {      
@@ -35,9 +34,8 @@ public class Collesium : MonoBehaviour
                 {
                     e.SetActive(true);
                 }
-                spawned = true;
+
             }
         }
     }
-
 }

@@ -130,6 +130,7 @@ public class Spearman_Manager : MonoBehaviour
 	void Die()
     {
         GetComponent<Collider2D>().enabled = false;
+		ColiseumKey.instance.deadEnemyCount++;
         this.enabled = false;
         anim.Play("Spearman_dead");
         Invoke("Eliminate", 5f);     

@@ -12,7 +12,8 @@ public class DestroyedKey : MonoBehaviour
             ScoreText.coinAmount += 1;
             Debug.Log("Key count:" + ScoreText.coinAmount);
             acquired = true;
-        Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

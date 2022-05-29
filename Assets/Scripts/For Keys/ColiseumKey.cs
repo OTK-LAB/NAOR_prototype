@@ -6,11 +6,23 @@ public class ColiseumKey : MonoBehaviour
 {
     public GameObject key;
 
-    private void Start() {
+    public float deadEnemyCount;
+    public float requiredDeadEnemy;
+
+    public static ColiseumKey instance;
+    
+    private void Awake() 
+    {
+        instance = this;
+    }
+
+    private void Start() 
+    {
         key.SetActive(false);
+        deadEnemyCount = 0;
     }
     private void Update() {
-        if(!gameObject.GetComponent<Sword_Behaviour>().isAlive())
+        if(deadEnemyCount == requiredDeadEnemy && !key.GetComponent<DestroyedKey>().isAcquired())
         {
             key.SetActive(true);
         }

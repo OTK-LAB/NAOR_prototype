@@ -5,14 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "Player" && ScoreText.coinAmount==3)
         {
-            if (Input.GetKeyDown(KeyCode.E) && ScoreText.coinAmount==3)
-            {
-                SceneManager.LoadScene("Demo Final");
-            }
+            SceneManager.LoadScene("Demo Final");
         }
     }
 }
