@@ -175,4 +175,9 @@ public class Legolas : MonoBehaviour
         }*/
 
     }
+
+    public bool isAlive()
+    {
+        return alive;
+    }
 }

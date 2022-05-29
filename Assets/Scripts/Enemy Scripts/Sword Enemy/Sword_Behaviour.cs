@@ -21,6 +21,7 @@ public class Sword_Behaviour : MonoBehaviour
     //Hit
     public float maxHealth = 110;
     public float currentHealth;
+    private bool alive = true;
     Vector3 movement;
     #endregion
 
@@ -224,11 +225,17 @@ public class Sword_Behaviour : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         deathColl.SetActive(true);
         this.enabled = false;
+        alive = false;
         anim.Play("Enemy_dead");
         Invoke("Eliminate", 1f);     
     }
     private void Eliminate()
     {
          Destroy(gameObject);
+    }
+
+    public bool isAlive()
+    {
+        return alive;
     }
 }
