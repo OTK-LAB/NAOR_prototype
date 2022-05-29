@@ -10,7 +10,7 @@ public class ColiseumKey : MonoBehaviour
         key.SetActive(false);
     }
     private void Update() {
-        if(!gameObject.GetComponent<Sword_Behaviour>().isAlive())
+        if(gameObject.GetComponent<Collesium>().AreEnemiesDied())
         {
             key.SetActive(true);
         }

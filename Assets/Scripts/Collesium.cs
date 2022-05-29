@@ -8,6 +8,8 @@ public class Collesium : MonoBehaviour
     public GameObject player;
     public Camera cam;
 
+    private bool enemiesDied = false;
+
     private List<GameObject> enemies;
     // Start is called before the first frame update
     void Start()
@@ -23,7 +25,7 @@ public class Collesium : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        CheckEnemies();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -40,4 +42,27 @@ public class Collesium : MonoBehaviour
         }
     }
 
+    private void CheckEnemies(){
+        if(spawned)
+        {
+            int count = 0;
+            foreach( GameObject e in enemies)
+            {
+                if(!e.activeInHierarchy)
+                {
+                    count ++;
+                }
+            }
+
+            if(count == enemies.Count)
+            {
+                enemiesDied = true;
+            }
+        }
+    }
+
+    public bool AreEnemiesDied()
+    {
+        return enemiesDied;
+    }
 }
