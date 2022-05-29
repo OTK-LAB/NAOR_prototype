@@ -31,7 +31,7 @@ public class Dagger : MonoBehaviour
     public void DaggerDamageUp(){
         daggerDamage += daggerDamage * 1/2;
     }
-    public void DaggerDamageDown(){
+    public static void DaggerDamageDown(){
         daggerDamage = 5.0f;
     }
 

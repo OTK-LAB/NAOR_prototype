@@ -240,7 +240,7 @@ public class GateManager : MonoBehaviour
         _playerController.lifeStealRate = 0;
         _playerController.jumpForce = 7f;
         _playerController.rollStaminaCost= 30f;
-        Dagger.instance.DaggerDamageDown();
+        Dagger.DaggerDamageDown();
         Physics2D.IgnoreLayerCollision (7, 8, false);
         _playerController.cooldownTime = 9f;
         _playerManager.shieldDefenceRate = 0.4f;
