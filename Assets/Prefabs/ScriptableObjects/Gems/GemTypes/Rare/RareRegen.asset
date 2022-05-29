@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gemtype: 10
   isActive: 0
-  buffRate: 0
+  buffRate: 5
   title: Regen
-  description: Can potu %30 daha etkili olur
+  description: Every 10 second, regens 5 health

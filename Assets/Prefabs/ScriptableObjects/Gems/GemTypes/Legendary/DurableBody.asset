@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 40
   title: Durable Body
-  description: "Al\u0131nan hasar\u0131 %40 azalt\u0131r"
+  description: Damage taken -%40

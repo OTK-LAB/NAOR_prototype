@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 50
   title: Acrobatics
-  description: "Roll %50 daha az stamina yer ve %50 daha y\xFCkse\u011Fe z\u0131plar"
+  description: Roll takes %50 less stamina and jumps %50 higher

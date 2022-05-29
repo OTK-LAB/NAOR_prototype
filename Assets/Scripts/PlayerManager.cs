@@ -45,6 +45,8 @@ public class PlayerManager : MonoBehaviour
     //Gemler icin eklediklerim
     public float defenceRate=0;
     public float shieldDefenceRate = 0.4f;
+    public bool isRegen = false;
+    public float regenHealth = 5f;
 
 
     // Start is called before the first frame update
@@ -93,6 +95,21 @@ public class PlayerManager : MonoBehaviour
             }
                 break;
         }
+        }
+    
+    //TODO REGEN KISMINI DUZELT SUAN CALISMIYOR
+    public IEnumerator Regen()
+    {
+        while (isRegen != false)
+        {
+            Debug.Log("regen calisti");
+            yield return new WaitForSeconds(10f);
+            CurrentHealth += regenHealth;
+            Debug.Log(regenHealth +"eklendi");
+            Actions.OnHealthChanged();
+        }
+
+        yield return null;
     }
 
     private void Awake()

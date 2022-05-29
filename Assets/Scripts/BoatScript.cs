@@ -13,6 +13,7 @@ public class BoatScript : MonoBehaviour
     private bool docksReached = true;
     private bool endDocksReached = false;
     public AudioSource music;
+    public GameObject tallCollRight, tallCollLeft;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,7 +25,10 @@ public class BoatScript : MonoBehaviour
         {
             ePressed = true;
             if(docksReached)
+            {
                 music.PlayDelayed(1);
+                tallCollRight.SetActive(false);   
+            }
         }
 
         if(music.isPlaying && music.volume < 1)
@@ -37,7 +41,10 @@ public class BoatScript : MonoBehaviour
             if(boatSpeed < 4 && docksReached)
                 boatSpeed += Time.deltaTime;
             if(boatSpeed > 0 && endDocksReached)
+            {
                 boatSpeed -= Time.deltaTime / 2;
+                tallCollLeft.SetActive(true);
+            }
             else if(boatSpeed < 0)
                 boatSpeed = 0;
             rb.velocity = new Vector2(boatSpeed, rb.velocity.y);

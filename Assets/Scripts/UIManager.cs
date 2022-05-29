@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.ComponentModel.Design;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -46,7 +48,11 @@ public class UIManager : MonoBehaviour
     private int healthGateIndex; // healthgate indexini tutar deger
     private GemSO selectedGem;  // tikladigimiz butona gore secili gemi tutan degisken
 
-    
+
+    private void Start()
+    {
+        ClearGems();
+    }
 
     public void OnCommonGemsButtonPressed(String hpText)
     {
@@ -138,6 +144,32 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    public void ClearGems()
+    {
+        foreach (var healthGates in _gateManager.healthGateListSo.HealthGateList.ToList())
+        {
+            Debug.Log(healthGates.name);
+            foreach (var activeGem in healthGates.activeGems.ToList())
+            {
+                
+                if (activeGem != null)
+                {
+                    Debug.Log(activeGem.name);
+                    int index = healthGates.activeGems.IndexOf(activeGem);
+                    activeGem.isActive = false;
+                    healthGates.activeGems[index]= null;
+                    
+                    Debug.Log(activeGem.name + "silindi");
+                }
+                else
+                {
+                    Debug.Log("gem is null");
+                }
+                
+                
+            }
+        }
+    }
     public void SlotsColors()
     {
         

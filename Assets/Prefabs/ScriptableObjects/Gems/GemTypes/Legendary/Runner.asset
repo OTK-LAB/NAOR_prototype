@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 200
   title: Runner
-  description: "Ko\u015Fma hareket h\u0131z\u0131 3 kat\u0131na \xE7\u0131kar"
+  description: Sprinting speed x3

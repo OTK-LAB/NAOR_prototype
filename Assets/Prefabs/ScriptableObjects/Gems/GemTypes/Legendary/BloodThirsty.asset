@@ -16,4 +16,4 @@ MonoBehaviour:
   isActive: 0
   buffRate: 10
   title: Blood Thirsty
-  description: "D\xFCz vuru\u015Flar\u0131n\u0131n %10'u kadar iyile\u015Fir"
+  description: Heals %10 of damage dealt

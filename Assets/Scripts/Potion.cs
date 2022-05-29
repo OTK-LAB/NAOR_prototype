@@ -31,10 +31,10 @@ public class Potion : MonoBehaviour
         //farklı scriptte çağırmak için
         //Potion.instance.CheckPoint();
         
-        /*if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             CheckPoint();            
-        }*/
+        }
        
         //iksir ekleme fonksiyonu
         //farklı scriptte çağırmak için

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gemtype: 8
   isActive: 0
-  buffRate: 0
+  buffRate: 50
   title: Vaulter
-  description: "Roll'un mesafesini 1.5 kat\u0131na \xE7\u0131kart\u0131r"
+  description: Roll distance x1.5
