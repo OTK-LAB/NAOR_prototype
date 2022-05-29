@@ -8,6 +8,7 @@ public class Boss_Manager : MonoBehaviour
 															         	//if the animation is done it will revert to idle (if nearby) and change direction towards us.
     public PlayerManager player;  //do not try this at home
     public float health = 500;
+	private bool alive = true;
 
 	public GameObject deathEffect;
 
@@ -33,7 +34,7 @@ public class Boss_Manager : MonoBehaviour
 
 	//batuhanin ekledikleri
 	public static Boss_Manager instance;
-
+	//
 
 	private void Awake()
 	{
@@ -121,6 +122,7 @@ public class Boss_Manager : MonoBehaviour
     {
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+		alive = false;
         anim.Play("Miniboss_dead");
         Invoke("Eliminate", 5f);     
     }
@@ -134,4 +136,9 @@ public class Boss_Manager : MonoBehaviour
 		if (decrease > 0)                                                   does not work for some reason?
 			decrease -= Time.deltaTime;
 	}*/
+
+	public bool isAlive()
+	{
+		return alive;
+	}
 }
