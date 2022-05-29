@@ -159,6 +159,8 @@ public class PlayerManager : MonoBehaviour
                                 enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
                             if(enemy.CompareTag("Legolas"))
                                 enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Spearman"))
+                                enemy.GetComponent<Spearman_Manager>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }

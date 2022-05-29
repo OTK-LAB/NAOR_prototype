@@ -13,6 +13,8 @@ public class Sword_Behaviour : MonoBehaviour
     public GameObject hotZone;
     public GameObject triggerArea;
 
+    public GameObject deathColl;
+    public Animator anim;
     public Transform leftLimit;
     public Transform rightLimit;
     public Collider2D[] colliders;
@@ -24,7 +26,6 @@ public class Sword_Behaviour : MonoBehaviour
 
     #region private variables
     private GameObject player;
-    private Animator anim;
     private float distance; //distance btween enemy and player
 
     private bool isAvailable;
@@ -93,7 +94,7 @@ public class Sword_Behaviour : MonoBehaviour
             }
         }
         
-        if (distance <= attackDistance)  //saldýrý menzili içinde
+        if (distance <= attackDistance)  //saldï¿½rï¿½ menzili iï¿½inde
         {
             attackMode = true;
             Attack();
@@ -115,7 +116,7 @@ public class Sword_Behaviour : MonoBehaviour
 
     void Attack()
     {
-        if (isHurt)
+        if (isHurt && !isAvailable && !anim.GetCurrentAnimatorStateInfo(0).IsName("Enemy_attack"))
         {
             return;
         }
@@ -173,16 +174,21 @@ public class Sword_Behaviour : MonoBehaviour
 
     public void Flip()
     {
-        Vector3 rotation = transform.eulerAngles;
-        if(transform.position.x > target.position.x)
+        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Enemy_attack"))
         {
-            rotation.y = 180f;
+            Vector3 rotation = transform.eulerAngles;
+            if(transform.position.x > target.position.x)
+            {
+              rotation.y = 180f;
+            }
+            else if (transform.position.x < target.position.x)
+            {
+              rotation.y = 0f;
+            }
+            transform.eulerAngles = rotation;
         }
-        else if (transform.position.x < target.position.x)
-        {
-            rotation.y = 0f;
-        }
-        transform.eulerAngles = rotation;
+        
+
     }
 
     private void CheckforPlayer()               //animation event     //could be improvised
@@ -202,7 +208,7 @@ public class Sword_Behaviour : MonoBehaviour
         {
             Die();
         }
-        else
+        else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Enemy_attack"))
         {
             isHurt = true;
             anim.Play("Enemy_hit");    
@@ -216,9 +222,10 @@ public class Sword_Behaviour : MonoBehaviour
     void Die()
     {
         GetComponent<Collider2D>().enabled = false;
+        deathColl.SetActive(true);
         this.enabled = false;
         anim.Play("Enemy_dead");
-        Invoke("Eliminate", 1.5f);     
+        Invoke("Eliminate", 1f);     
     }
     private void Eliminate()
     {

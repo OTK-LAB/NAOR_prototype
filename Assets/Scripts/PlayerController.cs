@@ -675,10 +675,14 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
             if (enemy.CompareTag("Miniboss"))
                 enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
-             if (enemy.CompareTag("FakeWall"))
-                enemy.GetComponent<FakeWallScript>().TakeDamage(attackDamage);
             if (enemy.CompareTag("MinibossShield"))
                 enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
+            if (enemy.CompareTag("Spearman"))
+                enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("SpearmanShield"))
+                enemy.transform.parent.GetComponent<Spearman_Manager>().Guard();
+            if (enemy.CompareTag("FakeWall"))
+                enemy.GetComponent<FakeWallScript>().TakeDamage(attackDamage);
         }
         attackTime = 0f;
     }
@@ -701,7 +705,11 @@ public class PlayerController : MonoBehaviour
             if (enemy.CompareTag("Miniboss"))
                 enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
             if (enemy.CompareTag("MinibossShield"))
-                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();    
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
+            if (enemy.CompareTag("Spearman"))
+                enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("SpearmanShield"))
+                enemy.transform.parent.GetComponent<Spearman_Manager>().Guard();
         }
     }
     public void FallAttackTransition()
