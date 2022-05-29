@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Collesium : MonoBehaviour
 {
-    private bool spawned = false;
+    private static bool spawned = false;
     public GameObject player;
     public Camera cam;
 
@@ -35,6 +35,7 @@ public class Collesium : MonoBehaviour
                 {
                     e.SetActive(true);
                 }
+                spawned = true;
             }
         }
     }

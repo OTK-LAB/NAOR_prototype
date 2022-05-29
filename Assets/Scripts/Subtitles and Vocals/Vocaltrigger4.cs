@@ -6,16 +6,20 @@ public class Vocaltrigger4: MonoBehaviour
 {
     // Start is called before the first frame update
     public AudioObject clipToPlay;
+    public static bool isTriggered = false;
 
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if(!isTriggered)
         {
-            Vocal4.instance.Say(clipToPlay);
-            Destroy(gameObject);
+            if (collision.CompareTag("Player"))
+            {
+                Vocal4.instance.Say(clipToPlay);
+                isTriggered = true;
+                Destroy(gameObject);
+            }
         }
-
     }
 }
