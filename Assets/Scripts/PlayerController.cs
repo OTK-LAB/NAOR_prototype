@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,18 +9,19 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float runSpeed;
     public float walkSpeed;
-    [HideInInspector] public bool isStunned = false;
-    [HideInInspector] public bool isPraying;
     private float xAxis;
     private bool walkToggle;
+    [HideInInspector] public bool isStunned = false;
     [HideInInspector] public bool facingRight = true;
     private Rigidbody2D rb;
+    private bool isPraying;
     [HideInInspector] public bool canMove = true;
+    [HideInInspector] public bool canFlip = true;
 
     [Header("Roll")]
     public float rollSpeed;
     private bool isRolling = false;
-    public CircleCollider2D rollColl;
+    public GameObject rollColl;
     public float iFrame = 0.3f;
 
     //Jumping
@@ -34,6 +35,43 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundLayer;
 
+    [Header("Wall Slide")]
+    public Transform wallGrabPointFront;
+    public Transform wallGrabPointBack;
+    public float wallSlideSpeed = 0.2f;
+    private bool isWallSliding = false;
+    private bool grabFront, grabBack, canGrab;
+    public float wallDistance = 0.05f;
+
+    [Header("Wall Jump")]
+    public float wallJumpTime = 0.1f;
+    public float xWallForce = 5f;
+    public float wallJumpLerp = 1f;
+    private float jumpTime;
+    private int wallDirection;
+    private bool wallJumpPressed = false;
+    private bool isWallJumping = false;
+
+    [Header("Ledge Climb")]
+    public Transform ledgeCheckUp;
+    public Transform ledgeCheckDown;
+    private bool isTouchingLedgeUp;
+    private bool isTouchingLedgeDown;
+    private bool canClimbLedge = false;
+    private bool ledgeDetected;
+    private Vector2 ledgePosBot;
+    private Vector2 ledgePos1;
+    private Vector2 ledgePos2;
+    RaycastHit2D hit;
+
+    [SerializeField]
+    private float ledgeDistance;
+    public float ledgeXOffset1 = 0.0f;
+    public float ledgeYOffset1 = 0.0f;
+    public float ledgeXOffset2 = 0.0f;
+    public float ledgeYOffset2 = 0.0f;
+    private float gravity;
+
     //Animations
     private Animator animator;
     private string currentState;
@@ -44,18 +82,26 @@ public class PlayerController : MonoBehaviour
     const string roll = "PlayerRoll";
     const string pray = "PlayerPray";
     const string parry = "PlayerParry";
+    const string fallattack = "PlayerFallAttack";
+    const string climb = "PlayerClimb";
     const string stun = "PlayerStun";
+    const string wallSlide = "PlayerWallSlide";
+    const string ledgeClimb = "PlayerLedgeClimb";
+    const string ledgeHang = "PlayerLedgeHang";
+
 
     //Combat
     [Header("Combat")]
+    public Transform attackPoint;
+    public Transform fallAttackBox;
+    public Vector3 fallAttackSize;
     private float attackTime = 0.0f;
     private int attackCount = 0;
-    public Transform attackPoint;
     public float attackRange = 0.5f;
-    public int attackDamage = 10;
+    public float attackDamage = 10;
     public LayerMask enemyLayers;
     private bool isAttacking;
-    public bool isHeavyAttacking;
+    private bool isFallAttacking;
     private PlayerManager playerManager;
     private float stamina;
     [HideInInspector] public bool inCheckpointRange;
@@ -71,11 +117,18 @@ public class PlayerController : MonoBehaviour
     private CooldownController daggerCooldownController;
     private ItemStack daggerStack;
 
+    //Gems
+    public float rollStaminaRate=0;
+    public float lifeStealRate = 0;
+
+    [Header("Miscellaneous")]
+    //Move list
+    public GameObject moveList;
+
     private void Awake()
     {
         daggerStack = GetComponent<ItemStack>();
         daggerStack.SetItem(daggerobj, daggerAmount);
-
         daggerCooldownController = GetComponent<CooldownController>();
         daggerCooldownController.SetCooldown(cooldownTime);
     }
@@ -83,6 +136,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gravity = rb.gravityScale;
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
     }
@@ -93,12 +147,13 @@ public class PlayerController : MonoBehaviour
         CheckAttack();
         ChangeAnimations();
         FlipPlayer();
+        CheckLedgeClimb();
         stamina = StaminaBar.instance.currentStamina;
         if (daggerCooldownController.GetQueue().Count > 0)
         {
             if (Time.time >= daggerCooldownController.GetDequeueTime())
             {
-                //DequeueLastItem() fonksiyonuyla Queue'dan ��kard���n dagger'� Stack'e koy
+                //DequeueLastItem() fonksiyonuyla Queue'dan cikardigin dagger'i Stack'e koy
                 daggerStack.PushToStack(daggerCooldownController.DequeueLastItem());
             }
         }
@@ -107,28 +162,111 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         //Jump();
+        WallJump();
+        WallSlide();
     }
     void CheckState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        grabFront = Physics2D.OverlapCircle(wallGrabPointFront.position, wallDistance, groundLayer);
+        grabBack = Physics2D.OverlapCircle(wallGrabPointBack.position, wallDistance, groundLayer);
+        if(facingRight)
+        {
+            isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
+            if(isTouchingLedgeDown)
+            {
+                ledgePosBot = ledgeCheckDown.position;
+             }
+        }
+        else
+        {
+            isTouchingLedgeUp = Physics2D.Raycast(ledgeCheckUp.position, -transform.right, ledgeDistance, groundLayer);
+            hit = Physics2D.Raycast(ledgeCheckDown.position, -transform.right, ledgeDistance, groundLayer);
+            isTouchingLedgeDown = hit;
+            if(isTouchingLedgeDown)
+            { 
+                ledgePosBot = ledgeCheckDown.position;
+            }        
+        }
+
+        if(grabFront || grabBack)
+        {
+            canGrab = true;
+        }
+        else
+        {
+            canGrab = false;
+        }
+
+        if(grabFront && !grabBack)
+        {
+            if(wallGrabPointFront.transform.position.x > wallGrabPointBack.transform.position.x)
+            {
+                wallDirection = -1;
+            }
+            else
+            {
+                wallDirection = 1;
+            }
+        }
+        else if(!grabFront && grabBack)
+        {
+            if(wallGrabPointBack.transform.position.x > wallGrabPointFront.transform.position.x)
+            {
+                wallDirection = -1;
+            }
+            else
+            {
+                wallDirection = 1;
+            }
+        }
+
+        if(isTouchingLedgeDown && !isTouchingLedgeUp && hit.collider.CompareTag("Climbable") && !ledgeDetected ){
+            ledgeDetected = true;
+        }
+
+        //stop rolling if not grounded
+        if(isRolling && !isGrounded)
+        {
+            StopCoroutine(Roll());
+            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+        }
+
     }
     void CheckInputs()
-    {     
+    {
         //Get Horizontal Input
-        xAxis = Input.GetAxisRaw("Horizontal");
+        if(!isWallJumping && !canClimbLedge)
+        {
+            xAxis = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            xAxis = 0;
+        }
         //Walk Toggle
         if (Input.GetKeyDown(KeyCode.LeftAlt))
             walkToggle = !walkToggle;
         //Jump
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded && !isRolling && !isPraying && !isAttacking && !playerManager.isHealing && !isStunned)
+            if (isGrounded && !isPraying && !isAttacking && !isFallAttacking && !isWallSliding && !playerManager.isHealing && !isStunned)
             {
+                if (isRolling)
+                {
+                    StopCoroutine(Roll());
+                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                }
                 isJumping = true;
                 jumpTimeCounter = jumpTimer;
                 Jump();
             }
-        } 
+            if (isWallSliding)
+                wallJumpPressed = true;
+        }
         if (Input.GetButton("Jump") && isJumping)
             if (jumpTimeCounter > 0)
             {
@@ -144,16 +282,21 @@ public class PlayerController : MonoBehaviour
         }
         //Pray
         if (Input.GetKeyDown(KeyCode.C))
-            if (isGrounded && inCheckpointRange && !isPraying && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned)
+            if (isGrounded && inCheckpointRange && !isPraying && !isAttacking && !isFallAttacking && !isGuarding && !isRolling && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned)
+            {
                 isPraying = true;
+                rb.velocity = new Vector2(0, 0);
+            }
         //Roll
         if (Input.GetKeyDown(KeyCode.LeftShift))
-            if (isGrounded && !isRolling && !isPraying && !playerManager.hitAnimRunning && !playerManager.isHealing && stamina >= 30 && !isStunned)
+            if (isGrounded && !isRolling && !isPraying && !isAttacking && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isHealing && !isStunned && stamina >= 30 && !isGuarding && !isJumping)
                 StartCoroutine(Roll()); 
         //Guard
         if (Input.GetMouseButton(1))
             if (isGrounded && !playerManager.hitAnimRunning && stamina >= 10)
-                performGuard();
+                if(!isFallAttacking){
+                    performGuard();
+                }
         if (Input.GetMouseButtonUp(1))
             if (isGuarding)
             {
@@ -168,37 +311,113 @@ public class PlayerController : MonoBehaviour
         //Potion
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if(isGrounded && !isRolling && !isAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing && !isStunned)
+            if(isGrounded && !isRolling && !isAttacking && !isFallAttacking && !isPraying && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing  && !isStunned)
             {
-                if (Potion.instance.potionCount > 0 && PlayerManager.instance.CurrentHealth < 100)
+                if (Potion.instance.potionCount > 0 && playerManager.CurrentHealth < 100 && playerManager.lives == 4)
                 {
-                    PlayerManager.instance.HealthPotion(33);
+                    playerManager.HealthPotion(33);
                     Potion.instance.UsePotions(1);
                 }
             }
         }
+        //Toggle Move List
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            moveList.SetActive(!moveList.activeInHierarchy);
+        }
     }
     
-  
-    void Move()
+   private void CheckLedgeClimb()
     {
-        if (!canMove)
+        if(ledgeDetected && !canClimbLedge)
         {
-            rb.velocity = new Vector2 (0,0);
-            return;
-        }
-
-        if (!isRolling && !isAttacking && !isPraying && !isStunned)
-        {
-            if (!isGuarding)
+            
+            canClimbLedge = true;
+            if(canClimbLedge)
             {
-                if(!walkToggle)
-                    rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
-                else
-                    rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
+                isWallSliding = false;
+            }
+           
+            if (facingRight)
+            {
+                ledgePos1 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) - ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
+                ledgePos2 = new Vector2(Mathf.Floor(ledgePosBot.x + wallDistance) + ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
             }
             else
-                rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
+            {
+                ledgePos1 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) + ledgeXOffset1, Mathf.Floor(ledgePosBot.y) + ledgeYOffset1);
+                ledgePos2 = new Vector2(Mathf.Ceil(ledgePosBot.x - wallDistance) - ledgeXOffset2, Mathf.Floor(ledgePosBot.y) + ledgeYOffset2);
+            }
+            ChangeAnimationState(ledgeHang);
+            canMove = false;
+            canFlip = false;
+
+            rb.velocity = new Vector2(0,0);
+            transform.position = new Vector2(ledgePos1.x + (facingRight ? .2f : -.2f), ledgePos1.y + (facingRight ? .5f : .5f));
+            rb.gravityScale = 0;
+           
+        }
+
+        if(canClimbLedge && Input.GetKeyDown(KeyCode.Space))
+        {
+            ChangeAnimationState(ledgeClimb);
+        }
+        if(canClimbLedge && Input.GetKeyDown(KeyCode.S))
+        {
+            FinishLedgeClimb();
+        }   
+    }
+
+    public void FinishLedgeClimb()
+    {
+        transform.position = new Vector2(transform.position.x + (facingRight ?  -.1f : .1f), transform.position.y);
+        canClimbLedge = false;
+        canMove = true;
+        canFlip = true;
+        ledgeDetected = false;
+        rb.gravityScale = gravity;
+    }
+    public void ChangePlayerPosition()
+    {
+        canClimbLedge = false;
+        canMove = true;
+        canFlip = true;
+        ledgeDetected = false;
+        rb.gravityScale = gravity;
+        transform.position = new Vector2(ledgePos2.x, ledgePos2.y + .4f);
+        if (isGrounded)
+            ChangeAnimationState(idle);
+    }
+    void Move()
+    {
+        if (canMove)
+        {
+            if (!isWallJumping)
+            {
+                if (!isRolling && !isAttacking && !isPraying && !playerManager.isHealing && !isStunned && !isFallAttacking)
+                {
+                    if (!isGuarding)
+                    {
+                        if(!walkToggle)
+                            rb.velocity = new Vector2(xAxis * runSpeed, rb.velocity.y);
+                        else
+                            rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(xAxis * runSpeed / 2, rb.velocity.y);
+                    }
+                }
+            }
+            else
+            {
+                rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(xAxis * runSpeed, rb.velocity.y)), wallJumpLerp * Time.deltaTime);
+            }
+        }
+        else
+        {
+            rb.velocity = new Vector2(0,0);
+            return;
         }
     }
     void Jump()
@@ -210,14 +429,61 @@ public class PlayerController : MonoBehaviour
             jumpTimer += Time.fixedDeltaTime;
             jumpForce = Math.Round(jumpTimer,2);
         }*/
+        
     }
+    void WallJump()
+    {
+        if (wallJumpPressed)
+        {
+            if((wallDirection == 1 && !facingRight) || (wallDirection == -1 && facingRight))
+            {
+                Flip();
+            }
+
+            rb.velocity = new Vector2(xWallForce * wallDirection, 10);
+            wallJumpPressed = false;
+
+            StartCoroutine(WallJumpWaiter());
+        }
+    }
+
+    IEnumerator WallJumpWaiter()
+    {
+        isWallJumping = true;
+        yield return new WaitForSeconds(0.4f);
+        isWallJumping = false;
+    }
+
+    void WallSlide()
+    {
+        if (canGrab && !isGrounded && !canClimbLedge && xAxis != 0 && !isFallAttacking)
+        {
+            isWallSliding = true;
+            jumpTime = Time.time + wallJumpTime;
+        }
+        else if (jumpTime < Time.time)
+        {
+            isWallSliding = false;
+        }  
+        else if (canClimbLedge == true)
+        {
+            isWallSliding = false;
+        }
+        if (isWallSliding)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
+        }
+    }
+    
     IEnumerator Roll()
     {
         isRolling = true;
         playerManager.damageable = false;
-        rollColl.enabled = true;
+        rollColl.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
-        StaminaBar.instance.useStamina(30);
+        StaminaBar.instance.useStamina(30*(1-rollStaminaRate));
+        Debug.Log(30*(1-rollStaminaRate) + "stamina kullanildi");
+
         if (facingRight)
             rb.velocity = new Vector2(rollSpeed, rb.velocity.y);
         else
@@ -226,24 +492,24 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isRolling = false;
         playerManager.damageable = true;
-        rollColl.enabled = false;
+        rollColl.SetActive(false);
         GetComponent<BoxCollider2D>().enabled = true;
     }
     void performGuard()
     {
-        if(!parryStamina)
-        {
-            StaminaBar.instance.useStamina(10);
-            parryStamina = true;
-        }
-        guardTimer += Time.deltaTime;
-        if(guardTimer > 1)
-        {
-            guardTimer = 0;
-            StaminaBar.instance.useStamina(12.5f);
-        }
         if(!isRolling && isGrounded && !isPraying && !isAttacking && !isStunned)
         {
+            if(!parryStamina)
+            {
+                StaminaBar.instance.useStamina(10);
+                parryStamina = true;
+            }
+            guardTimer += Time.deltaTime;
+            if(guardTimer > 1)
+            {
+                guardTimer = 0;
+                StaminaBar.instance.useStamina(12.5f);
+            }
             ChangeAnimationState(parry);
             isGuarding = true;
         }
@@ -251,28 +517,33 @@ public class PlayerController : MonoBehaviour
     
     void FlipPlayer()
     {
-        if(!isRolling && !isPraying && !isStunned)
+        if(!isRolling && !isPraying && !isAttacking && !isStunned)
         {
             if(xAxis < 0 && facingRight)
             {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                facingRight = !facingRight;
+                Flip();
             }
             else if(xAxis > 0 && !facingRight)
             {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                facingRight = !facingRight;
+                Flip();
             }
+        }
+    }
+    
+    void Flip(){
+        if(canFlip)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            facingRight = !facingRight;
         }
     }
     void ChangeAnimations()
     {
         //Ground Animations --> Idle, Run, Attack and Roll
-        if(isGrounded && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing)
+        if(isGrounded && !isFallAttacking && !playerManager.hitAnimRunning && !playerManager.isReviving && !playerManager.isHealing && !canClimbLedge)
         {
             if(!isRolling && !isGuarding)
             {
-                
                     if(!isAttacking && !isPraying && !isStunned)
                     { 
                         if(xAxis == 0)
@@ -280,7 +551,7 @@ public class PlayerController : MonoBehaviour
                         else
                             ChangeAnimationState(run); 
                     }
-                    if(isAttacking && !isStunned)
+                    if(isAttacking)
                     {                 
                         ChangeAnimationState("PlayerAttack" + attackCount);
                         if(attackTime > 0.6f)    
@@ -292,22 +563,37 @@ public class PlayerController : MonoBehaviour
                         StartCoroutine(StopPraying());
                     }
                     if(isStunned)
-                    {
                         ChangeAnimationState(stun);
-                    }
-                
             }
             else if(isRolling && !isGuarding)
                 ChangeAnimationState(roll);
         }
 
         //Air Animations --> Jump and Fall
-        if(!isGrounded)
+        if(!isGrounded && !canClimbLedge)
         {
-            if(rb.velocity.y > 0)
-                ChangeAnimationState(jump);
-            if(rb.velocity.y < 0)
-                ChangeAnimationState(fall);    
+            if(!isAttacking && !isFallAttacking && !isWallSliding)
+            {
+                if(rb.velocity.y > 0)
+                    ChangeAnimationState(jump);
+                if(rb.velocity.y < 0)
+                    ChangeAnimationState(fall);    
+            }
+            else
+            {       
+                if(isAttacking) 
+                {
+                    ChangeAnimationState("PlayerAttack" + attackCount);
+                    if(attackTime > 0.6f)    
+                        isAttacking = false;
+                }       
+                if(isFallAttacking)
+                {
+                    ChangeAnimationState(fallattack);
+                }
+                if (isWallSliding)
+                    ChangeAnimationState(wallSlide);
+            }
         }
    
      }
@@ -327,56 +613,134 @@ public class PlayerController : MonoBehaviour
         attackTime += Time.deltaTime;
         if (attackTime > 0.6f)
             isCombo = false;
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !Input.GetKey(KeyCode.S))
         {
-            if (!isPraying && !isGuarding && isGrounded && !isRolling && !playerManager.isHealing && stamina >= 15 && !isStunned)
-                if (isCombo && attackTime > 0.3f)
-                    Attack();
-                else if (!isCombo)
-                    Attack();
+            if((isGrounded && stamina >= 15) || (!isGrounded && stamina >= 25))
+            {
+                if (!isPraying && !isGuarding && !isRolling && !playerManager.isHealing && !isStunned && !isFallAttacking && !canClimbLedge)
+                {
+                    if (isCombo && attackTime > 0.3f)
+                        Attack();
+                    else if (!isCombo)
+                        Attack();
+                }
+            }
+        }
+        else if (!isGrounded && Input.GetButtonDown("Fire1") && Input.GetKey(KeyCode.S) && stamina >= 50 && rb.velocity.y <= 6 && !isFallAttacking && !isWallSliding)
+        {
+            StaminaBar.instance.useStamina(50);
+            isFallAttacking = true;
+            rb.velocity = new Vector2(0, rb.velocity.y - 1f);
+            //rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+            FallAttack();
         }
     }
     void Attack()
     {
-        StaminaBar.instance.useStamina(15);
         isAttacking = true;
-        rb.velocity = new Vector2(0,0);
-        attackDamage += 2;
+        if(isGrounded)
+        {
+            StaminaBar.instance.useStamina(15);
+            rb.velocity = new Vector2(0,0);
+            attackDamage += 2;
+        }
+        else
+        {
+            StaminaBar.instance.useStamina(25);
+            attackDamage += 1;
+        }
         attackCount++;
         isCombo = true;
 
-        if (attackCount > 3 || attackTime > 0.6f)
+        if ((attackCount > 3 || attackTime > 0.6f))
         {
             attackCount = 1;
-            attackDamage = 20;
+            if(isGrounded)
+                attackDamage = 20;
+            else
+                attackDamage = 10;
         }
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
-            if (enemy.CompareTag("Spearman"))
-                enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
-
-            if (enemy.CompareTag("SpearmanShield"))
-                enemy.transform.parent.GetComponent<Spearman_Manager>().Guard();
-
-            if (enemy.CompareTag("Enemy"))
+            if(enemy.CompareTag("Enemy"))
                 enemy.GetComponent<Minion_wfireball>().TakeDamage(attackDamage);
-
-            if (enemy.CompareTag("Villager"))
+            if(enemy.CompareTag("Villager"))
                 enemy.GetComponent<VillagerHealthManager>().TakeDamage(attackDamage);
-
+            if(enemy.CompareTag("Sword"))
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("MinionwPoke"))
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(attackDamage);
+            if(enemy.CompareTag("Legolas"))
+                enemy.GetComponent<Legolas>().TakeDamage(attackDamage);
             if (enemy.CompareTag("Miniboss"))
                 enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
-
             if (enemy.CompareTag("MinibossShield"))
                 enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
-
+            if (enemy.CompareTag("Spearman"))
+                enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("SpearmanShield"))
+                enemy.transform.parent.GetComponent<Spearman_Manager>().Guard();
+            if (enemy.CompareTag("FakeWall"))
+                enemy.GetComponent<FakeWallScript>().TakeDamage(attackDamage);
         }
         attackTime = 0f;
     }
+    void FallAttack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(fallAttackBox.position, fallAttackSize, enemyLayers);
+        this.GetComponent<PlayerManager>().damageable = false;
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if(enemy.CompareTag("Enemy"))
+                enemy.GetComponent<Minion_wfireball>().TakeDamage(40);
+            if(enemy.CompareTag("Villager"))
+                enemy.GetComponent<VillagerHealthManager>().TakeDamage(40);
+            if(enemy.CompareTag("Sword"))
+                enemy.GetComponent<Sword_Behaviour>().TakeDamage(40);
+            if(enemy.CompareTag("MinionwPoke"))
+                enemy.GetComponent<Minion_wpoke>().TakeDamage(40);
+            if(enemy.CompareTag("Legolas"))
+                enemy.GetComponent<Legolas>().TakeDamage(40);
+            if (enemy.CompareTag("Miniboss"))
+                enemy.GetComponent<Boss_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("MinibossShield"))
+                enemy.transform.parent.GetComponent<Boss_Manager>().Parry();
+            if (enemy.CompareTag("Spearman"))
+                enemy.GetComponent<Spearman_Manager>().TakeDamage(attackDamage);
+            if (enemy.CompareTag("SpearmanShield"))
+                enemy.transform.parent.GetComponent<Spearman_Manager>().Guard();
+        }
+    }
+    public void FallAttackTransition()
+    {
+        if(isGrounded)
+        {
+            ChangeAnimationState("PlayerFallAttackLanding");
+        }
+    }
+    public void FallAttackDone()
+    {
+        isFallAttacking = false;
+        //rb.constraints = ~RigidbodyConstraints2D.FreezePositionX;
+        this.GetComponent<PlayerManager>().damageable = true;
+    }
+    public void StealLife(float stealRate)
+    {
+        if (playerManager.CurrentHealth < playerManager.MaxHealth)
+        {
+            playerManager.CurrentHealth += attackDamage * stealRate;
+            Debug.Log(attackDamage * stealRate + "Can calindi");
+            Actions.OnHealthChanged();
+            if (playerManager.CurrentHealth > 100)
+            {
+                playerManager.CurrentHealth = 100;
+            }
+        }
+    }
     public void ThrowDagger()
     {
-        //Stack'ten gir dagger ��kar ve dagger objesine ata
+        //Stack'ten gir dagger çıkar ve dagger objesine ata
         GameObject dagger = daggerStack.PopFromStack();
 
         if (dagger != null)
@@ -388,7 +752,7 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.right);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                //Stack'ten çıkarmış dagger objesini Queue'ya yerleştir
                 daggerCooldownController.EnqueueItem(dagger);
             }
             else
@@ -398,10 +762,10 @@ public class PlayerController : MonoBehaviour
                 dagger.GetComponent<Dagger>().Initialize(Vector2.left);
                 dagger.SetActive(true);
                 StartCoroutine(startDaggerLifeTime());
-                //Stack'ten ��karm�� oldu�un dagger objesini Queue'ya yerle�tir
+                //Stack'ten çıkarmış dagger objesini Queue'ya yerleştir
                 daggerCooldownController.EnqueueItem(dagger);
             }
-            //Daggerlar�n 3 saniye sonra sahneden ��kmas�na yarayan coroutine
+            //Daggerların 3 saniye sonra sahneden çıkmasına yarayan coroutine
             IEnumerator startDaggerLifeTime()
             {
                 yield return new WaitForSeconds(10f);
@@ -413,13 +777,18 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        Gizmos.DrawWireCube(fallAttackBox.position, fallAttackSize);
     }
 
     public bool isBusy()
     {
-        if (isAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing || isStunned)
+        if (isAttacking || isFallAttacking || isGuarding || isPraying || isRolling || playerManager.isReviving || playerManager.hitAnimRunning || playerManager.isHealing || canClimbLedge)
             return true;
         else
             return false;
-    }    
+    } 
+
+    public ItemStack GetDaggerStack(){
+        return daggerStack;
+    }
 }
