@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +5,15 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
 
-    [HideInInspector] public GameObject currentCheckPoint;
+    public GameObject currentCheckPoint;
     private PlayerController player;
     private Rigidbody2D rb;
     public GameObject reviveEffect;
     private SpriteRenderer spriteRenderer;
     public float flickerSpeed;
     private bool flickering;
+    public GameObject crown;
+    [SerializeField] private SceneChanger scene;
 
     public static PlayerManager instance;
 
@@ -32,11 +33,14 @@ public class PlayerManager : MonoBehaviour
     //Animations
     const string hit = "PlayerHit";
     const string death = "PlayerDeath";
+    const string deathDD = "PlayerDeathDD";
     const string revive = "PlayerRevive";
     const string counter = "PlayerCounter";
     const string heal = "PlayerHeal";
     [HideInInspector] public bool hitAnimRunning;
 
+    //HealthGate
+    public HealthBar healthBar;
 
     //Gemler icin eklediklerim
     public float defenceRate=0;
@@ -52,11 +56,9 @@ public class PlayerManager : MonoBehaviour
         player = GetComponent<PlayerController>(); 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        currentCheckPoint = gameObject;
-        
+        healthBar.SetMaxHealth(MaxHealth);
     }
 
-    
     // Update is called once per frame
     void Update()
     {
@@ -67,8 +69,7 @@ public class PlayerManager : MonoBehaviour
         if (status == 1 || status == 2) // continue moving after a parry
             player.canMove = true;
 
-        
-            switch(lives){
+        switch(lives){
              case 4:
                  if (CurrentHealth >= 100)
             {
@@ -110,6 +111,7 @@ public class PlayerManager : MonoBehaviour
 
         yield return null;
     }
+
     private void Awake()
     {
         instance = this;
@@ -122,6 +124,10 @@ public class PlayerManager : MonoBehaviour
         isHealing = true;
         rb.velocity = new Vector2(0,0);
         Invoke("CancelHealState", 0.8f);
+        if (CurrentHealth > 100)
+        {
+            CurrentHealth = 100;
+        }
         Actions.OnHealthChanged();
     }
     void CancelHealState()
@@ -170,6 +176,8 @@ public class PlayerManager : MonoBehaviour
                                 enemy.GetComponent<Minion_wpoke>().TakeDamage(player.attackDamage * 1.25f);
                             if(enemy.CompareTag("Legolas"))
                                 enemy.GetComponent<Legolas>().TakeDamage(player.attackDamage * 1.25f);
+                            if(enemy.CompareTag("Spearman"))
+                                enemy.GetComponent<Spearman_Manager>().TakeDamage(player.attackDamage * 1.25f);
                         }
                         break;
                 }
@@ -207,7 +215,7 @@ public class PlayerManager : MonoBehaviour
     {
         hitAnimRunning = false;
     }
-    void Die()
+    public void Die()
     {
         if (CurrentHealth <= 0)
         {
@@ -217,29 +225,35 @@ public class PlayerManager : MonoBehaviour
                 dead = true;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
+                rb.velocity = new Vector2(0,0);                
                 player.ChangeAnimationState(death);
                 StartCoroutine(DeathDefiance());
-                CurrentHealth = (MaxHealth * 1) / 100;
-
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 2)
             {
-                CurrentHealth = (MaxHealth * 1) / 100;
-              
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 1)
             {
-                CurrentHealth = (MaxHealth * 1) / 100;
-               
+                CurrentHealth = 1;
+                healthBar.DeathDefienceGem(lives);
             }
             if (lives == 0)
             {
                 dead = true;
-                player.ChangeAnimationState(death);
+                damageable = false;
+                player.ChangeAnimationState(deathDD);
                 CurrentHealth = MaxHealth;
+                healthBar.DeathDefienceGem(lives);
                 lives = 4;
                 //rb.simulated = false; character stays in air when he dies if these lines are active
                 player.enabled = false;
+                crown.SetActive(false);
+                healthBar.RevertHealthBar();
+                Potion.instance.CheckPoint();
                 StartCoroutine(RespawnPlayer());
             }
         }
@@ -257,8 +271,9 @@ public class PlayerManager : MonoBehaviour
         isReviving = true;
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
         player.ChangeAnimationState(revive);
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         revived = true;
+        crown.SetActive(true);
         isReviving = false;
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
@@ -269,14 +284,18 @@ public class PlayerManager : MonoBehaviour
         flickering = false;
     }
 
-    IEnumerator RespawnPlayer()
+    public IEnumerator RespawnPlayer()
     {
         yield return new WaitForSeconds(1f);
         revived = false;
-        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, transform.position.y, currentCheckPoint.transform.position.z);
+        damageable = true;
+        transform.position = new Vector3(currentCheckPoint.transform.position.x + 1, currentCheckPoint.transform.position.y, 0);
+        rb.velocity = new Vector2(0,0);
         dead = false;
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
+        currentCheckPoint.GetComponent<CheckPointController>().currentVCam.SetActive(true);
+        StartCoroutine(scene.WelcomeToScene());
     }
 
 }

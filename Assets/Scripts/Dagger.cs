@@ -32,7 +32,7 @@ public class Dagger : MonoBehaviour
         daggerDamage += daggerDamage * 1/2;
     }
     public void DaggerDamageDown(){
-        daggerDamage = 5f;
+        daggerDamage = 5.0f;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

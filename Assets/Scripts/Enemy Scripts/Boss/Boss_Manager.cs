@@ -31,9 +31,13 @@ public class Boss_Manager : MonoBehaviour
 	[HideInInspector] public float trainAttack;
 	public float trainAttackTimer = 1f;
 
+	//batuhanin ekledikleri
+	public static Boss_Manager instance;
+
 
 	private void Awake()
 	{
+		instance = this;
 		anim = GetComponent<Animator>();
 		trainAttack = trainAttackTimer;
 	}

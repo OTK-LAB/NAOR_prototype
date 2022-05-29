@@ -36,11 +36,6 @@ public class StaminaBar : MonoBehaviour
         //stamina kullanma fonksiyonu
         //başka scriptte çağırmak için 
         //StaminaBar.instance.useStamina(12);
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            useStamina(15);
-        }
-
         if(currentStamina >= 100)
             currentStamina = 100;
     }
