@@ -80,7 +80,7 @@ public class PrologueManager : MonoBehaviour
                 typeWriterScript1.time = 4f;
                 transform.GetChild(index).gameObject.SetActive(true);
                 
-                yield return new WaitForSecondsRealtime(9);
+                yield return new WaitForSecondsRealtime(8);
                 //transform.GetChild(index).gameObject.SetActive(false);
                 index++;
             }

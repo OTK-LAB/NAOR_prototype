@@ -41,7 +41,7 @@ public class MainMenuManager : MonoBehaviour
     {
         PrologueCanvas.SetActive(true);
         audioSource.clip = Seslendirme;
-        audioSource.Play();
+        audioSource.PlayOneShot(Seslendirme);
         Destroy(MenuCanvas);
         // yield return new WaitForSeconds(5);
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Loads the next scene in line
