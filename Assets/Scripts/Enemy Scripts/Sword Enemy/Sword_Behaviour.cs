@@ -224,6 +224,7 @@ public class Sword_Behaviour : MonoBehaviour
     {
         GetComponent<Collider2D>().enabled = false;
         deathColl.SetActive(true);
+        ColiseumKey.instance.deadEnemyCount++;
         this.enabled = false;
         alive = false;
         anim.Play("Enemy_dead");

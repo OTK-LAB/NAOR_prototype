@@ -121,6 +121,8 @@ public class Boss_Manager : MonoBehaviour
     void Die()
     {
         GetComponent<Collider2D>().enabled = false;
+		shieldcoll.SetActive(false);
+		GetComponent<Rigidbody2D>().simulated = false;
         this.enabled = false;
 		alive = false;
         anim.Play("Miniboss_dead");

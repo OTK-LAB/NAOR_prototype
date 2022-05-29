@@ -15,7 +15,7 @@ public class MinibossKey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!boss.isAlive())
+        if(!boss.isAlive() && !key.GetComponent<DestroyedKey>().isAcquired())
         {
             key.SetActive(true);
         }

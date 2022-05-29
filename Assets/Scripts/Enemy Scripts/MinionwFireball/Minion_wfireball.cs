@@ -188,6 +188,7 @@ public class Minion_wfireball : MonoBehaviour
         movement = new Vector3(transform.position.x, -3.17f, transform.position.z);
         transform.position = movement;
         GetComponent<Collider2D>().enabled = false;
+        ColiseumKey.instance.deadEnemyCount++;
         this.enabled = false;
 
     }

@@ -158,8 +158,8 @@ public class Legolas : MonoBehaviour
     {
         ChangeAnimationState(death);
         GetComponent<Collider2D>().enabled = false;
+        ColiseumKey.instance.deadEnemyCount++;
         this.enabled = false;
-
     }
     private void OnTriggerEnter2D(Collider2D trig)
     {
