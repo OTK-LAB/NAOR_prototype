@@ -295,7 +295,7 @@ public class PlayerManager : MonoBehaviour
         //rb.simulated = true; character stays in air when he dies if these lines are active
         player.enabled = true;
         currentCheckPoint.GetComponent<CheckPointController>().currentVCam.SetActive(true);
-        StartCoroutine(scene.WelcomeToScene());
+        //StartCoroutine(scene.WelcomeToScene());
     }
 
 }

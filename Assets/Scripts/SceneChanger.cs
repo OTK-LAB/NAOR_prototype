@@ -9,12 +9,12 @@ using UnityEngine.SceneManagement;
 public class SceneChanger : MonoBehaviour
 {
     public PlayerController player;
-    public Image siyahEkran;
+    //public Image siyahEkran;
 
     [Header("Locks")]
-    public string keyToThisDoor;                //kilitli kapý için bunlar
-    public string requiredKey;                  //anahtara sahip olduðunu tek tek playerpref'e yazýcaz gibi...
-    public bool locked;                         //þimdilik kilitlerle uðraþmýyorum
+    public string keyToThisDoor;                //kilitli kapï¿½ iï¿½in bunlar
+    public string requiredKey;                  //anahtara sahip olduï¿½unu tek tek playerpref'e yazï¿½caz gibi...
+    public bool locked;                         //ï¿½imdilik kilitlerle uï¿½raï¿½mï¿½yorum
 
     [Header("Door Type")]
     public bool leftDoor;
@@ -32,9 +32,9 @@ public class SceneChanger : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        siyahEkran = GameObject.FindGameObjectWithTag("EditorOnly").GetComponent<Image>();
+        //siyahEkran = GameObject.FindGameObjectWithTag("EditorOnly").GetComponent<Image>();
 
-        StartCoroutine(WelcomeToScene());
+        //StartCoroutine(WelcomeToScene());
 
         if (PlayerPrefs.GetFloat("usedLeftDoor") == 1)
           player.transform.position = new Vector2(PlayerPrefs.GetFloat("nextLeftPlayerPositionX"), PlayerPrefs.GetFloat("nextLeftPlayerPositionY"));
@@ -67,7 +67,7 @@ public class SceneChanger : MonoBehaviour
             buttonEpressed = false;
     }
 
-    public IEnumerator WelcomeToScene()
+    /*public IEnumerator WelcomeToScene()
     {
         for (float f = 0; f <= 2; f += Time.deltaTime)
         {
@@ -76,17 +76,17 @@ public class SceneChanger : MonoBehaviour
             siyahEkran.color = newColor;
             yield return null;
         }
-    }
+    }*/
 
     IEnumerator ChangeTheScene(string nextscene)
     {
-        for (float f = 0; f <= 2; f += Time.deltaTime)
+        /*for (float f = 0; f <= 2; f += Time.deltaTime)
         {
             Color newColor = siyahEkran.color;
             newColor.a = Mathf.Lerp(0f, 1f, f / 2); ;
             siyahEkran.color = newColor;
             yield return null;
-        }
+        }*/
         yield return new WaitForSecondsRealtime(0.5f);
         SceneManager.LoadScene(nextscene);
     }
