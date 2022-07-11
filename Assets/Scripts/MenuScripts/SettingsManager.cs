@@ -47,11 +47,11 @@ public class SettingsManager : MonoBehaviour
     
     public void SetMusicVolume(float value)
     {
-        audiomixer.SetFloat("MusicVolume", value);
+        audiomixer.SetFloat("MusicVolume", Mathf.Log10(value)*20);
     }
     public void SetAmbianceVolume(float value)
     {
-        audiomixer.SetFloat("AmbianceVolume", value);
+        audiomixer.SetFloat("AmbianceVolume",Mathf.Log10(value)*20);
     }
 
     public void SetFullscreen(bool fullscreenEnabled)
